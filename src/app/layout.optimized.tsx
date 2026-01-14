@@ -3,8 +3,10 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { SmoothScroll } from '@/components/providers/SmoothScroll';
 import { LanguageProvider } from '@/components/providers/LanguageProvider';
-import { CustomCursor, ParticlesBackground, ScrollProgress, BackToTop, LiveActivityFeed } from '@/components/ui';
+import { CustomCursor, ScrollProgress, BackToTop, LiveActivityFeed } from '@/components/ui';
 import { createMetadata, siteConfig } from '@/lib/seo';
+// OPTIMIZATION: Import optimized particles
+import { OptimizedLayoutParticles } from '@/components/OptimizedLayoutParticles';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -79,15 +81,13 @@ const organizationSchema = {
       areaServed: ['ES', 'LATAM', 'US'],
     },
   ],
-  // Vinculación semántica a entidades conocidas
   sameAs: [
     siteConfig.socialLinks.twitter,
     siteConfig.socialLinks.linkedin,
     siteConfig.socialLinks.instagram,
-    'https://www.wikidata.org/wiki/Q1323477', // Digital marketing agency
-    'https://www.wikidata.org/wiki/Q156849', // Marketing agency
+    'https://www.wikidata.org/wiki/Q1323477',
+    'https://www.wikidata.org/wiki/Q156849',
   ],
-  // Servicios ofrecidos (referencia a ItemList)
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Digital Marketing Services',
@@ -153,11 +153,17 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-white text-gray-800">
         <LanguageProvider>
+          {/* Critical UI elements that should load immediately */}
           <ScrollProgress />
           <CustomCursor />
-          <ParticlesBackground />
+          
+          {/* OPTIMIZED: Particles load after 1s or when browser is idle */}
+          <OptimizedLayoutParticles delay={1000} useIdleCallback={true} />
+          
+          {/* Non-blocking UI elements */}
           <BackToTop />
           <LiveActivityFeed />
+          
           <SmoothScroll>{children}</SmoothScroll>
         </LanguageProvider>
       </body>

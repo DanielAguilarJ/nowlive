@@ -32,12 +32,28 @@ const ParticlesBackground = dynamic(() => import('@/components/ui').then(m => ({
 const CustomCursor = dynamic(() => import('@/components/ui').then(m => ({ default: m.CustomCursor })), {
   ssr: false,
 });
+const FluidCursor = dynamic(() => import('@/components/ui').then(m => ({ default: m.FluidCursor })), {
+  ssr: false,
+});
+const GridLightEffect = dynamic(() => import('@/components/ui').then(m => ({ default: m.GridLightEffect })), {
+  ssr: false,
+});
+const GlowingOrbs = dynamic(() => import('@/components/ui').then(m => ({ default: m.GlowingOrbs })), {
+  ssr: false,
+});
+const NoiseBackground = dynamic(() => import('@/components/ui').then(m => ({ default: m.NoiseBackground })), {
+  ssr: false,
+});
 
 export default function HomeClient() {
   return (
     <>
       <ScrollProgress />
       <CustomCursor />
+      <FluidCursor />
+      <GridLightEffect />
+      <GlowingOrbs />
+      <NoiseBackground />
       <Header />
       <main className="relative overflow-hidden">
         <div className="fixed inset-0 -z-10">

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import HomeClient from './HomeClient';
-import { createMetadata } from '@/lib/seo';
+import { createMetadata, generateServicesListSchema, generateWebsiteSchema } from '@/lib/seo';
 
 export const metadata: Metadata = createMetadata({
   title: 'Agencia de Marketing Digital',
@@ -19,5 +20,35 @@ export const metadata: Metadata = createMetadata({
 });
 
 export default function Home() {
-  return <HomeClient />;
+  // Schema.org para listado de servicios (ItemList)
+  const servicesSchema = generateServicesListSchema(undefined, { lang: 'es' });
+  
+  // Schema.org para WebSite con SearchAction
+  const websiteSchema = generateWebsiteSchema('es');
+
+  return (
+    <>
+      {/* Structured Data - ItemList de servicios */}
+      <Script
+        id="services-list-schema"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(servicesSchema),
+        }}
+      />
+      
+      {/* Structured Data - WebSite con SearchAction */}
+      <Script
+        id="website-schema"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(websiteSchema),
+        }}
+      />
+      
+      <HomeClient />
+    </>
+  );
 }

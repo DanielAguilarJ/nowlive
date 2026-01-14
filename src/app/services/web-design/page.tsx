@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Script from 'next/script';
-import { siteConfig } from '@/lib/seo';
+import { siteConfig, generateServiceSchema, generateBreadcrumbSchema } from '@/lib/seo';
 import WebDesignClient from './WebDesignClient';
 
 export const metadata: Metadata = {
@@ -15,30 +15,38 @@ export const metadata: Metadata = {
 };
 
 export default function WebDesignPage() {
-  const serviceSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    serviceType: 'Diseño y Desarrollo Web',
-    provider: {
-      '@type': 'Organization',
-      name: siteConfig.name,
-      url: siteConfig.url,
-    },
-    areaServed: 'ES',
-    description: 'Diseño y desarrollo web profesional optimizado para conversiones. Sitios web rápidos, responsivos y orientados a resultados.',
-    offers: {
-      '@type': 'Offer',
-      availability: 'https://schema.org/InStock',
-    },
-  };
+  // Schema.org ProfessionalService con vinculación semántica a Wikidata
+  const serviceSchema = generateServiceSchema('web-design', {
+    lang: 'es',
+    includeOffers: true,
+    includeReviews: true,
+  });
+
+  // Schema.org BreadcrumbList para navegación
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Inicio', url: '/' },
+    { name: 'Servicios', url: '/services' },
+    { name: 'Diseño Web', url: '/services/web-design' },
+  ]);
 
   return (
     <>
+      {/* Structured Data - ProfessionalService con sameAs a Wikidata */}
       <Script
         id="service-schema"
         type="application/ld+json"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
+      
+      {/* Structured Data - BreadcrumbList */}
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      
       <WebDesignClient />
     </>
   );

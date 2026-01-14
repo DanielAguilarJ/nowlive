@@ -71,6 +71,7 @@ export function Button({
         'transition-all duration-300 ease-power3-out',
         'focus:outline-none focus:ring-2 focus:ring-offset-2',
         'disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none',
+        'relative overflow-hidden ripple',
         // Variant styles
         variantStyles[variant],
         // Size styles

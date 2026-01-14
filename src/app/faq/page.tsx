@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { createMetadata, siteConfig } from '@/lib/seo';
+import { createMetadata, generateFaqSchema, generateBreadcrumbSchema } from '@/lib/seo';
 import FAQClient from './FAQClient';
 import { getTranslations } from '@/lib/i18n';
 
@@ -14,48 +14,36 @@ export const metadata: Metadata = createMetadata({
 export default function FAQPage() {
   const t = getTranslations('es');
   
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: t.faq.items.map((item) => ({
-      '@type': 'Question',
-      name: item.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: item.answer,
-      },
+  // Usar la nueva función generateFaqSchema
+  const faqSchema = generateFaqSchema(
+    t.faq.items.map((item) => ({
+      question: item.question,
+      answer: item.answer,
     })),
-  };
+    {
+      pageName: 'FAQ',
+      pageUrl: '/faq',
+    }
+  );
 
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Inicio',
-        item: siteConfig.url,
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'FAQ',
-        item: `${siteConfig.url}/faq`,
-      },
-    ],
-  };
+  // Usar la nueva función generateBreadcrumbSchema
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Inicio', url: '/' },
+    { name: 'FAQ', url: '/faq' },
+  ]);
 
   return (
     <>
       <Script
         id="faq-schema"
         type="application/ld+json"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <Script
         id="breadcrumb-schema"
         type="application/ld+json"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <FAQClient />

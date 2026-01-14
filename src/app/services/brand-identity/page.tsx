@@ -1,4 +1,6 @@
 import { Metadata } from 'next';
+import Script from 'next/script';
+import { generateServiceSchema, generateBreadcrumbSchema } from '@/lib/seo';
 import BrandIdentityClient from './BrandIdentityClient';
 
 export const metadata: Metadata = {
@@ -13,5 +15,39 @@ export const metadata: Metadata = {
 };
 
 export default function BrandIdentityPage() {
-  return <BrandIdentityClient />;
+  // Schema.org ProfessionalService con vinculación semántica a Wikidata
+  const serviceSchema = generateServiceSchema('brand-identity', {
+    lang: 'es',
+    includeOffers: true,
+    includeReviews: true,
+  });
+
+  // Schema.org BreadcrumbList para navegación
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Inicio', url: '/' },
+    { name: 'Servicios', url: '/services' },
+    { name: 'Identidad de Marca', url: '/services/brand-identity' },
+  ]);
+
+  return (
+    <>
+      {/* Structured Data - ProfessionalService con sameAs a Wikidata */}
+      <Script
+        id="service-schema"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      
+      {/* Structured Data - BreadcrumbList */}
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      
+      <BrandIdentityClient />
+    </>
+  );
 }
