@@ -1,0 +1,10 @@
+export { Header } from './Header';
+export { Hero } from './Hero';
+export { Services } from './Services';
+export { Portfolio } from './Portfolio';
+export { Testimonials } from './Testimonials';
+export { Team } from './Team';
+export { Process } from './Process';
+export { CTA } from './CTA';
+export { Footer } from './Footer';
+export { Stats } from './Stats';
