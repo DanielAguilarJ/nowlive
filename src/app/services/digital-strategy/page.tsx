@@ -35,7 +35,7 @@ export default function DigitalStrategyPage() {
       <Script
         id="service-schema"
         type="application/ld+json"
-        strategy="beforeInteractive"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
       
@@ -43,7 +43,7 @@ export default function DigitalStrategyPage() {
       <Script
         id="breadcrumb-schema"
         type="application/ld+json"
-        strategy="beforeInteractive"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       

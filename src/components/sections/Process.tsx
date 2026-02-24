@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SectionContainer, ScrollReveal, AnimatedText } from '@/components/ui';
@@ -34,11 +34,36 @@ const icons = [
   ),
 ];
 
+/** Bullet-point details revealed on hover for each step */
+const stepDetails: Record<string, string[][]> = {
+  es: [
+    ['Entrevistas con stakeholders', 'Analisis competitivo', 'Auditoria digital completa', 'Definicion de buyer personas'],
+    ['Roadmap basado en datos', 'KPIs y metricas clave', 'Arquitectura de contenidos', 'Plan de canales y touchpoints'],
+    ['Sprints agiles de 2 semanas', 'QA continuo y revision de codigo', 'Entregas incrementales', 'Comunicacion diaria de avances'],
+    ['A/B testing continuo', 'Reportes mensuales de rendimiento', 'Iteracion basada en datos', 'Escalabilidad y crecimiento sostenido'],
+  ],
+  en: [
+    ['Stakeholder interviews', 'Competitive analysis', 'Full digital audit', 'Buyer persona definition'],
+    ['Data-driven roadmap', 'KPIs & key metrics', 'Content architecture', 'Channel & touchpoint planning'],
+    ['2-week agile sprints', 'Continuous QA & code review', 'Incremental deliverables', 'Daily progress updates'],
+    ['Continuous A/B testing', 'Monthly performance reports', 'Data-driven iteration', 'Scalability & sustained growth'],
+  ],
+};
+
+/** Duration labels for each step */
+const stepDurations: Record<string, string[]> = {
+  es: ['1-2 semanas', '1 semana', '2-4 semanas', 'Continuo'],
+  en: ['1-2 weeks', '1 week', '2-4 weeks', 'Ongoing'],
+};
+
 export function Process() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<SVGPathElement>(null);
+  const lineRef = useRef<SVGLineElement>(null);
+  const [expandedStep, setExpandedStep] = useState<number | null>(null);
   const { lang } = useLanguage();
   const t = getTranslations(lang);
+  const details = stepDetails[lang] || stepDetails.en;
+  const durations = stepDurations[lang] || stepDurations.en;
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -47,18 +72,24 @@ export function Process() {
 
     if (prefersReducedMotion || !containerRef.current) return;
 
+    // Set the line length to match the container height
+    if (lineRef.current && containerRef.current) {
+      const containerHeight = containerRef.current.scrollHeight;
+      lineRef.current.setAttribute('y2', String(containerHeight - 48));
+    }
+
     const ctx = gsap.context(() => {
-      // Animate the connecting line
+      // Animate the connecting dashed line via stroke-dashoffset
       if (lineRef.current) {
         const length = lineRef.current.getTotalLength();
         gsap.set(lineRef.current, {
-          strokeDasharray: length,
+          strokeDasharray: '12 8',
           strokeDashoffset: length,
         });
 
         gsap.to(lineRef.current, {
           strokeDashoffset: 0,
-          duration: 2,
+          duration: 2.4,
           ease: 'power2.inOut',
           scrollTrigger: {
             trigger: containerRef.current,
@@ -81,6 +112,16 @@ export function Process() {
           once: true,
         },
       });
+
+      // Animate glow rings with a subtle pulse on each icon
+      gsap.to('.process-icon-glow', {
+        boxShadow: '0 0 40px 8px rgba(59,130,246,0.45), 0 0 80px 16px rgba(59,130,246,0.18)',
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        stagger: 0.4,
+      });
     }, containerRef);
 
     return () => ctx.revert();
@@ -94,8 +135,8 @@ export function Process() {
     >
       <div className="text-center mb-16">
         <ScrollReveal direction="up">
-          <span className="inline-block px-4 py-2 mb-4 text-sm font-medium text-accent-300 bg-accent-500/20 rounded-full">
-              {t.process.badge}
+          <span className="inline-block px-4 py-2 mb-4 text-badge text-accent-300 bg-accent-500/20 rounded-full">
+            {t.process.badge}
           </span>
         </ScrollReveal>
 
@@ -103,76 +144,167 @@ export function Process() {
           as="h2"
           animation="slide-up"
           delay={0.1}
-          className="text-fluid-4xl font-bold text-white mb-4"
+          className="text-fluid-4xl text-white mb-4 text-section-heading"
         >
           {t.process.title}
         </AnimatedText>
 
         <ScrollReveal direction="up" delay={0.2}>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto text-body">
             {t.process.description}
           </p>
         </ScrollReveal>
       </div>
 
       {/* Process timeline */}
-      <div ref={containerRef} className="relative max-w-4xl mx-auto">
-        {/* Connecting line (hidden on mobile) */}
+      <div ref={containerRef} className="relative max-w-5xl mx-auto">
+        {/* ── Animated dashed connector line (hidden on mobile) ── */}
         <svg
-          className="absolute top-16 left-1/2 transform -translate-x-1/2 w-full h-full hidden md:block"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-1 h-full hidden md:block pointer-events-none"
           preserveAspectRatio="none"
+          style={{ overflow: 'visible' }}
         >
-          <path
-            ref={lineRef}
-            d="M 60 0 L 60 100%"
-            stroke="url(#gradient)"
-            strokeWidth="2"
-            fill="none"
-            className="process-line"
-            style={{ transform: 'translateX(calc(50% - 60px))' }}
-          />
           <defs>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#3B82F6" />
-              <stop offset="100%" stopColor="#10B981" />
+            <linearGradient id="process-line-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.9" />
+              <stop offset="50%" stopColor="#8B5CF6" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#10B981" stopOpacity="0.9" />
             </linearGradient>
           </defs>
+          <line
+            ref={lineRef}
+            x1="0"
+            y1="48"
+            x2="0"
+            y2="800"
+            stroke="url(#process-line-gradient)"
+            strokeWidth="3"
+            className="process-dashed-line"
+          />
         </svg>
 
         {/* Steps */}
-        <div className="relative space-y-12 md:space-y-24">
-          {t.process.steps.map((step, index) => (
-            <div
-              key={step.number}
-              className={`process-step relative flex flex-col md:flex-row items-center gap-8 ${
-                index % 2 === 1 ? 'md:flex-row-reverse' : ''
-              }`}
-            >
-              {/* Icon circle */}
-              <div className="relative z-10 flex-shrink-0">
-                <div className="w-24 h-24 bg-gradient-to-br from-accent-500 to-accent-600 rounded-full flex items-center justify-center text-white shadow-glow-lg">
-                  {icons[index]}
-                </div>
-                <div className="absolute -top-2 -right-2 w-10 h-10 bg-white rounded-full flex items-center justify-center text-primary-700 font-bold shadow-lg">
-                  {step.number}
-                </div>
-              </div>
+        <div className="relative space-y-16 md:space-y-28">
+          {t.process.steps.map((step, index) => {
+            const isEven = index % 2 === 0;
+            const isExpanded = expandedStep === index;
 
-              {/* Content */}
+            return (
               <div
-                className={`flex-1 text-center md:text-left ${
-                  index % 2 === 1 ? 'md:text-right' : ''
-                }`}
+                key={step.number}
+                className="process-step relative"
               >
-                <h3 className="text-2xl font-bold text-white mb-3">
-                  {step.title}
-                </h3>
-                <p className="text-gray-300 leading-relaxed max-w-md">
-                  {step.description}
-                </p>
+                {/* ── Desktop: alternating two-column layout ── */}
+                <div
+                  className={`flex flex-col md:flex-row items-center gap-8 md:gap-12 ${
+                    !isEven ? 'md:flex-row-reverse' : ''
+                  }`}
+                >
+                  {/* Icon circle with glow */}
+                  <div className="relative z-10 flex-shrink-0">
+                    {/* Outer glow ring */}
+                    <div className="process-icon-glow absolute -inset-3 rounded-full bg-accent-500/10 blur-md" />
+                    {/* Main icon circle */}
+                    <div className="relative w-28 h-28 bg-gradient-to-br from-accent-500 via-accent-600 to-accent-700 rounded-full flex items-center justify-center text-white shadow-glow-lg ring-2 ring-accent-400/30 ring-offset-2 ring-offset-primary-700">
+                      {icons[index]}
+                    </div>
+                    {/* Step number badge with gradient background */}
+                    <div className="absolute -top-3 -right-3 w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-20">
+                      <div className="w-full h-full rounded-full bg-gradient-to-br from-white via-accent-100 to-accent-300 flex items-center justify-center">
+                        <span className="text-lg font-extrabold bg-gradient-to-br from-accent-700 to-accent-500 bg-clip-text text-transparent text-display">
+                          {step.number}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content card */}
+                  <div
+                    className={`flex-1 max-w-lg ${
+                      isEven ? 'md:text-left text-center' : 'md:text-right text-center'
+                    }`}
+                  >
+                    <h3 className="text-2xl md:text-3xl text-white mb-1 text-section-heading">
+                      {step.title}
+                    </h3>
+
+                    {/* Duration label */}
+                    <span
+                      className={`inline-flex items-center gap-1.5 text-xs font-semibold tracking-wide uppercase mb-3 px-3 py-1 rounded-full bg-accent-500/15 text-accent-300 border border-accent-500/20 ${
+                        isEven ? '' : 'md:ml-auto'
+                      }`}
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {durations[index]}
+                    </span>
+
+                    <p className="text-gray-300 text-body leading-relaxed">
+                      {step.description}
+                    </p>
+
+                    {/* Expandable hover details */}
+                    <button
+                      onClick={() => setExpandedStep(isExpanded ? null : index)}
+                      onMouseEnter={() => setExpandedStep(index)}
+                      className={`mt-3 inline-flex items-center gap-1.5 text-sm font-medium transition-colors duration-200 ${
+                        isExpanded ? 'text-accent-300' : 'text-accent-400/70 hover:text-accent-300'
+                      } ${!isEven ? 'md:ml-auto' : ''}`}
+                    >
+                      <span>{lang === 'es' ? 'Ver detalles' : 'View details'}</span>
+                      <svg
+                        className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+
+                    {/* Expanded details panel */}
+                    <div
+                      className={`overflow-hidden transition-all duration-500 ease-power3-out ${
+                        isExpanded ? 'max-h-64 opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'
+                      }`}
+                    >
+                      <ul
+                        className={`space-y-2 ${
+                          !isEven ? 'md:text-right' : 'md:text-left'
+                        } text-left`}
+                      >
+                        {details[index].map((detail, i) => (
+                          <li
+                            key={i}
+                            className={`flex items-start gap-2 text-sm text-gray-400 ${
+                              !isEven ? 'md:flex-row-reverse md:text-right' : ''
+                            }`}
+                            style={{
+                              transitionDelay: isExpanded ? `${i * 60}ms` : '0ms',
+                              opacity: isExpanded ? 1 : 0,
+                              transform: isExpanded ? 'translateY(0)' : 'translateY(8px)',
+                              transition: 'opacity 0.3s ease, transform 0.3s ease',
+                            }}
+                          >
+                            <svg
+                              className="w-4 h-4 mt-0.5 flex-shrink-0 text-accent-400"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>{detail}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </SectionContainer>

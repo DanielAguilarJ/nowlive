@@ -55,6 +55,7 @@ export function ParticlesBackground() {
     window.addEventListener('mousemove', handleMouseMove);
 
     // Animation loop
+    let animationId: number;
     const animate = () => {
       if (!ctx || !canvas) return;
 
@@ -105,12 +106,13 @@ export function ParticlesBackground() {
         });
       });
 
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
+      cancelAnimationFrame(animationId);
       window.removeEventListener('resize', setCanvasSize);
       window.removeEventListener('mousemove', handleMouseMove);
     };

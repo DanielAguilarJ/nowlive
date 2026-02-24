@@ -32,7 +32,7 @@ export default function Home() {
       <Script
         id="services-list-schema"
         type="application/ld+json"
-        strategy="beforeInteractive"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(servicesSchema),
         }}
@@ -42,7 +42,7 @@ export default function Home() {
       <Script
         id="website-schema"
         type="application/ld+json"
-        strategy="beforeInteractive"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(websiteSchema),
         }}

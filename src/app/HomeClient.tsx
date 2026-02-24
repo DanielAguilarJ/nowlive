@@ -17,6 +17,9 @@ const Portfolio = dynamic(() => import('@/components/sections').then(m => ({ def
 const Stats = dynamic(() => import('@/components/sections').then(m => ({ default: m.Stats })), {
   loading: () => <div className="min-h-[400px]" />,
 });
+const ClientLogos = dynamic(() => import('@/components/sections').then(m => ({ default: m.ClientLogos })), {
+  loading: () => <div className="min-h-[200px]" />,
+});
 const Testimonials = dynamic(() => import('@/components/sections').then(m => ({ default: m.Testimonials })), {
   loading: () => <div className="min-h-[500px]" />,
 });
@@ -46,6 +49,7 @@ export default function HomeClient() {
         <Hero />
         <Services />
         <Stats />
+        <ClientLogos />
         <Portfolio />
         <Process />
         <Team />

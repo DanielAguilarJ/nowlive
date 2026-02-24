@@ -1,15 +1,49 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Space_Grotesk, Outfit, Sora, JetBrains_Mono, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import { SmoothScroll } from '@/components/providers/SmoothScroll';
 import { LanguageProvider } from '@/components/providers/LanguageProvider';
-import { CustomCursor, ParticlesBackground, ScrollProgress, BackToTop, LiveActivityFeed } from '@/components/ui';
+import { ClientProviders } from '@/components/providers/ClientProviders';
 import { createMetadata, siteConfig } from '@/lib/seo';
 
-const inter = Inter({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-space-grotesk',
+  weight: ['400', '500', '600', '700'],
+});
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-outfit',
+  weight: ['400', '500', '600', '700', '800'],
+});
+
+const sora = Sora({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sora',
+  weight: ['300', '400', '500', '600', '700'],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-jetbrains-mono',
+  // Solo los pesos realmente usados; preload:false evita que bloquee el LCP
+  weight: ['400', '700'],
+  preload: false,
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-playfair',
+  weight: ['400', '600', '700'],
+  style: ['normal'],
+  // Fuente decorativa – no bloquea el render
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -139,11 +173,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={inter.variable} suppressHydrationWarning>
+    <html lang="es" className={`${spaceGrotesk.variable} ${outfit.variable} ${sora.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable}`} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* next/font sirve las fuentes localmente → los preconnect a Google Fonts son innecesarios */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://images.unsplash.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -153,12 +187,9 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-white text-gray-800">
         <LanguageProvider>
-          <ScrollProgress />
-          <CustomCursor />
-          <ParticlesBackground />
-          <BackToTop />
-          <LiveActivityFeed />
-          <SmoothScroll>{children}</SmoothScroll>
+          <ClientProviders>
+            <SmoothScroll>{children}</SmoothScroll>
+          </ClientProviders>
         </LanguageProvider>
       </body>
     </html>

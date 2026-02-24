@@ -6,6 +6,10 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  // Genera estilos hover solo en dispositivos que los soportan (reduce CSS en móvil)
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
       colors: {
@@ -50,8 +54,11 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        mono: ['Fira Code', 'monospace'],
+        display: ['var(--font-space-grotesk)', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-sora)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-jetbrains-mono)', 'Fira Code', 'monospace'],
+        serif: ['var(--font-playfair)', 'Georgia', 'serif'],
       },
       fontSize: {
         // Fluid typography using clamp

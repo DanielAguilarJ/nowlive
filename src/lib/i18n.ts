@@ -217,6 +217,21 @@ export const translations = {
       privacy: "Privacidad",
       terms: "Términos de Servicio",
       cookies: "Cookies",
+      backToTop: "Volver arriba",
+      trustBadges: {
+        ssl: "SSL Seguro",
+        gdpr: "GDPR Compliant",
+        support: "24/7 Soporte",
+        iso: "ISO 27001",
+      },
+      contact: {
+        title: "Contacto",
+        phone: "+34 912 345 678",
+        email: "hola@creamostech.com",
+        address: "Calle Gran Vía 28, 28013 Madrid, España",
+      },
+      liveChat: "Chat en vivo",
+      liveChatSubtitle: "Respuesta inmediata",
     },
     blog: {
       title: "Blog & Recursos",
@@ -779,6 +794,21 @@ export const translations = {
       privacy: "Privacy",
       terms: "Terms of Service",
       cookies: "Cookies",
+      backToTop: "Back to top",
+      trustBadges: {
+        ssl: "SSL Secure",
+        gdpr: "GDPR Compliant",
+        support: "24/7 Support",
+        iso: "ISO 27001",
+      },
+      contact: {
+        title: "Contact",
+        phone: "+34 912 345 678",
+        email: "hello@creamostech.com",
+        address: "Calle Gran Via 28, 28013 Madrid, Spain",
+      },
+      liveChat: "Live Chat",
+      liveChatSubtitle: "Instant response",
     },
     blog: {
       title: "Blog & Resources",

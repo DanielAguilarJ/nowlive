@@ -8,3 +8,4 @@ export { Process } from './Process';
 export { CTA } from './CTA';
 export { Footer } from './Footer';
 export { Stats } from './Stats';
+export { ClientLogos } from './ClientLogos';

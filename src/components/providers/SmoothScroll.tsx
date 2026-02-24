@@ -31,15 +31,17 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
     });
 
     // Animation frame loop
+    let rafId: number;
     function raf(time: number) {
       lenisRef.current?.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     // Cleanup
     return () => {
+      cancelAnimationFrame(rafId);
       lenisRef.current?.destroy();
       lenisRef.current = null;
     };
