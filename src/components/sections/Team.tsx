@@ -126,7 +126,7 @@ export function Team() {
               <div className="p-6 text-center relative">
                 {/* Role badge */}
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className={`inline-block px-4 py-1.5 text-xs font-bold text-white rounded-full bg-gradient-to-r ${roleGradients[idx]} shadow-lg`}>
+                  <span className={`inline-block px-4 py-1.5 text-xs font-bold text-white rounded-full bg-gradient-to-r ${roleGradients[idx]} shadow-lg whitespace-nowrap max-w-[90%] truncate`}>
                     {member.role}
                   </span>
                 </div>

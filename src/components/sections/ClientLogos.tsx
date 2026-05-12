@@ -191,7 +191,7 @@ function LogoItem({ logo }: { logo: typeof logos[number] }) {
 
     return (
         <div
-            className="relative flex-shrink-0 px-8 md:px-12 flex items-center justify-center logo-grayscale text-gray-600 hover:text-accent-600"
+            className="relative flex-shrink-0 px-4 sm:px-8 md:px-12 flex items-center justify-center logo-grayscale text-gray-600 hover:text-accent-600"
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
         >
@@ -272,8 +272,8 @@ export function ClientLogos() {
             {/* Marquee Row 1 - Left direction (faster) */}
             <div className="relative">
                 {/* Fade edges */}
-                <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-                <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+                <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
                 {/* Scrolling strip */}
                 <div className="overflow-hidden">
@@ -293,8 +293,8 @@ export function ClientLogos() {
             {/* Marquee Row 2 - Reverse direction */}
             <div className="relative mt-6">
                 {/* Fade edges */}
-                <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-                <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+                <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
                 {/* Scrolling strip - reverse */}
                 <div className="overflow-hidden">
@@ -313,7 +313,7 @@ export function ClientLogos() {
 
             {/* Trust indicators with animated icons */}
             <ScrollReveal direction="up" delay={0.3}>
-                <div className="flex flex-wrap justify-center gap-8 mt-12 text-sm text-gray-500">
+                <div className="flex flex-wrap justify-center gap-4 sm:gap-8 mt-12 text-sm text-gray-500">
                     {trustIndicators.map((indicator) => (
                         <div
                             key={indicator.icon}

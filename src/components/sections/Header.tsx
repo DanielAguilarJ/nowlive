@@ -315,7 +315,7 @@ export function Header() {
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
                     onMouseLeave={() => setIsServicesOpen(false)}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[480px] bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-100/80 py-4 px-2 overflow-hidden"
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[min(480px,calc(100vw-2rem))] bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-100/80 py-4 px-2 overflow-hidden"
                   >
                     {/* Header of mega menu */}
                     <div className="px-4 pb-3 mb-2 border-b border-gray-100">
@@ -470,7 +470,7 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden fixed inset-0 top-0 bg-primary-900/98 backdrop-blur-xl z-[-1]"
+            className="lg:hidden fixed inset-0 top-0 bg-primary-900/98 backdrop-blur-xl z-[49]"
           >
             <div className="flex flex-col justify-center items-center h-full px-8 pt-20 pb-12 overflow-y-auto">
               {/* Services Accordion */}

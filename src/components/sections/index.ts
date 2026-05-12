@@ -9,3 +9,6 @@ export { CTA } from './CTA';
 export { Footer } from './Footer';
 export { Stats } from './Stats';
 export { ClientLogos } from './ClientLogos';
+export { Offer } from './Offer';
+export { FloatingConversion } from './FloatingConversion';
+export { ExitIntent } from './ExitIntent';

@@ -201,7 +201,7 @@ export function Services() {
                     }`}
                   >
                     {/* Service number */}
-                    <span className="absolute top-6 right-6 text-6xl font-bold text-gray-100 select-none pointer-events-none text-mono-number leading-none">
+                    <span className={`absolute right-6 text-6xl font-bold text-gray-100 select-none pointer-events-none text-mono-number leading-none ${isPopular ? 'top-12' : 'top-6'}`}>
                       {serviceNumber}
                     </span>
 

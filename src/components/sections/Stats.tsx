@@ -129,7 +129,7 @@ function ProgressRing({ percentage, delay, uniqueId }: { percentage: number; del
   }, [delay]);
 
   return (
-    <div ref={containerRef} className="relative w-28 h-28 mx-auto mb-4">
+    <div ref={containerRef} className="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-4">
       <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
         <defs>
           {/* Unique gradient per ring so they can coexist */}
@@ -370,7 +370,7 @@ export function Stats() {
                 />
 
                 {/* Icon centered in ring */}
-                <div className="absolute top-8 left-1/2 -translate-x-1/2 w-28 h-28 flex items-center justify-center">
+                <div className="absolute top-8 left-1/2 -translate-x-1/2 w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-accent-500/20 to-purple-500/20 flex items-center justify-center text-accent-400 group-hover:text-accent-300 transition-colors group-hover:scale-110 transform duration-300">
                     {statIcons[index]}
                   </div>

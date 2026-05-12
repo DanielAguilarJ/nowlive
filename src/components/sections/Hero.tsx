@@ -1,24 +1,15 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Button } from '@/components/ui';
-import { AnimatedText, ScrollReveal, Typewriter, AnimatedNumber, MorphingBlob, FloatingElements } from '@/components/ui';
+import { AnimatedText, ScrollReveal, Typewriter, AnimatedNumber } from '@/components/ui';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { getTranslations } from '@/lib/i18n';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const trustLogos = ['TechFlow', 'VitaHealth', 'FinTrack', 'Luxe', 'Aurum'];
 
 export function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
-  const layer1Ref = useRef<HTMLDivElement>(null);
-  const layer2Ref = useRef<HTMLDivElement>(null);
-  const layer3Ref = useRef<HTMLDivElement>(null);
   const { lang } = useLanguage();
   const t = getTranslations(lang);
   const [liveViewers, setLiveViewers] = useState(0);
@@ -30,59 +21,8 @@ export function Hero() {
         const delta = Math.floor(Math.random() * 5) - 2;
         return Math.max(8, Math.min(40, prev + delta));
       });
-    }, 5000);
+    }, 8000);
     return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
-
-    if (prefersReducedMotion) return;
-
-    const ctx = gsap.context(() => {
-      if (layer1Ref.current) {
-        gsap.to(layer1Ref.current, {
-          y: 100,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1,
-          },
-        });
-      }
-
-      if (layer2Ref.current) {
-        gsap.to(layer2Ref.current, {
-          y: 150,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1,
-          },
-        });
-      }
-
-      if (layer3Ref.current) {
-        gsap.to(layer3Ref.current, {
-          y: 200,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1,
-          },
-        });
-      }
-    }, heroRef);
-
-    return () => ctx.revert();
   }, []);
 
   const scrollToSection = (href: string) => {
@@ -97,51 +37,15 @@ export function Hero() {
       ref={heroRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Background layers for parallax effect */}
-      <div className="absolute inset-0">
-        <div
-          ref={layer1Ref}
-          className="absolute inset-0 will-change-transform"
-          style={{
-            background: 'linear-gradient(135deg, #0f1729 0%, #1e3a5f 25%, #0f172a 50%, #1a1040 75%, #0f1729 100%)',
-            backgroundSize: '400% 400%',
-            animation: 'gradient-shift 12s ease infinite',
-          }}
-        />
-        <div className="absolute inset-0 noise-overlay" />
-        <div
-          ref={layer2Ref}
-          className="absolute inset-0 bg-grid-pattern opacity-15 will-change-transform"
-        />
-        <div
-          ref={layer3Ref}
-          className="absolute inset-0 will-change-transform"
-        >
-          <div className="absolute top-1/4 left-1/4">
-            <MorphingBlob size={300} color="#3b82f6" />
-          </div>
-          <div className="absolute bottom-1/4 right-1/4">
-            <MorphingBlob size={400} color="#8b5cf6" />
-          </div>
-          <div className="absolute top-1/2 right-1/3">
-            <MorphingBlob size={250} color="#ec4899" />
-          </div>
-        </div>
-        <FloatingElements count={30} className="opacity-50" />
-      </div>
-
-      {/* Decorative SVG shapes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <svg className="absolute top-20 left-10 w-24 h-24 text-accent-500/30 animate-spin-slow holographic" viewBox="0 0 100 100">
-          <polygon points="50,5 95,75 5,75" fill="currentColor" />
-        </svg>
-        <svg className="absolute bottom-32 right-20 w-32 h-32 text-accent-400/30 animate-blob" viewBox="0 0 100 100">
-          <rect x="10" y="10" width="80" height="80" rx="10" fill="currentColor" />
-        </svg>
-        <svg className="absolute top-1/3 right-10 w-20 h-20 text-success-500/30 animate-float morph" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="40" fill="currentColor" />
-        </svg>
-      </div>
+      {/* Lightweight static background (zero JS, no scroll listeners) */}
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          background:
+            'radial-gradient(ellipse 80% 60% at 20% 30%, rgba(59,130,246,0.25), transparent 60%), radial-gradient(ellipse 70% 60% at 80% 70%, rgba(139,92,246,0.25), transparent 60%), linear-gradient(135deg, #0f1729 0%, #1e3a5f 40%, #1a1040 100%)',
+        }}
+      />
+      <div className="absolute inset-0 bg-grid-pattern opacity-10 -z-10" />
 
       {/* Hero content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -191,7 +95,7 @@ export function Hero() {
             <Button
               variant="primary"
               size="lg"
-              onClick={() => scrollToSection('#cta')}
+              onClick={() => scrollToSection('#offer')}
               className="animate-pulse-glow relative group"
               rightIcon={
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -204,11 +108,35 @@ export function Hero() {
             <Button
               variant="outline"
               size="lg"
-              onClick={() => scrollToSection('#portfolio')}
+              onClick={() => scrollToSection('#offer')}
               className="border-white/40 text-white hover:bg-white hover:text-primary-700 backdrop-blur-sm"
             >
               {t.hero.secondaryCTA}
             </Button>
+          </div>
+        </ScrollReveal>
+
+        {/* Guarantee + payment chips */}
+        <ScrollReveal direction="up" delay={0.65}>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-xs text-gray-300">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 font-medium">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              {lang === 'es' ? 'Garantía 5x ROI o reembolso' : '5x ROI guarantee or refund'}
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-gray-200 font-medium">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+              {lang === 'es' ? 'Respuesta en < 60s por WhatsApp' : '< 60s reply on WhatsApp'}
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-gray-200 font-medium">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {lang === 'es' ? 'Resultados en 14 días' : 'Results in 14 days'}
+            </span>
           </div>
         </ScrollReveal>
 
@@ -232,7 +160,7 @@ export function Hero() {
 
         {/* Stats with glassmorphism */}
         <ScrollReveal direction="up" delay={0.9}>
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             {t.hero.stats.map((stat, index) => (
               <div
                 key={index}
@@ -252,7 +180,7 @@ export function Hero() {
       </div>
 
       {/* Scroll indicator - mouse wheel style */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+      <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2">
         <button
           onClick={() => scrollToSection('#services')}
           className="flex flex-col items-center text-white/60 hover:text-white transition-colors group"

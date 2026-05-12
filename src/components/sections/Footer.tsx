@@ -286,7 +286,7 @@ export function Footer() {
             Main footer content
            ═══════════════════════════════════════ */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12">
             {/* ── Brand column ── */}
             <div className="lg:col-span-2">
               <Link href="/" className="inline-block mb-4 text-display">
@@ -336,7 +336,7 @@ export function Footer() {
                   <form
                     onSubmit={handleSubmit}
                     className={clsx(
-                      'flex gap-2 transition-all duration-500',
+                      'flex flex-col sm:flex-row gap-2 transition-all duration-500',
                       isSubmitted && 'opacity-0 scale-95 pointer-events-none'
                     )}
                   >
@@ -616,7 +616,7 @@ export function Footer() {
         onClick={scrollToTop}
         aria-label={t.footer.backToTop}
         className={clsx(
-          'fixed right-6 bottom-6 z-50',
+          'fixed right-4 bottom-4 sm:right-6 sm:bottom-6 z-50',
           'w-12 h-12 rounded-full',
           'bg-accent-500 hover:bg-accent-400 text-white',
           'shadow-lg hover:shadow-glow',

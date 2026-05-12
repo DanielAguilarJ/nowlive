@@ -230,9 +230,7 @@ export function Process() {
 
                     {/* Duration label */}
                     <span
-                      className={`inline-flex items-center gap-1.5 text-xs font-semibold tracking-wide uppercase mb-3 px-3 py-1 rounded-full bg-accent-500/15 text-accent-300 border border-accent-500/20 ${
-                        isEven ? '' : 'md:ml-auto'
-                      }`}
+                      className={`inline-flex items-center gap-1.5 text-xs font-semibold tracking-wide uppercase mb-3 px-3 py-1 rounded-full bg-accent-500/15 text-accent-300 border border-accent-500/20`}
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -250,7 +248,7 @@ export function Process() {
                       onMouseEnter={() => setExpandedStep(index)}
                       className={`mt-3 inline-flex items-center gap-1.5 text-sm font-medium transition-colors duration-200 ${
                         isExpanded ? 'text-accent-300' : 'text-accent-400/70 hover:text-accent-300'
-                      } ${!isEven ? 'md:ml-auto' : ''}`}
+                      }`}
                     >
                       <span>{lang === 'es' ? 'Ver detalles' : 'View details'}</span>
                       <svg
@@ -266,7 +264,7 @@ export function Process() {
                     {/* Expanded details panel */}
                     <div
                       className={`overflow-hidden transition-all duration-500 ease-power3-out ${
-                        isExpanded ? 'max-h-64 opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'
+                        isExpanded ? 'max-h-72 opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'
                       }`}
                     >
                       <ul

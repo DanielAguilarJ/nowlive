@@ -10,6 +10,9 @@ import {
 } from '@/components/sections';
 
 // Lazy load heavy sections
+const Offer = dynamic(() => import('@/components/sections').then(m => ({ default: m.Offer })), {
+  loading: () => <div className="min-h-[600px]" />,
+});
 const Portfolio = dynamic(() => import('@/components/sections').then(m => ({ default: m.Portfolio })), {
   loading: () => <div className="min-h-screen" />,
 });
@@ -35,13 +38,14 @@ export default function HomeClient() {
       <Header />
       <main className="relative overflow-hidden">
         <Hero />
+        <ClientLogos />
+        <Offer />
         <Services />
         <Stats />
-        <ClientLogos />
         <Portfolio />
         <Process />
-        <Team />
         <Testimonials />
+        <Team />
         <CTA />
       </main>
       <Footer />
