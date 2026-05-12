@@ -7,12 +7,10 @@ import { Header, Footer, CTA, Stats } from "@/components/sections";
 import {
   SectionContainer,
   TiltCard,
-  ParticlesBackground,
   ScrollReveal,
   Badge,
   Typewriter,
   MagneticButton,
-  ScrollProgress,
 } from "@/components/ui";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { getTranslations } from "@/lib/i18n";
@@ -318,14 +316,12 @@ export default function ServicesClient() {
 
   return (
     <>
-      <ScrollProgress />
       <Header />
       <main className="pt-24">
         {/* ════════════════════════════════════════════
             HERO
             ════════════════════════════════════════════ */}
         <section className="relative overflow-hidden py-24 lg:py-44 bg-primary-900 text-white">
-          <ParticlesBackground />
           <div className="absolute inset-0 bg-gradient-to-b from-primary-900/50 to-primary-900 z-0" />
 
           <SectionContainer background="transparent" padding="sm">

@@ -2,15 +2,10 @@
 
 import dynamic from 'next/dynamic';
 import { ReactNode } from 'react';
+import { OptimizedLayoutParticles } from '@/components/OptimizedLayoutParticles';
 
-// Carga diferida con ssr:false — estos componentes sólo existen en el navegador
-// y no aportan nada al HTML inicial, por lo que diferirlos reduce el JS del bundle crítico
 const CustomCursor = dynamic(
   () => import('@/components/ui/CustomCursor').then(m => ({ default: m.CustomCursor })),
-  { ssr: false }
-);
-const ParticlesBackground = dynamic(
-  () => import('@/components/ui/ParticlesBackground').then(m => ({ default: m.ParticlesBackground })),
   { ssr: false }
 );
 const ScrollProgress = dynamic(
@@ -35,7 +30,7 @@ export function ClientProviders({ children }: ClientProvidersProps) {
     <>
       <ScrollProgress />
       <CustomCursor />
-      <ParticlesBackground />
+      <OptimizedLayoutParticles delay={1000} />
       <BackToTop />
       <LiveActivityFeed />
       {children}

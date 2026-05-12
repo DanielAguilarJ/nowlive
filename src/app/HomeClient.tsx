@@ -8,9 +8,8 @@ import {
   CTA,
   Footer,
 } from '@/components/sections';
-import { ScrollProgress } from '@/components/ui';
 
-// Lazy load componentes pesados de animación
+// Lazy load heavy sections
 const Portfolio = dynamic(() => import('@/components/sections').then(m => ({ default: m.Portfolio })), {
   loading: () => <div className="min-h-screen" />,
 });
@@ -29,23 +28,12 @@ const Team = dynamic(() => import('@/components/sections').then(m => ({ default:
 const Process = dynamic(() => import('@/components/sections').then(m => ({ default: m.Process })), {
   loading: () => <div className="min-h-[500px]" />,
 });
-const ParticlesBackground = dynamic(() => import('@/components/ui').then(m => ({ default: m.ParticlesBackground })), {
-  ssr: false,
-});
-const CustomCursor = dynamic(() => import('@/components/ui').then(m => ({ default: m.CustomCursor })), {
-  ssr: false,
-});
 
 export default function HomeClient() {
   return (
     <>
-      <ScrollProgress />
-      <CustomCursor />
       <Header />
       <main className="relative overflow-hidden">
-        <div className="fixed inset-0 -z-10">
-          <ParticlesBackground />
-        </div>
         <Hero />
         <Services />
         <Stats />

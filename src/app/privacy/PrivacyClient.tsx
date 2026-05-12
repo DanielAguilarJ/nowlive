@@ -1,7 +1,7 @@
 "use client";
 
 import { Header, Footer } from '@/components/sections';
-import { SectionContainer, ScrollReveal, ParticlesBackground, Badge, ScrollProgress } from '@/components/ui';
+import { SectionContainer, ScrollReveal, Badge } from '@/components/ui';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { getTranslations } from '@/lib/i18n';
 
@@ -11,11 +11,9 @@ export default function PrivacyClient() {
 
   return (
     <>
-      <ScrollProgress />
       <Header />
       <main className="pt-24">
         <section className="relative overflow-hidden py-32 lg:py-48 bg-primary-900 text-white">
-          <ParticlesBackground />
           <div className="absolute inset-0 bg-gradient-to-b from-primary-900/50 to-primary-900 z-0" />
 
           <SectionContainer background="transparent" padding="none">

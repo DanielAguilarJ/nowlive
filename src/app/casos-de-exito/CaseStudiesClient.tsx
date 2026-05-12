@@ -5,13 +5,11 @@ import Image from 'next/image';
 import { Header, Footer, CTA } from '@/components/sections';
 import {
 	SectionContainer,
-	ParticlesBackground,
 	ScrollReveal,
 	Badge,
 	AnimatedNumber,
 	LogoMarquee,
 	MagneticButton,
-	ScrollProgress,
 } from '@/components/ui';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { getTranslations } from '@/lib/i18n';
@@ -31,11 +29,9 @@ export default function CaseStudiesClient() {
 
 	return (
 		<>
-			<ScrollProgress />
 			<Header />
 			<main className="pt-24">
 				<section className="relative overflow-hidden py-24 lg:py-44 bg-primary-900 text-white">
-					<ParticlesBackground />
 					<div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent-500/20 via-transparent to-transparent opacity-50" />
 
 					<SectionContainer background="transparent" padding="sm">

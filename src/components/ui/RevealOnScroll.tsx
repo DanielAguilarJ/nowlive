@@ -38,27 +38,27 @@ export function RevealOnScroll({
     };
 
     const from = directionMap[direction];
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        elementRef.current,
+        { ...from, opacity: 0 },
+        {
+          x: 0,
+          y: 0,
+          opacity: 1,
+          duration,
+          delay,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: elementRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    }, elementRef);
 
-    gsap.fromTo(
-      elementRef.current,
-      {
-        ...from,
-        opacity: 0,
-      },
-      {
-        x: 0,
-        y: 0,
-        opacity: 1,
-        duration,
-        delay,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: elementRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      }
-    );
+    return () => ctx.revert();
   }, [direction, distance, delay, duration]);
 
   return (
@@ -82,23 +82,25 @@ export function ClipPathReveal({
   useEffect(() => {
     if (!elementRef.current) return;
 
-    gsap.fromTo(
-      elementRef.current,
-      {
-        clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)',
-      },
-      {
-        clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-        duration: 1.2,
-        delay,
-        ease: 'power4.inOut',
-        scrollTrigger: {
-          trigger: elementRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-      }
-    );
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        elementRef.current,
+        { clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)' },
+        {
+          clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+          duration: 1.2,
+          delay,
+          ease: 'power4.inOut',
+          scrollTrigger: {
+            trigger: elementRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    }, elementRef);
+
+    return () => ctx.revert();
   }, [delay]);
 
   return (
@@ -122,27 +124,27 @@ export function ScaleReveal({
   useEffect(() => {
     if (!elementRef.current) return;
 
-    gsap.fromTo(
-      elementRef.current,
-      {
-        scale: 0,
-        opacity: 0,
-        rotation: -10,
-      },
-      {
-        scale: 1,
-        opacity: 1,
-        rotation: 0,
-        duration: 0.8,
-        delay,
-        ease: 'back.out(1.7)',
-        scrollTrigger: {
-          trigger: elementRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      }
-    );
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        elementRef.current,
+        { scale: 0, opacity: 0, rotation: -10 },
+        {
+          scale: 1,
+          opacity: 1,
+          rotation: 0,
+          duration: 0.8,
+          delay,
+          ease: 'back.out(1.7)',
+          scrollTrigger: {
+            trigger: elementRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    }, elementRef);
+
+    return () => ctx.revert();
   }, [delay]);
 
   return (

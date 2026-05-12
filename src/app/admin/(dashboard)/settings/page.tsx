@@ -66,7 +66,6 @@ export default function SettingsPage() {
     setIsSaving(true);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     // In production, save to database/API
-    console.log('Saving settings:', settings);
     setIsSaving(false);
     alert('Configuración guardada correctamente');
   };

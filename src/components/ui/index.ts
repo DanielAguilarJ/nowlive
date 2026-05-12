@@ -5,7 +5,7 @@ export { AnimatedText } from './AnimatedText';
 export { ParallaxImage } from './ParallaxImage';
 export { ScrollReveal } from './ScrollReveal';
 export { CustomCursor } from './CustomCursor';
-export { ParticlesBackground } from './ParticlesBackground';
+export { ParticlesBackground } from './ParticlesBackground.optimized';
 export { AnimatedNumber, StatsCard } from './AnimatedNumber';
 export { Typewriter } from './Typewriter';
 export { MagneticButton } from './MagneticButton';

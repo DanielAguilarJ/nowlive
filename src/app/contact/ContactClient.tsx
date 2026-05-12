@@ -6,8 +6,6 @@ import {
   SectionContainer,
   ScrollReveal,
   Badge,
-  ScrollProgress,
-  ParticlesBackground,
   TiltCard,
 } from '@/components/ui';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -27,7 +25,6 @@ export default function ContactClient() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission
-    console.log('Form submitted:', formData);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -100,12 +97,10 @@ export default function ContactClient() {
 
   return (
     <>
-      <ScrollProgress />
       <Header />
       <main className="pt-24">
         {/* Hero Section */}
         <section className="relative overflow-hidden py-24 lg:py-40 bg-primary-900 text-white">
-          <ParticlesBackground />
           <SectionContainer background="transparent" padding="sm">
             <div className="max-w-4xl mx-auto text-center relative z-10">
               <ScrollReveal>

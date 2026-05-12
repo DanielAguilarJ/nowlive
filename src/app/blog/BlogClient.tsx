@@ -7,10 +7,8 @@ import { Header, Footer, CTA } from '@/components/sections';
 import {
   SectionContainer,
   TiltCard,
-  ParticlesBackground,
   ScrollReveal,
   Badge,
-  ScrollProgress,
   Marquee,
   MagneticButton,
 } from '@/components/ui';
@@ -65,11 +63,9 @@ export default function BlogClient() {
 
   return (
     <>
-      <ScrollProgress />
       <Header />
       <main className="pt-24">
         <section className="relative overflow-hidden py-24 lg:py-40 bg-white">
-          <ParticlesBackground />
           <SectionContainer background="transparent" padding="none">
             <div className="text-center relative z-10">
               <ScrollReveal>

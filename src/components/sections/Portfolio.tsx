@@ -158,8 +158,9 @@ function PortfolioCard({
             src={project.image}
             alt={project.title}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            loading="lazy"
             className="object-cover transition-transform duration-500 ease-out"
-            style={{ willChange: 'transform' }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
@@ -348,6 +349,7 @@ function ProjectModal({
             src={project.image}
             alt={project.title}
             fill
+            sizes="(max-width: 768px) 100vw, 768px"
             className="object-cover"
           />
           {/* Gradient overlay */}

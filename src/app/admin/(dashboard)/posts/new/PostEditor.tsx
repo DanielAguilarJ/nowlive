@@ -70,8 +70,6 @@ export default function PostEditor() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // In production, save to database
-    console.log('Saving post:', { ...post, status });
-
     setIsSaving(false);
     alert(status === 'published' ? 'Post publicado!' : 'Borrador guardado!');
   };
