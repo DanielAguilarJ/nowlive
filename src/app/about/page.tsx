@@ -6,7 +6,7 @@ import AboutClient from "./AboutClient";
 export const metadata: Metadata = createMetadata({
   title: "Sobre Nosotros | Equipo & Proceso",
   description:
-    "Conoce al equipo de CreamosTech: 50+ expertos en marketing digital, diseño y tecnología con más de 12 años de experiencia impulsando el crecimiento de marcas.",
+    "Conoce a Kevin Daniel Aguilar Junco, especialista SEO en Aguascalientes, Mexico, enfocado en optimizacion, simulacion numerica y ML/AI para sistemas mecanicos y energeticos.",
   path: "/about",
   keywords: [
     "sobre nosotros",

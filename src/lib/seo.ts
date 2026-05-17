@@ -7,12 +7,12 @@ export const siteConfig = {
   localeOpenGraph: 'es_ES',
   foundingDate: '2024',
   contactEmail: 'hola@creamostech.agency',
-  phone: '+34 900 000 000', // Actualiza con tu teléfono real
+  phone: '+5214496355166',
   address: {
-    streetAddress: 'Calle Principal 123',
-    addressLocality: 'Madrid',
-    postalCode: '28001',
-    addressCountry: 'ES',
+    streetAddress: 'Av. Universidad 1001, Bosques del Prado Nte.',
+    addressLocality: 'Aguascalientes',
+    postalCode: '20127',
+    addressCountry: 'MX',
   },
   socialLinks: {
     twitter: 'https://twitter.com/creamostech',

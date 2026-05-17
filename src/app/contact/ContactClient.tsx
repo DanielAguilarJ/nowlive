@@ -62,8 +62,8 @@ export default function ContactClient() {
         </svg>
       ),
       title: lang === 'es' ? 'Teléfono' : 'Phone',
-      value: '+1 (555) 123-4567',
-      link: 'tel:+15551234567',
+      value: '+52 1 449 635 5166',
+      link: 'tel:+5214496355166',
     },
     {
       icon: (
@@ -83,7 +83,7 @@ export default function ContactClient() {
         </svg>
       ),
       title: lang === 'es' ? 'Ubicación' : 'Location',
-      value: 'San Francisco, CA',
+      value: 'Av. Universidad 1001, Bosques del Prado Nte., 20127 Aguascalientes, Ags.',
       link: null,
     },
   ];
@@ -186,7 +186,7 @@ export default function ContactClient() {
                         value={formData.phone}
                         onChange={handleChange}
                         className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-accent-500 outline-none transition-colors bg-white"
-                        placeholder="+1 (555) 000-0000"
+                        placeholder="+52 1 449 635 5166"
                       />
                     </div>
                   </div>

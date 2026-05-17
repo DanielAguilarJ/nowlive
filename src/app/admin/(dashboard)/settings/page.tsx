@@ -38,8 +38,8 @@ export default function SettingsPage() {
     siteName: 'CreamosTech',
     siteDescription: 'Agencia de Marketing Digital Full-Service',
     contactEmail: 'hola@creamostech.com',
-    phone: '+34 912 345 678',
-    address: 'Calle Gran Vía 123, Madrid, España',
+    phone: '+52 1 449 635 5166',
+    address: 'Av. Universidad 1001, Bosques del Prado Nte., 20127 Aguascalientes, Ags.',
     socialLinks: {
       facebook: 'https://facebook.com/creamostech',
       instagram: 'https://instagram.com/creamostech',

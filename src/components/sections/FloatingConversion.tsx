@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 
-const WHATSAPP_NUMBER = '5215555555555';
+const WHATSAPP_NUMBER = '5214496355166';
 
 function buildWhatsAppLink(message: string) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
