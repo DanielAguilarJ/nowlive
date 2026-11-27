@@ -1,0 +1,96 @@
+{
+ "serviceIcons": [
+  null,
+  null,
+  null,
+  null,
+  null,
+  null
+ ],
+ "serviceDescriptions": {
+  "es": [
+   "Sitios web modernos y responsivos",
+   "Planes digitales basados en datos",
+   "Automatiza tu funnel de ventas",
+   "Contenido que engancha y convierte",
+   "Posicionamiento orgánico y analítica",
+   "Identidad visual que impacta"
+  ],
+  "en": [
+   "Modern and responsive websites",
+   "Data-driven digital plans",
+   "Automate your sales funnel",
+   "Content that engages and converts",
+   "Organic positioning and analytics",
+   "Visual identity that impacts"
+  ]
+ },
+ "serviceLinks": {
+  "es": [
+   {
+    "href": "/services/web-design",
+    "label": "Diseño & Desarrollo Web"
+   },
+   {
+    "href": "/services/digital-strategy",
+    "label": "Estrategia Digital"
+   },
+   {
+    "href": "/services/marketing-automation",
+    "label": "Marketing Automation"
+   },
+   {
+    "href": "/services/content-creation",
+    "label": "Creación de Contenido"
+   },
+   {
+    "href": "/services/seo-analytics",
+    "label": "SEO & Analytics"
+   },
+   {
+    "href": "/services/brand-identity",
+    "label": "Identidad de Marca"
+   }
+  ],
+  "en": [
+   {
+    "href": "/services/web-design",
+    "label": "Web Design & Development"
+   },
+   {
+    "href": "/services/digital-strategy",
+    "label": "Digital Strategy"
+   },
+   {
+    "href": "/services/marketing-automation",
+    "label": "Marketing Automation"
+   },
+   {
+    "href": "/services/content-creation",
+    "label": "Content Creation"
+   },
+   {
+    "href": "/services/seo-analytics",
+    "label": "SEO & Analytics"
+   },
+   {
+    "href": "/services/brand-identity",
+    "label": "Brand Identity"
+   }
+  ]
+ },
+ "navSectionIcons": {
+  "#portfolio": null,
+  "#process": null,
+  "#team": null,
+  "#testimonials": null
+ },
+ "TRACKED_SECTIONS": [
+  "services",
+  "portfolio",
+  "process",
+  "team",
+  "testimonials",
+  "cta"
+ ]
+}

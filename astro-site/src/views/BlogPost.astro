@@ -1,0 +1,286 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import CallCta from '../components/CallCta.astro';
+import { site, type Lang } from '../data/site';
+import { articles } from '../data/content';
+import { u } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  path: string;
+  slug: string;
+}
+const { lang, path, slug } = Astro.props;
+const s = u(lang);
+const a = articles.find((x) => x.slug === slug)!;
+const fmt = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+const related = articles.filter((x) => x.slug !== slug && x.category === a.category).concat(articles.filter((x) => x.slug !== slug && x.category !== a.category)).slice(0, 3);
+const remote = a.heroImage.includes('images.unsplash.com');
+// Unsplash resizes on request; auto=format serves WebP/AVIF to browsers that take them.
+const img = (src: string, w: number) =>
+  src.includes('images.unsplash.com')
+    ? src.replace(/w=\d+&h=\d+/, `w=${w}&h=${Math.round(w * 0.56)}`) + (src.includes('auto=format') ? '' : '&auto=format&q=72')
+    : src;
+const imageAbs = a.heroImage.startsWith('http') ? a.heroImage : new URL(a.heroImage, site.url).href;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: a.title,
+    description: a.description,
+    image: imageAbs,
+    datePublished: a.publishedAt,
+    dateModified: a.updatedAt ?? a.publishedAt,
+    inLanguage: 'es-MX',
+    author: { '@type': 'Organization', name: a.author },
+    publisher: { '@id': `${site.url}/#organization` },
+    mainEntityOfPage: new URL(path, site.url).href,
+    keywords: a.keywords.join(', '),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${site.url}/blog/` },
+      { '@type': 'ListItem', position: 3, name: a.title, item: new URL(path, site.url).href },
+    ],
+  },
+];
+---
+
+<Base lang={lang} title={a.title} description={a.description} path={path} image={a.heroImage.startsWith('http') ? undefined : a.heroImage} type="article" schema={schema} alt={null}>
+  {remote && <link slot="head" rel="preconnect" href="https://images.unsplash.com" />}
+  <article>
+    <PageHead lang="es" title={a.title} lead={a.summary} crumbs={[{ label: 'Blog', to: '/blog/' }, { label: a.category }]}>
+      <p class="meta data">
+        <span>{a.author}</span>
+        <span><time datetime={a.publishedAt}>{fmt(a.publishedAt)}</time></span>
+        <span>{a.readTime} {s.minRead}</span>
+      </p>
+    </PageHead>
+
+    <div class="wrap body">
+      <img
+        class="hero-img"
+        src={img(a.heroImage, 1400)}
+        srcset={remote ? [640, 960, 1400].map((w) => `${img(a.heroImage, w)} ${w}w`).join(', ') : undefined}
+        sizes={remote ? '(max-width: 1440px) calc(100vw - 40px), 1320px' : undefined}
+        alt={a.title}
+        width="1400"
+        height="784"
+        fetchpriority="high"
+        decoding="async"
+      />
+
+      <div class="cols">
+        <aside class="toc" aria-label="Contenido">
+          <p class="data">Contenido</p>
+          <ol>
+            {a.sections.map((sec, i) => <li><a href={`#s${i + 1}`}>{sec.title}</a></li>)}
+          </ol>
+        </aside>
+
+        <div class="prose">
+          {
+            a.painPoints?.length ? (
+              <div class="box pain">
+                <p class="data"><span class="lamp" data-state="red" /> Si te pasa esto</p>
+                <ul>{a.painPoints.map((p) => <li>{p}</li>)}</ul>
+              </div>
+            ) : null
+          }
+          {
+            a.sections.map((sec, i) => (
+              <section id={`s${i + 1}`}>
+                <h2>{sec.title}</h2>
+                {sec.paragraphs.map((p) => <p>{p}</p>)}
+                {sec.bullets?.length ? <ul>{sec.bullets.map((b) => <li>{b}</li>)}</ul> : null}
+              </section>
+            ))
+          }
+          {
+            a.takeaways.length > 0 && (
+              <div class="box">
+                <p class="data"><span class="lamp" data-state="green" /> Lo que te llevas</p>
+                <ul>{a.takeaways.map((x) => <li>{x}</li>)}</ul>
+              </div>
+            )
+          }
+          {
+            a.checklist?.length ? (
+              <div class="box check">
+                <p class="data"><span class="lamp" data-state="amber" /> Checklist</p>
+                <ul>
+                  {a.checklist.map((x) => (
+                    <li>
+                      <Icon name="check" />
+                      {x}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null
+          }
+          <div class="svc">
+            <p>{a.serviceCTA.helper}</p>
+            <a class="btn" href={a.serviceCTA.href}>{a.serviceCTA.label}<Icon name="arrow" /></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <section class="section related" aria-labelledby="rel-title">
+    <div class="wrap">
+      <h2 id="rel-title" class="display-3">Sigue leyendo</h2>
+      <ul>
+        {
+          related.map((r) => (
+            <li>
+              <a href={`/blog/${r.slug}`}>
+                <span class="r-title">{r.title}</span>
+                <span class="data">{r.category} · {r.readTime}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+  <CallCta lang={lang} />
+</Base>
+
+<style>
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+    color: var(--text-3);
+  }
+  .body {
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .hero-img {
+    width: 100%;
+    max-height: 560px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    margin-top: clamp(-2rem, -3vw, -1rem);
+    position: relative;
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .toc {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    align-self: start;
+    display: grid;
+    gap: 0.8rem;
+  }
+  .toc .data {
+    color: var(--text-3);
+  }
+  .toc ol {
+    padding-left: 1.2em;
+    display: grid;
+    gap: 0.15rem;
+    font-size: 0.92rem;
+    color: var(--text-2);
+  }
+  .toc a {
+    display: block;
+    padding-block: 0.2rem;
+    text-decoration: none;
+    color: var(--text-2);
+  }
+  .toc a:hover {
+    color: var(--amber);
+  }
+  .box {
+    padding: 1.4rem 1.6rem;
+    background: var(--panel);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+  }
+  .box .data {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    color: var(--text-2);
+    margin-bottom: 0.8rem;
+  }
+  .box ul {
+    margin: 0;
+  }
+  .check ul {
+    list-style: none;
+    padding: 0;
+  }
+  .check li {
+    display: flex;
+    gap: 0.6rem;
+  }
+  .check :global(svg) {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    margin-top: 6px;
+    color: var(--green);
+  }
+  .svc {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+    padding: 1.6rem;
+    border: 1px solid var(--amber);
+    border-radius: var(--radius);
+    margin-top: 2.5em;
+  }
+  .related {
+    border-top: 1px solid var(--rule);
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+  .related ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--rule-strong);
+  }
+  .related a {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1.2rem 1.5rem 1.2rem 0;
+    text-decoration: none;
+  }
+  .related .data {
+    color: var(--amber);
+  }
+  .r-title {
+    font-size: 1.25rem;
+    font-weight: 750;
+    font-stretch: 82%;
+    line-height: 1.15;
+  }
+  @media (max-width: 960px) {
+    .cols {
+      grid-template-columns: 1fr;
+    }
+    .toc {
+      position: static;
+    }
+    .related ul {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,239 @@
+---
+import Wordmark from './Wordmark.astro';
+import Icon from './Icon.astro';
+import { href, site, waLink, type Lang } from '../data/site';
+import { serviceCards, t } from '../data/content';
+import { u } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const s = u(lang);
+const tf = t(lang).footer;
+const cards = serviceCards(lang);
+const company = [
+  { label: s.nav.about, to: '/about' },
+  { label: s.nav.cases, to: '/casos-de-exito' },
+  { label: lang === 'es' ? 'Testimonios' : 'Testimonials', to: '/testimonios' },
+  { label: s.nav.blog, to: '/blog' },
+  { label: lang === 'es' ? 'Recursos' : 'Resources', to: '/recursos' },
+  { label: lang === 'es' ? 'Trabaja con nosotros' : 'Careers', to: '/careers' },
+  { label: 'FAQ', to: '/faq' },
+];
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="hazard" aria-hidden="true"></div>
+  <div class="wrap grid">
+    <div class="intro">
+      <Wordmark />
+      <p class="tag">{s.footerTagline}</p>
+      <p class="desc">{tf.description}</p>
+      <div class="social">
+        <a href={site.social.instagram} target="_blank" rel="noopener" aria-label="Instagram"><Icon name="instagram" /></a>
+        <a href={site.social.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn"><Icon name="linkedin" /></a>
+        <a href={site.social.twitter} target="_blank" rel="noopener" aria-label="X (Twitter)"><Icon name="twitter" /></a>
+      </div>
+    </div>
+
+    <nav aria-labelledby="f-services">
+      <h2 id="f-services" class="data">{tf.services}</h2>
+      <ul>
+        {
+          cards.map((c) => (
+            <li>
+              <a href={href(lang, `/services/${c.slug}`)}>{c.title}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav aria-labelledby="f-company">
+      <h2 id="f-company" class="data">{s.footerNav}</h2>
+      <ul>
+        {
+          company.map((c) => (
+            <li>
+              <a href={href(lang, c.to)}>{c.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="contact">
+      <h2 class="data">{s.footerContact}</h2>
+      <ul>
+        <li>
+          <a href={waLink(s.whatsappHello)} target="_blank" rel="noopener"><Icon name="whatsapp" />{site.phoneDisplay}</a>
+        </li>
+        <li>
+          <a href={`mailto:${site.email}`}><Icon name="mail" />{site.email}</a>
+        </li>
+        <li>
+          <a href={site.mapsUrl} target="_blank" rel="noopener"><Icon name="pin" /><span>{tf.contact.address}</span></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap bottom">
+    <p>© {year} CreamosTech. {s.rights}</p>
+    <ul class="badges data" aria-label={lang === 'es' ? 'Garantías' : 'Assurances'}>
+      <li>{tf.trustBadges.ssl}</li>
+      <li>{tf.trustBadges.gdpr}</li>
+      <li>{tf.trustBadges.support}</li>
+      <li>{tf.trustBadges.iso}</li>
+    </ul>
+    <p class="legal">
+      <a href={href(lang, '/privacy')}>{tf.privacy}</a>
+      <a href={href(lang, '/terms')}>{tf.terms}</a>
+      <a href="#top">{tf.backToTop}</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--panel);
+    border-top: 1px solid var(--rule);
+    margin-top: 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1.3fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    padding-block: clamp(3.5rem, 7vw, 5.5rem);
+  }
+  .intro {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+  .tag {
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-stretch: 72%;
+    line-height: 1.05;
+    max-width: 18ch;
+  }
+  .desc {
+    color: var(--text-2);
+    font-size: 0.98rem;
+    max-width: 44ch;
+  }
+  h2.data {
+    color: var(--text-3);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+  ul {
+    list-style: none;
+    display: grid;
+    gap: 0.6rem;
+  }
+  nav ul {
+    gap: 0;
+  }
+  nav a,
+  .contact a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.98rem;
+  }
+  /* same rhythm as before, but each link is a 33px-tall tap target */
+  nav a {
+    display: inline-block;
+    padding-block: 0.3rem;
+  }
+  nav a:hover,
+  .contact a:hover {
+    color: var(--amber);
+  }
+  .contact a {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    line-height: 1.45;
+    padding-block: 0.25rem;
+  }
+  .contact ul {
+    gap: 0.1rem;
+  }
+  .contact :global(svg) {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    margin-top: 2px;
+    color: var(--text-3);
+  }
+  .social {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .social a {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    color: var(--text-2);
+  }
+  .social a:hover {
+    color: var(--text);
+    border-color: var(--text-3);
+  }
+  .social :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    position: relative;
+    padding-block: 1.5rem 2rem;
+    color: var(--text-3);
+    font-size: 0.9rem;
+  }
+  .bottom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: var(--gutter);
+    right: var(--gutter);
+    height: 1px;
+    background: var(--rule);
+  }
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+  }
+  .legal {
+    display: flex;
+    gap: 1.2rem;
+  }
+  .legal a {
+    color: var(--text-2);
+  }
+  @media (max-width: 960px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .intro {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 520px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

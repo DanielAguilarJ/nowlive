@@ -1,0 +1,76 @@
+{
+ "icons": [
+  null,
+  null,
+  null,
+  null
+ ],
+ "stepDetails": {
+  "es": [
+   [
+    "Entrevistas con stakeholders",
+    "Analisis competitivo",
+    "Auditoria digital completa",
+    "Definicion de buyer personas"
+   ],
+   [
+    "Roadmap basado en datos",
+    "KPIs y metricas clave",
+    "Arquitectura de contenidos",
+    "Plan de canales y touchpoints"
+   ],
+   [
+    "Sprints agiles de 2 semanas",
+    "QA continuo y revision de codigo",
+    "Entregas incrementales",
+    "Comunicacion diaria de avances"
+   ],
+   [
+    "A/B testing continuo",
+    "Reportes mensuales de rendimiento",
+    "Iteracion basada en datos",
+    "Escalabilidad y crecimiento sostenido"
+   ]
+  ],
+  "en": [
+   [
+    "Stakeholder interviews",
+    "Competitive analysis",
+    "Full digital audit",
+    "Buyer persona definition"
+   ],
+   [
+    "Data-driven roadmap",
+    "KPIs & key metrics",
+    "Content architecture",
+    "Channel & touchpoint planning"
+   ],
+   [
+    "2-week agile sprints",
+    "Continuous QA & code review",
+    "Incremental deliverables",
+    "Daily progress updates"
+   ],
+   [
+    "Continuous A/B testing",
+    "Monthly performance reports",
+    "Data-driven iteration",
+    "Scalability & sustained growth"
+   ]
+  ]
+ },
+ "stepDurations": {
+  "es": [
+   "1-2 semanas",
+   "1 semana",
+   "2-4 semanas",
+   "Continuo"
+  ],
+  "en": [
+   "1-2 weeks",
+   "1 week",
+   "2-4 weeks",
+   "Ongoing"
+  ]
+ }
+}

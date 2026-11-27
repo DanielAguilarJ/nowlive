@@ -1,0 +1,63 @@
+{
+ "logos": [
+  {
+   "name": "TechFlow",
+   "svg": null
+  },
+  {
+   "name": "VitaHealth",
+   "svg": null
+  },
+  {
+   "name": "FinTrack",
+   "svg": null
+  },
+  {
+   "name": "Luxe",
+   "svg": null
+  },
+  {
+   "name": "Aurum & Co.",
+   "svg": null
+  },
+  {
+   "name": "SkillStream",
+   "svg": null
+  },
+  {
+   "name": "NovaSoft",
+   "svg": null
+  },
+  {
+   "name": "DataBridge",
+   "svg": null
+  }
+ ],
+ "logosRow2": [
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null
+ ],
+ "trustIndicators": [
+  {
+   "icon": "projects",
+   "es": "150+ proyectos entregados",
+   "en": "150+ projects delivered"
+  },
+  {
+   "icon": "satisfaction",
+   "es": "98% satisfaccion",
+   "en": "98% satisfaction"
+  },
+  {
+   "icon": "support",
+   "es": "Soporte dedicado 24/7",
+   "en": "Dedicated 24/7 support"
+  }
+ ]
+}

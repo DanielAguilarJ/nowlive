@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/home/Hero.astro';
+import Clients from '../components/home/Clients.astro';
+import Stations from '../components/home/Stations.astro';
+import Plans from '../components/home/Plans.astro';
+import Production from '../components/home/Production.astro';
+import Cases from '../components/home/Cases.astro';
+import Process from '../components/home/Process.astro';
+import Signoffs from '../components/home/Signoffs.astro';
+import Operator from '../components/home/Operator.astro';
+import Faq from '../components/Faq.astro';
+import CallCta from '../components/CallCta.astro';
+import Icon from '../components/Icon.astro';
+import { href, site, type Lang } from '../data/site';
+import { serviceCards, t } from '../data/content';
+import { u } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  path: string;
+}
+const { lang, path } = Astro.props;
+const s = u(lang);
+const tf = t(lang).faq;
+const title = lang === 'es' ? 'Agencia de Marketing Digital en Aguascalientes' : 'Digital Marketing Agency';
+const description =
+  lang === 'es'
+    ? 'CreamosTech diseña, lanza y optimiza sistemas de venta digitales: web que convierte, embudos automáticos, WhatsApp, anuncios, contenido y SEO. Auditoría gratuita en menos de 24 h.'
+    : 'CreamosTech designs, launches and optimizes digital sales systems: high-converting websites, automated funnels, WhatsApp, ads, content and SEO. Free audit in under 24 h.';
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: site.name,
+    url: site.url,
+    inLanguage: lang === 'es' ? 'es-MX' : 'en',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: lang === 'es' ? 'Servicios de CreamosTech' : 'CreamosTech services',
+    itemListElement: serviceCards(lang).map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: new URL(href(lang, `/services/${c.slug}`), site.url).href,
+      name: c.title,
+    })),
+  },
+];
+---
+
+<Base lang={lang} title={title} description={description} path={path} schema={schema}>
+  <Hero lang={lang} />
+  <Clients lang={lang} />
+  <Stations lang={lang} />
+  <Plans lang={lang} />
+  <Production lang={lang} />
+  <Cases lang={lang} />
+  <Process lang={lang} />
+  <Signoffs lang={lang} />
+  <Operator lang={lang} />
+  <section class="section" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
+      <header class="section-head">
+        <h2 id="faq-title" class="display-2">{tf.title}</h2>
+        <p class="lead">{tf.description}</p>
+        <a class="link-arrow" href={href(lang, '/faq')}>{s.faqMore}<Icon name="arrow" /></a>
+      </header>
+      <div><Faq items={tf.items} /></div>
+    </div>
+  </section>
+  <CallCta lang={lang} />
+</Base>
+
+<style>
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+  .faq-grid .section-head {
+    justify-items: start;
+  }
+  @media (max-width: 900px) {
+    .faq-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

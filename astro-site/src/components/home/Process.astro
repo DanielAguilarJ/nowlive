@@ -1,0 +1,185 @@
+---
+import Icon from '../Icon.astro';
+import type { Lang } from '../../data/site';
+import { processSteps, t } from '../../data/content';
+import { u } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const s = u(lang);
+const tp = t(lang).process;
+const steps = processSteps(lang);
+---
+
+<section class="section process" id="proceso" aria-labelledby="proc-title">
+  <div class="wrap">
+    <header class="section-head">
+      <h2 id="proc-title" class="display-2">{tp.title}</h2>
+      <p class="lead">{tp.description}</p>
+    </header>
+
+    <div class="line" aria-hidden="true">
+      <span class="belt"></span>
+      <span class="unit"></span>
+    </div>
+
+    <ol class="steps">
+      {
+        steps.map((st) => (
+          <li>
+            <p class="num data">
+              <span class="lamp" data-state="green" />
+              {st.number}
+            </p>
+            <h3>{st.title}</h3>
+            <p class="desc">{st.description}</p>
+            <ul class="details">
+              {st.details.map((d: string) => (
+                <li>
+                  <Icon name="check" />
+                  {d}
+                </li>
+              ))}
+            </ul>
+            <p class="dur data">
+              {s.processDuration}: <b>{st.duration}</b>
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .line {
+    position: relative;
+    height: 40px;
+    margin-bottom: 1.5rem;
+    view-timeline-name: --proc;
+  }
+  .belt {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 24px;
+    height: 8px;
+    border-radius: 4px;
+    background: repeating-linear-gradient(90deg, var(--rule-strong) 0 18px, var(--rule) 18px 22px);
+  }
+  .unit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 26px;
+    height: 22px;
+    border-radius: 3px;
+    background: var(--green);
+    box-shadow: 0 6px 12px rgb(0 0 0 / 0.5);
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .unit {
+        animation: travel linear both;
+        animation-timeline: --proc;
+        animation-range: entry 100% exit 0%;
+      }
+    }
+  }
+  @keyframes travel {
+    0% {
+      left: 0;
+      background: #9a8466;
+    }
+    40% {
+      background: var(--amber);
+    }
+    100% {
+      left: calc(100% - 26px);
+      background: var(--green);
+    }
+  }
+  .steps {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .steps > li {
+    display: grid;
+    gap: 0.85rem;
+    align-content: start;
+    padding: 1.5rem 1.5rem 1.5rem 0;
+    margin-right: 1.5rem;
+    border-right: 1px solid var(--rule);
+  }
+  .steps > li:last-child {
+    border-right: 0;
+    margin-right: 0;
+  }
+  .num {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--amber);
+    font-size: 0.85rem;
+  }
+  h3 {
+    font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+  }
+  .desc {
+    color: var(--text-2);
+  }
+  .details {
+    list-style: none;
+    display: grid;
+    gap: 0.45rem;
+    font-size: 0.95rem;
+  }
+  .details li {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  .details :global(svg) {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    margin-top: 4px;
+    color: var(--green);
+  }
+  .dur {
+    margin-top: 0.4rem;
+    color: var(--text-3);
+  }
+  .dur b {
+    color: var(--text);
+    font-weight: 600;
+  }
+  @media (max-width: 1000px) {
+    .steps {
+      grid-template-columns: 1fr 1fr;
+    }
+    .steps > li:nth-child(2) {
+      border-right: 0;
+      margin-right: 0;
+    }
+    .steps > li:nth-child(-n + 2) {
+      border-bottom: 1px solid var(--rule);
+    }
+  }
+  @media (max-width: 600px) {
+    .steps {
+      grid-template-columns: 1fr;
+    }
+    .steps > li {
+      border-right: 0;
+      margin-right: 0;
+      border-bottom: 1px solid var(--rule);
+      padding-right: 0;
+    }
+  }
+</style>

@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Faq from '../components/Faq.astro';
+import CallCta from '../components/CallCta.astro';
+import type { Lang } from '../data/site';
+import { allFaqs, t } from '../data/content';
+import { faqSchema } from '../data/seo';
+
+interface Props {
+  lang: Lang;
+  path: string;
+}
+const { lang, path } = Astro.props;
+const es = lang === 'es';
+const tf = t(lang).faq;
+const items = allFaqs(lang);
+---
+
+<Base lang={lang} title={es ? 'Preguntas frecuentes' : 'Frequently asked questions'} description={tf.description} path={path} schema={[faqSchema(items)]}>
+  <PageHead lang={lang} title={es ? 'Preguntas frecuentes' : 'Frequently asked questions'} lead={tf.description} crumbs={[{ label: 'FAQ' }]} code={`${items.length} ${es ? 'respuestas' : 'answers'}`}>
+    <label class="search">
+      <span class="sr-only">{es ? 'Buscar preguntas' : 'Search questions'}</span>
+      <input type="search" placeholder={es ? 'Busca: precio, tiempos, SEO…' : 'Search: price, timing, SEO…'} data-faq-search />
+    </label>
+  </PageHead>
+  <section class="section" aria-label="FAQ">
+    <div class="wrap narrow" data-faq-list>
+      <Faq items={items} grouped />
+      <p class="empty" data-faq-empty hidden>{es ? 'No encontramos esa pregunta. Escríbenos por WhatsApp y te respondemos.' : "We couldn't find that question. Message us on WhatsApp and we'll answer."}</p>
+    </div>
+  </section>
+  <CallCta lang={lang} />
+</Base>
+
+<style>
+  .narrow {
+    max-width: 980px;
+  }
+  .search {
+    width: min(560px, 100%);
+  }
+  .search input {
+    width: 100%;
+    min-height: 54px;
+    padding: 0 1rem;
+    background: var(--panel);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    color: var(--text);
+    font: inherit;
+  }
+  .search input:focus-visible {
+    outline: none;
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px rgb(255 178 26 / 0.25);
+  }
+  .empty {
+    color: var(--text-2);
+    padding-block: 2rem;
+  }
+</style>
+
+<script>
+  const input = document.querySelector<HTMLInputElement>('[data-faq-search]');
+  const list = document.querySelector<HTMLElement>('[data-faq-list]');
+  const empty = document.querySelector<HTMLElement>('[data-faq-empty]');
+  const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  input?.addEventListener('input', () => {
+    const q = norm(input.value.trim());
+    let shown = 0;
+    list?.querySelectorAll<HTMLElement>('.group').forEach((g) => {
+      let inGroup = 0;
+      g.querySelectorAll<HTMLDetailsElement>('details').forEach((d) => {
+        const hit = !q || norm(d.textContent ?? '').includes(q);
+        d.hidden = !hit;
+        if (hit) inGroup++;
+      });
+      g.hidden = inGroup === 0;
+      shown += inGroup;
+    });
+    if (empty) empty.hidden = shown > 0;
+  });
+</script>

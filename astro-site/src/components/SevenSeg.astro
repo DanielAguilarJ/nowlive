@@ -1,0 +1,156 @@
+---
+// A 7-segment LED readout drawn in SVG. The markup already shows the final value;
+// the script only replays the count from zero when the board scrolls into view.
+interface Props {
+  value: string | number;
+  class?: string;
+  label?: string;
+}
+const { value, class: className, label } = Astro.props;
+const text = String(value);
+
+const T = 13;
+const G = 2;
+const L = T / 2;
+const R = 60 - T / 2;
+const h = (y: number) =>
+  [
+    [L + G, y],
+    [L + T / 2 + G, y - T / 2],
+    [R - T / 2 - G, y - T / 2],
+    [R - G, y],
+    [R - T / 2 - G, y + T / 2],
+    [L + T / 2 + G, y + T / 2],
+  ]
+    .map((p) => p.join(','))
+    .join(' ');
+const v = (x: number, y1: number, y2: number) =>
+  [
+    [x, y1 + G],
+    [x + T / 2, y1 + T / 2 + G],
+    [x + T / 2, y2 - T / 2 - G],
+    [x, y2 - G],
+    [x - T / 2, y2 - T / 2 - G],
+    [x - T / 2, y1 + T / 2 + G],
+  ]
+    .map((p) => p.join(','))
+    .join(' ');
+
+const segs: Record<string, string> = {
+  a: h(L),
+  b: v(R, L, 50),
+  c: v(R, 50, 100 - L),
+  d: h(100 - L),
+  e: v(L, 50, 100 - L),
+  f: v(L, L, 50),
+  g: h(50),
+};
+const map: Record<string, string> = {
+  '0': 'abcdef',
+  '1': 'bc',
+  '2': 'abged',
+  '3': 'abgcd',
+  '4': 'fgbc',
+  '5': 'afgcd',
+  '6': 'afgecd',
+  '7': 'abc',
+  '8': 'abcdefg',
+  '9': 'abcdfg',
+};
+const chars = [...text];
+---
+
+<span class:list={['seg', className]} data-target={text} role="img" aria-label={label ?? text}>
+  {
+    chars.map((ch) =>
+      ch === '.' ? (
+        <span class="dp" aria-hidden="true" />
+      ) : map[ch] ? (
+        <svg class="d" viewBox="0 0 60 100" aria-hidden="true">
+          <g transform="skewX(-5) translate(4 0)">
+            {Object.entries(segs).map(([s, pts]) => (
+              <polygon data-s={s} points={pts} class={map[ch].includes(s) ? 'on' : undefined} />
+            ))}
+          </g>
+        </svg>
+      ) : null,
+    )
+  }
+</span>
+
+<style>
+  .seg {
+    --seg-h: 3.4rem;
+    display: inline-flex;
+    align-items: flex-end;
+    gap: calc(var(--seg-h) * 0.08);
+  }
+  .d {
+    height: var(--seg-h);
+    width: calc(var(--seg-h) * 0.62);
+    overflow: visible;
+  }
+  .d polygon {
+    fill: color-mix(in oklab, var(--seg-on, var(--amber)) 5%, transparent);
+    transition: fill 0.08s linear;
+  }
+  .d polygon.on {
+    fill: var(--seg-on, var(--amber));
+  }
+  .dp {
+    width: calc(var(--seg-h) * 0.11);
+    height: calc(var(--seg-h) * 0.11);
+    background: var(--seg-on, var(--amber));
+    margin-inline: calc(var(--seg-h) * -0.02);
+  }
+</style>
+
+<script>
+  const MAP: Record<string, string> = {
+    '0': 'abcdef', '1': 'bc', '2': 'abged', '3': 'abgcd', '4': 'fgbc',
+    '5': 'afgcd', '6': 'afgecd', '7': 'abc', '8': 'abcdefg', '9': 'abcdfg',
+  };
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function paint(el: HTMLElement, digits: string) {
+    const svgs = el.querySelectorAll<SVGSVGElement>('svg.d');
+    svgs.forEach((svg, i) => {
+      const on = MAP[digits[i]] ?? '';
+      svg.querySelectorAll('polygon').forEach((p) => p.classList.toggle('on', on.includes(p.dataset.s!)));
+    });
+  }
+
+  function run(el: HTMLElement) {
+    const target = el.dataset.target!;
+    const digitsOnly = target.replace('.', '');
+    const n = Number(digitsOnly);
+    if (!Number.isFinite(n) || n === 0) return;
+    const len = digitsOnly.length;
+    const start = performance.now();
+    const dur = 1300;
+    const tick = (now: number) => {
+      const k = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(2, -10 * k);
+      const cur = Math.round(n * (k === 1 ? 1 : eased));
+      const s = String(cur);
+      paint(el, (' '.repeat(Math.max(0, len - s.length)) + s).slice(-len));
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            io.unobserve(e.target);
+            run(e.target as HTMLElement);
+          }
+        }
+      },
+      { threshold: 0.6 },
+    );
+    document.querySelectorAll<HTMLElement>('.seg[data-target]').forEach((el) => io.observe(el));
+  }
+</script>

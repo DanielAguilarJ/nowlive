@@ -1,0 +1,438 @@
+---
+import Icon from '../Icon.astro';
+import { href, type Lang } from '../../data/site';
+import { serviceCards, serviceDetail, t } from '../../data/content';
+import { u } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const s = u(lang);
+const ts = t(lang).services;
+const cards = serviceCards(lang).map((c) => ({
+  ...c,
+  specs: (serviceDetail(lang, c.slug).features.items as { title: string; highlight?: string }[]).slice(0, 3),
+}));
+---
+
+<section class="section stations" id="servicios" aria-labelledby="st-title">
+  <div class="wrap">
+    <header class="section-head">
+      <h2 id="st-title" class="display-2">{s.stationsTitle}</h2>
+      <p class="lead">{ts.description}</p>
+    </header>
+
+    <div class="track" role="tablist" aria-label={ts.title} data-tabs>
+      <span class="shuttle" aria-hidden="true"></span>
+      {
+        cards.map((c, i) => (
+          <button
+            class="stop"
+            role="tab"
+            id={`st-tab-${c.slug}`}
+            aria-controls={`st-panel-${c.slug}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+            type="button"
+          >
+            <span class="node" aria-hidden="true">
+              <span class="lamp" data-state={i === 0 ? 'amber' : 'green'} />
+            </span>
+            <span class="code data">{c.code}</span>
+            <span class="name">{c.title}</span>
+          </button>
+        ))
+      }
+    </div>
+
+    {
+      cards.map((c) => (
+        <article class="panel" role="tabpanel" id={`st-panel-${c.slug}`} aria-labelledby={`st-tab-${c.slug}`} data-panel>
+          <div class="copy">
+            <h3 class="display-3">{c.title}</h3>
+            <p class="hook">{c.description}</p>
+            <ul class="feats">
+              {c.features.map((f) => (
+                <li>
+                  <Icon name="check" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <a class="link-arrow" href={href(lang, `/services/${c.slug}`)}>
+              {s.stationOpen}: {c.title}
+              <Icon name="arrow" />
+            </a>
+          </div>
+          <div class="plate screwed" aria-hidden="true">
+            <div class="plate-head data">
+              <span>{c.code}</span>
+              <span class="lamp" data-state="green" />
+            </div>
+            <Icon name={c.icon} class="plate-icon" />
+            <dl class="specs">
+              {c.specs.map((sp) => (
+                <div>
+                  <dt>{sp.title}</dt>
+                  {sp.highlight && <dd>{sp.highlight}</dd>}
+                </div>
+              ))}
+            </dl>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .track {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    margin-bottom: 2.5rem;
+  }
+  .track::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 21px;
+    height: 6px;
+    background: repeating-linear-gradient(90deg, var(--rule-strong) 0 18px, var(--rule) 18px 22px);
+    border-radius: 3px;
+  }
+  .stop {
+    position: relative;
+    display: grid;
+    justify-items: start;
+    align-content: start;
+    gap: 0.35rem;
+    padding: 0 1rem 1rem 0;
+    background: none;
+    border: 0;
+    color: var(--text-2);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .node {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0.6rem;
+    background: var(--panel-2);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    transition: background-color 0.25s, border-color 0.25s;
+  }
+  .node .lamp {
+    width: 14px;
+    height: 14px;
+  }
+  .code {
+    color: var(--text-3);
+  }
+  .name {
+    font-weight: 750;
+    font-stretch: 80%;
+    font-size: 1.15rem;
+    line-height: 1.1;
+    max-width: 14ch;
+  }
+  .stop:hover {
+    color: var(--text);
+  }
+  .stop[aria-selected='true'] {
+    color: var(--text);
+  }
+  .stop[aria-selected='true'] .node {
+    background: var(--amber);
+    border-color: var(--amber);
+  }
+  .stop[aria-selected='true'] .node .lamp {
+    --lamp: var(--amber-ink);
+  }
+  .stop[aria-selected='true'] .code {
+    color: var(--amber);
+  }
+
+  .panel {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    padding: clamp(1.75rem, 4vw, 3rem);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+  .panel + .panel {
+    margin-top: 1rem;
+  }
+
+  /* With JS on wide screens: an amber unit rides the rail to the chosen station
+     and the panel is read in by a scanner curtain, like the gantries in the hero. */
+  .shuttle {
+    display: none;
+  }
+  @media (min-width: 901px) {
+    .track[data-live] .shuttle {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      width: 48px;
+      height: 48px;
+      background: var(--amber);
+      border-radius: var(--radius);
+      transform: translateX(var(--x, 0px));
+      pointer-events: none;
+    }
+    .track[data-live][data-ready] .shuttle {
+      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .track[data-live] .stop[aria-selected='true'] .node {
+      background: var(--panel-2);
+      border-color: var(--rule-strong);
+    }
+    .track[data-live] .stop[aria-selected='true'] .node .lamp {
+      position: relative;
+      z-index: 3;
+    }
+    .track[data-moving]::before {
+      animation: belt-run 0.55s linear;
+    }
+  }
+  @keyframes belt-run {
+    to {
+      background-position: 66px 0;
+    }
+  }
+  .panel[data-scan] {
+    position: relative;
+    animation: scan-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .panel[data-scan]::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent calc(100% - 64px), rgb(53 210 127 / 0.14) calc(100% - 2px), var(--green) calc(100% - 2px));
+    pointer-events: none;
+    animation: scan-beam 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes scan-in {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  @keyframes scan-beam {
+    from {
+      transform: translateX(-100%);
+    }
+    80% {
+      opacity: 1;
+    }
+    to {
+      transform: none;
+      opacity: 0;
+    }
+  }
+  .panel[hidden] {
+    display: none;
+  }
+  .copy {
+    display: grid;
+    gap: 1.1rem;
+    align-content: start;
+    justify-items: start;
+  }
+  .pcode {
+    color: var(--amber);
+  }
+  .hook {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--text);
+    max-width: 52ch;
+  }
+  .feats {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 1.5rem;
+    margin-block: 0.5rem 0.75rem;
+    color: var(--text-2);
+  }
+  .feats li {
+    display: flex;
+    gap: 0.55rem;
+    align-items: flex-start;
+  }
+  .feats :global(svg) {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    margin-top: 4px;
+    color: var(--green);
+  }
+  .plate {
+    align-self: start;
+    background-color: #121513;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+  }
+  .plate-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    color: var(--text-3);
+  }
+  .plate :global(.plate-icon) {
+    width: 64px;
+    height: 64px;
+    margin: 1.6rem 1.2rem 1.2rem;
+    color: var(--amber);
+    stroke-width: 1.1;
+  }
+  .specs {
+    margin: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .specs div {
+    padding: 0.85rem 1.2rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .specs div:last-child {
+    border-bottom: 0;
+  }
+  .specs dt {
+    font-weight: 700;
+    font-stretch: 88%;
+  }
+  .specs dd {
+    margin: 0.15rem 0 0;
+    color: var(--text-2);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 900px) {
+    .track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--gutter);
+      gap: 0.5rem;
+      margin-inline: calc(var(--gutter) * -1);
+      padding-inline: var(--gutter);
+      scrollbar-width: none;
+    }
+    .track::before {
+      display: none;
+    }
+    .stop {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 0 0.7rem;
+      padding: 0.6rem 0.9rem 0.6rem 0.6rem;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+    }
+    .node {
+      grid-row: span 2;
+      width: 36px;
+      height: 36px;
+      margin: 0;
+    }
+    .name {
+      font-size: 1rem;
+      max-width: none;
+      white-space: nowrap;
+    }
+    .panel {
+      grid-template-columns: 1fr;
+    }
+    .plate {
+      display: none;
+    }
+    .feats {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Progressive tabs: without JS every station panel stays visible, one after another.
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((list) => {
+    const tabs = [...list.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = tabs.map((tb) => document.getElementById(tb.getAttribute('aria-controls')!)!);
+    const shuttle = list.querySelector<HTMLElement>('.shuttle');
+    let current = 0;
+    let moveTimer = 0;
+
+    // the amber unit sits on the selected station's node
+    const place = () => {
+      const node = tabs[current].querySelector<HTMLElement>('.node');
+      if (!shuttle || !node) return;
+      shuttle.style.setProperty('--x', `${tabs[current].offsetLeft + node.offsetLeft}px`);
+    };
+
+    const select = (i: number, focus = false) => {
+      const moved = i !== current;
+      current = i;
+      tabs.forEach((tb, j) => {
+        const on = i === j;
+        tb.setAttribute('aria-selected', String(on));
+        tb.tabIndex = on ? 0 : -1;
+        tb.querySelector('.lamp')?.setAttribute('data-state', on ? 'amber' : 'green');
+        panels[j].hidden = !on;
+      });
+      if (moved) {
+        place();
+        list.setAttribute('data-moving', '');
+        clearTimeout(moveTimer);
+        moveTimer = window.setTimeout(() => list.removeAttribute('data-moving'), 560);
+        const p = panels[i];
+        p.removeAttribute('data-scan');
+        void p.offsetWidth; // restart the scan when stations are clicked quickly
+        p.setAttribute('data-scan', '');
+      }
+      if (focus) tabs[i].focus();
+      tabs[i].scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    };
+    panels.forEach((p) =>
+      p.addEventListener('animationend', (e) => {
+        if (e.target === p && !e.pseudoElement) p.removeAttribute('data-scan');
+      }),
+    );
+    if (shuttle) {
+      list.setAttribute('data-live', '');
+      place();
+      new ResizeObserver(() => {
+        list.removeAttribute('data-ready');
+        place();
+        requestAnimationFrame(() => list.setAttribute('data-ready', ''));
+      }).observe(list);
+    }
+    tabs.forEach((tb, i) => {
+      tb.addEventListener('click', () => select(i));
+      tb.addEventListener('keydown', (e) => {
+        const k = e.key;
+        if (k === 'ArrowRight' || k === 'ArrowDown') { e.preventDefault(); select((i + 1) % tabs.length, true); }
+        if (k === 'ArrowLeft' || k === 'ArrowUp') { e.preventDefault(); select((i - 1 + tabs.length) % tabs.length, true); }
+        if (k === 'Home') { e.preventDefault(); select(0, true); }
+        if (k === 'End') { e.preventDefault(); select(tabs.length - 1, true); }
+      });
+    });
+    panels.forEach((p, j) => (p.hidden = j !== 0));
+  });
+</script>

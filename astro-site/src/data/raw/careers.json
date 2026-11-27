@@ -1,0 +1,210 @@
+{
+ "content": {
+  "es": {
+   "badge": "Únete al Equipo",
+   "headline": "Construye el futuro digital con nosotros",
+   "subheadline": "En CreamosTech buscamos personas apasionadas, curiosas y decididas a generar impacto real. Aquí no hay jerarquías rígidas, hay equipos que se apoyan y proyectos que inspiran.",
+   "perksTitle": "¿Por qué trabajar aquí?",
+   "perks": [
+    {
+     "icon": "🏡",
+     "title": "Trabajo remoto",
+     "desc": "100% remoto con reuniones asincrónicas y cultura de flexibilidad."
+    },
+    {
+     "icon": "📚",
+     "title": "Aprendizaje continuo",
+     "desc": "Presupuesto anual para cursos, conferencias y libros técnicos."
+    },
+    {
+     "icon": "💰",
+     "title": "Compensación competitiva",
+     "desc": "Salario acorde al mercado + bonos por desempeño y metas."
+    },
+    {
+     "icon": "🌍",
+     "title": "Equipo global",
+     "desc": "Colabora con talento de más de 10 países en proyectos internacionales."
+    },
+    {
+     "icon": "⚡",
+     "title": "Proyectos retadores",
+     "desc": "Trabaja con marcas reconocidas y desafíos técnicos reales."
+    },
+    {
+     "icon": "🎉",
+     "title": "Cultura sana",
+     "desc": "Equilibrio vida-trabajo, celebraciones de logros y sin horas extra forzadas."
+    }
+   ],
+   "openRolesTitle": "Posiciones abiertas",
+   "openRoles": [
+    {
+     "title": "Senior Frontend Developer",
+     "department": "Tecnología",
+     "location": "Remoto",
+     "type": "Tiempo completo",
+     "description": "Buscamos un desarrollador frontend con experiencia en React/Next.js, TypeScript y Tailwind para crear interfaces de alto rendimiento y excelente UX."
+    },
+    {
+     "title": "Estratega de Contenido",
+     "department": "Marketing",
+     "location": "Remoto",
+     "type": "Tiempo completo",
+     "description": "Responsable de planificar y ejecutar estrategias de contenido multicanal: blogs, redes sociales, email y SEO para clientes de distintas industrias."
+    },
+    {
+     "title": "Director de Cuentas",
+     "department": "Cuentas",
+     "location": "Remoto / Híbrido",
+     "type": "Tiempo completo",
+     "description": "Gestión de relaciones con clientes clave, coordinación de equipos internos y garantía de entrega de resultados dentro de plazos y presupuesto."
+    },
+    {
+     "title": "Especialista SEO & Analytics",
+     "department": "SEO",
+     "location": "Remoto",
+     "type": "Tiempo completo",
+     "description": "Auditorías técnicas, link building, optimización on-page, configuración de GA4 y dashboards de performance para múltiples clientes."
+    },
+    {
+     "title": "Diseñador UX/UI Senior",
+     "department": "Diseño",
+     "location": "Remoto",
+     "type": "Tiempo completo",
+     "description": "Diseño de productos digitales desde investigación de usuario hasta entrega en Figma. Experiencia en design systems y pruebas de usabilidad."
+    }
+   ],
+   "noMatchTitle": "¿No encuentras tu rol?",
+   "noMatchDesc": "Aunque no tengas una vacante que encaje exactamente, siempre revisamos perfiles excepcionales. Envíanos tu CV y cuéntanos cómo puedes aportar.",
+   "noMatchCTA": "Enviar candidatura espontánea",
+   "applyLabel": "Aplicar ahora →",
+   "processTitle": "Proceso de selección",
+   "processSteps": [
+    {
+     "step": "01",
+     "title": "Aplica online",
+     "desc": "Envía tu CV y carta de motivación a través de nuestro formulario."
+    },
+    {
+     "step": "02",
+     "title": "Screening call",
+     "desc": "Una llamada de 30 min con nuestro equipo de talento para conocerte."
+    },
+    {
+     "step": "03",
+     "title": "Prueba técnica",
+     "desc": "Desafío práctico relacionado con el rol (max. 3 horas)."
+    },
+    {
+     "step": "04",
+     "title": "Entrevista final",
+     "desc": "Conversación con el líder del equipo y oferta si hay fit mutuo."
+    }
+   ]
+  },
+  "en": {
+   "badge": "Join the Team",
+   "headline": "Build the digital future with us",
+   "subheadline": "At CreamosTech we look for passionate, curious people determined to make a real impact. No rigid hierarchies here — just supportive teams and inspiring projects.",
+   "perksTitle": "Why work here?",
+   "perks": [
+    {
+     "icon": "🏡",
+     "title": "Remote work",
+     "desc": "100% remote with async meetings and a flexibility culture."
+    },
+    {
+     "icon": "📚",
+     "title": "Continuous learning",
+     "desc": "Annual budget for courses, conferences, and technical books."
+    },
+    {
+     "icon": "💰",
+     "title": "Competitive compensation",
+     "desc": "Market-aligned salary + performance and goal bonuses."
+    },
+    {
+     "icon": "🌍",
+     "title": "Global team",
+     "desc": "Collaborate with talent from 10+ countries on international projects."
+    },
+    {
+     "icon": "⚡",
+     "title": "Challenging projects",
+     "desc": "Work with recognized brands and real technical challenges."
+    },
+    {
+     "icon": "🎉",
+     "title": "Healthy culture",
+     "desc": "Work-life balance, achievement celebrations, and no forced overtime."
+    }
+   ],
+   "openRolesTitle": "Open positions",
+   "openRoles": [
+    {
+     "title": "Senior Frontend Developer",
+     "department": "Technology",
+     "location": "Remote",
+     "type": "Full-time",
+     "description": "Looking for a frontend developer experienced in React/Next.js, TypeScript, and Tailwind to build high-performance interfaces with excellent UX."
+    },
+    {
+     "title": "Content Strategist",
+     "department": "Marketing",
+     "location": "Remote",
+     "type": "Full-time",
+     "description": "Responsible for planning and executing multi-channel content strategies: blogs, social media, email, and SEO for clients across industries."
+    },
+    {
+     "title": "Account Director",
+     "department": "Accounts",
+     "location": "Remote / Hybrid",
+     "type": "Full-time",
+     "description": "Manage key client relationships, coordinate internal teams, and guarantee delivery of results within timelines and budget."
+    },
+    {
+     "title": "SEO & Analytics Specialist",
+     "department": "SEO",
+     "location": "Remote",
+     "type": "Full-time",
+     "description": "Technical audits, link building, on-page optimization, GA4 setup, and performance dashboards for multiple clients."
+    },
+    {
+     "title": "Senior UX/UI Designer",
+     "department": "Design",
+     "location": "Remote",
+     "type": "Full-time",
+     "description": "Design digital products from user research to Figma delivery. Experience in design systems and usability testing."
+    }
+   ],
+   "noMatchTitle": "Didn't find your role?",
+   "noMatchDesc": "Even if no vacancy matches exactly, we always review exceptional profiles. Send your CV and tell us how you can contribute.",
+   "noMatchCTA": "Send open application",
+   "applyLabel": "Apply now →",
+   "processTitle": "Selection process",
+   "processSteps": [
+    {
+     "step": "01",
+     "title": "Apply online",
+     "desc": "Submit your CV and cover letter through our form."
+    },
+    {
+     "step": "02",
+     "title": "Screening call",
+     "desc": "A 30-min call with our talent team to get to know you."
+    },
+    {
+     "step": "03",
+     "title": "Technical challenge",
+     "desc": "Practical challenge related to the role (max. 3 hours)."
+    },
+    {
+     "step": "04",
+     "title": "Final interview",
+     "desc": "Conversation with the team lead and offer if there's mutual fit."
+    }
+   ]
+  }
+ }
+}

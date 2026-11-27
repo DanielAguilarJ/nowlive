@@ -1,0 +1,138 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import CallCta from '../components/CallCta.astro';
+import { href, type Lang } from '../data/site';
+import { articles, t } from '../data/content';
+
+interface Props {
+  lang: Lang;
+  path: string;
+}
+const { lang, path } = Astro.props;
+const es = lang === 'es';
+const r = t(lang).resources;
+const latest = articles.slice(0, 6);
+const typeIcon: Record<string, string> = { Guía: 'doc', Guide: 'doc', Plantilla: 'check', Template: 'check', Herramienta: 'workflows', Tool: 'workflows' };
+---
+
+<Base lang={lang} title={r.title} description={r.description} path={path}>
+  <PageHead lang={lang} title={r.title} lead={r.description} crumbs={[{ label: r.title }]} />
+  <section class="section" aria-label={r.title}>
+    <div class="wrap">
+      <ul class="kit">
+        {
+          r.items.map((it: { title: string; type: string; level: string; description: string; link: string }) => (
+            <li>
+              <a href={it.link.startsWith('/blog') ? it.link : href(lang, it.link)}>
+                <Icon name={typeIcon[it.type] ?? 'doc'} class="k-icon" />
+                <span class="k-title">{it.title}</span>
+                <span class="k-meta data">
+                  {it.type} · {it.level}
+                </span>
+                <span class="k-desc">{it.description}</span>
+                <span class="link-arrow">
+                  {es ? 'Abrir' : 'Open'}
+                  <Icon name="arrow" />
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2 class="display-3 latest-title">{es ? 'Guías recientes del blog' : 'Recent guides from the blog'}</h2>
+      <ul class="latest">
+        {
+          latest.map((a) => (
+            <li>
+              <a href={`/blog/${a.slug}`}>
+                <span class="l-title">{a.title}</span>
+                <span class="data">
+                  {a.category} · {a.readTime}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+  <CallCta lang={lang} />
+</Base>
+
+<style>
+  .kit {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+  .kit a {
+    display: grid;
+    gap: 0.8rem;
+    justify-items: start;
+    height: 100%;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    background: var(--panel);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.2s;
+  }
+  .kit a:hover {
+    border-color: var(--amber);
+    color: var(--text);
+  }
+  .kit :global(.k-icon) {
+    width: 36px;
+    height: 36px;
+    color: var(--amber);
+  }
+  .k-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-stretch: 75%;
+    line-height: 1.05;
+  }
+  .k-meta {
+    color: var(--text-3);
+  }
+  .k-desc {
+    color: var(--text-2);
+  }
+  .latest-title {
+    margin-top: clamp(3.5rem, 7vw, 5.5rem);
+  }
+  .latest {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(2rem, 5vw, 4rem);
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--rule-strong);
+  }
+  .latest a {
+    display: grid;
+    gap: 0.4rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+  }
+  .l-title {
+    font-weight: 700;
+    font-stretch: 85%;
+    font-size: 1.12rem;
+  }
+  .latest .data {
+    color: var(--text-3);
+  }
+  @media (max-width: 900px) {
+    .kit,
+    .latest {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

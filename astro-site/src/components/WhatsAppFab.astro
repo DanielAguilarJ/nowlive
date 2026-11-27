@@ -1,0 +1,77 @@
+---
+import Icon from './Icon.astro';
+import { waLink, type Lang } from '../data/site';
+import { u } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const s = u(lang);
+---
+
+<a class="fab" href={waLink(s.whatsappHello)} target="_blank" rel="noopener" aria-label={s.heroWhatsapp} data-fab>
+  <Icon name="whatsapp" />
+  <span class="txt">{s.whatsapp}</span>
+</a>
+
+<script>
+  // On the home page the hero already offers WhatsApp; the floating button appears once it scrolls away.
+  const fab = document.querySelector<HTMLElement>('[data-fab]');
+  const hero = document.querySelector('[data-hero]');
+  if (fab && hero && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => fab.toggleAttribute('data-hidden', e.isIntersecting), { threshold: 0.35 }).observe(hero);
+  }
+</script>
+
+<style>
+  .fab {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: 40;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    height: 52px;
+    padding: 0 1.1rem 0 0.95rem;
+    border-radius: 26px;
+    background: #1f2a24;
+    border: 1px solid #2f4a3b;
+    color: #e9f7ee;
+    font-weight: 700;
+    font-stretch: 88%;
+    text-decoration: none;
+    box-shadow: var(--shadow-lift);
+    transition: transform 0.25s var(--ease-out), background-color 0.2s;
+  }
+  .fab:hover {
+    color: #fff;
+    background: #24382d;
+    transform: translateY(-2px);
+  }
+  .fab :global(svg) {
+    width: 24px;
+    height: 24px;
+    color: #4ade80;
+  }
+  .fab[data-hidden] {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
+  }
+  .fab {
+    transition-property: transform, background-color, opacity;
+  }
+  @media (max-width: 560px) {
+    .txt {
+      display: none;
+    }
+    .fab {
+      width: 54px;
+      height: 54px;
+      padding: 0;
+      justify-content: center;
+    }
+  }
+</style>

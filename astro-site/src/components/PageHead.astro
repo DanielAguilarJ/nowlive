@@ -1,0 +1,129 @@
+---
+import { href, type Lang } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  lead?: string;
+  crumbs?: { label: string; to?: string }[];
+  code?: string;
+}
+const { lang, title, lead, crumbs = [], code } = Astro.props;
+const hasAside = Astro.slots.has('aside');
+const trail = [{ label: lang === 'es' ? 'Inicio' : 'Home', to: href(lang, '/') }, ...crumbs];
+---
+
+<section class="page-head">
+  <div class="wrap">
+    <nav class="crumbs data" aria-label={lang === 'es' ? 'Ruta' : 'Breadcrumb'}>
+      <ol>
+        {
+          trail.map((c, i) => (
+            <li>
+              {c.to && i < trail.length - 1 ? <a href={c.to}>{c.label}</a> : <span aria-current="page">{c.label}</span>}
+            </li>
+          ))
+        }
+      </ol>
+      {code && <span class="code"><span class="lamp" data-state="green" aria-hidden="true" />{code}</span>}
+    </nav>
+    <div class:list={['body', { split: hasAside }]}>
+      <div class="main">
+        <h1 class="display-1">{title}</h1>
+        {lead && <p class="lead">{lead}</p>}
+        <slot />
+      </div>
+      {hasAside && <div class="aside"><slot name="aside" /></div>}
+    </div>
+  </div>
+  <div class="rule" aria-hidden="true"></div>
+</section>
+
+<style>
+  .page-head {
+    position: relative;
+    padding-block: clamp(2rem, 5vw, 3.5rem) clamp(3rem, 7vw, 5.5rem);
+    background: radial-gradient(90% 120% at 85% 0%, #181b19 0%, transparent 60%), var(--ground);
+  }
+  .wrap {
+    position: relative;
+    display: grid;
+    gap: 1.4rem;
+    justify-items: start;
+  }
+  .body {
+    width: 100%;
+  }
+  .main {
+    display: grid;
+    gap: 1.4rem;
+    justify-items: start;
+  }
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: center;
+  }
+  .aside {
+    display: grid;
+    place-items: center;
+  }
+  @media (max-width: 900px) {
+    .split {
+      grid-template-columns: 1fr;
+    }
+    .aside {
+      justify-items: center;
+    }
+  }
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    width: 100%;
+    color: var(--text-3);
+    margin-bottom: clamp(1rem, 4vw, 2.5rem);
+  }
+  .crumbs ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .crumbs li + li::before {
+    content: '/';
+    margin-right: 0.5rem;
+    color: var(--rule-strong);
+  }
+  .crumbs a {
+    color: var(--text-2);
+    text-decoration: none;
+  }
+  .crumbs a:hover {
+    color: var(--amber);
+  }
+  .crumbs [aria-current] {
+    color: var(--text);
+  }
+  .code {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  h1 {
+    max-width: 20ch;
+  }
+  .lead {
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  }
+  .rule {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--rule);
+  }
+</style>

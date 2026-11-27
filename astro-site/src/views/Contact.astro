@@ -1,0 +1,441 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import { site, waLink, type Lang } from '../data/site';
+import { plans, serviceCards, t } from '../data/content';
+import { u } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  path: string;
+}
+const { lang, path } = Astro.props;
+const s = u(lang);
+const f = s.form;
+const es = lang === 'es';
+const tf = t(lang).footer;
+const cards = serviceCards(lang);
+const planList = plans(lang);
+---
+
+<Base
+  lang={lang}
+  title={es ? 'Contacto y auditoría gratuita' : 'Contact and free audit'}
+  description={es ? 'Cuéntanos tu proyecto y recibe una propuesta personalizada en 24 horas. WhatsApp, teléfono, email y oficina en Aguascalientes.' : 'Tell us about your project and get a tailored proposal within 24 hours. WhatsApp, phone, email and office in Aguascalientes.'}
+  path={path}
+>
+  <PageHead
+    lang={lang}
+    title={es ? 'Contáctanos' : 'Contact us'}
+    lead={es ? 'Estamos listos para transformar tu presencia digital. Cuéntanos sobre tu proyecto y recibe una propuesta personalizada en 24 horas.' : "We're ready to transform your digital presence. Tell us about your project and receive a personalized proposal within 24 hours."}
+    crumbs={[{ label: s.nav.contact }]}
+  />
+
+  <section class="section contact" aria-label={s.nav.contact}>
+    <div class="wrap grid">
+      <form class="form" id="auditoria" action="/api/contact.php" method="post" novalidate data-form>
+        <h2 class="display-3">{f.title}</h2>
+        <p class="ok-msg" role="status" data-status hidden></p>
+        <input type="hidden" name="lang" value={lang} />
+        <div class="hp" aria-hidden="true">
+          <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+        </div>
+        <div class="two">
+          <label class="field">
+            <span>{f.name} <em>{f.required}</em></span>
+            <input name="name" type="text" required autocomplete="name" maxlength="120" />
+            <small class="err" data-err="name"></small>
+          </label>
+          <label class="field">
+            <span>{f.email} <em>{f.required}</em></span>
+            <input name="email" type="email" required autocomplete="email" maxlength="160" inputmode="email" />
+            <small class="err" data-err="email"></small>
+          </label>
+        </div>
+        <div class="two">
+          <label class="field">
+            <span>{f.phone}</span>
+            <input name="phone" type="tel" autocomplete="tel" maxlength="40" inputmode="tel" />
+          </label>
+          <label class="field">
+            <span>{f.company}</span>
+            <input name="company" type="text" autocomplete="organization" maxlength="160" />
+          </label>
+        </div>
+        <div class="two">
+          <label class="field">
+            <span>{f.service}</span>
+            <select name="service" data-prefill="service">
+              <option value="">{f.servicePlaceholder}</option>
+              {cards.map((c) => <option value={c.slug}>{c.title}</option>)}
+            </select>
+          </label>
+          <label class="field">
+            <span>{f.plan}</span>
+            <select name="plan" data-prefill="plan">
+              <option value="">{f.planNone}</option>
+              {planList.map((p) => <option value={p.name}>{p.name} · {p.price}</option>)}
+            </select>
+          </label>
+        </div>
+        <label class="field">
+          <span>{f.message} <em>{f.required}</em></span>
+          <textarea name="message" rows="5" required maxlength="4000" placeholder={f.messagePlaceholder}></textarea>
+          <small class="err" data-err="message"></small>
+        </label>
+        <p class="fail" role="alert" data-fail hidden>{f.error}</p>
+        <div class="actions">
+          <button class="btn" type="submit" data-submit>{f.submit}<Icon name="arrow" /></button>
+          <a class="btn btn--ghost" href={waLink(s.whatsappAudit)} target="_blank" rel="noopener" data-wa>
+            <Icon name="whatsapp" />{f.viaWhatsapp}
+          </a>
+        </div>
+        <p class="privacy">{f.privacy}</p>
+      </form>
+
+      <aside class="channels">
+        <a class="wa" href={waLink(s.whatsappAudit)} target="_blank" rel="noopener">
+          <Icon name="whatsapp" />
+          <span>
+            <b>WhatsApp</b>
+            <span>{site.phoneDisplay}</span>
+          </span>
+          <Icon name="arrow" class="go" />
+        </a>
+        <dl>
+          <div>
+            <dt class="data"><Icon name="phone" />{es ? 'Teléfono' : 'Phone'}</dt>
+            <dd><a href={`tel:${site.phoneE164}`}>{site.phoneDisplay}</a></dd>
+          </div>
+          <div>
+            <dt class="data"><Icon name="mail" />Email</dt>
+            <dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+          </div>
+          <div>
+            <dt class="data"><Icon name="pin" />{es ? 'Ubicación' : 'Location'}</dt>
+            <dd>
+              {tf.contact.address}
+              <a class="map" href={site.mapsUrl} target="_blank" rel="noopener">{es ? 'Abrir en Google Maps' : 'Open in Google Maps'}<Icon name="external" /></a>
+            </dd>
+          </div>
+          <div>
+            <dt class="data"><Icon name="clock" />{es ? 'Horario' : 'Hours'}</dt>
+            <dd>{es ? 'Lunes a viernes, 9:00 a 18:00' : 'Monday to Friday, 9 AM to 6 PM'}</dd>
+          </div>
+        </dl>
+        <p class="quick">
+          <span class="lamp" data-state="green" aria-hidden="true"></span>
+          {es ? 'Respondemos todos los mensajes en menos de 24 horas. Para consultas urgentes, llámanos directamente.' : 'We respond to all messages in less than 24 hours. For urgent inquiries, call us directly.'}
+        </p>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+  .form {
+    display: grid;
+    gap: 1.2rem;
+    padding: clamp(1.5rem, 3.5vw, 2.5rem);
+    background: var(--panel);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+  .two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  .field {
+    display: grid;
+    gap: 0.45rem;
+  }
+  .field > span {
+    font-weight: 650;
+    font-stretch: 90%;
+    font-size: 0.95rem;
+  }
+  .field em {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: var(--text-3);
+  }
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-height: 50px;
+    padding: 0.75rem 0.9rem;
+    background: var(--ground);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    color: var(--text);
+    font: inherit;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 140px;
+  }
+  select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--text-2) 50%), linear-gradient(135deg, var(--text-2) 50%, transparent 50%);
+    background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%;
+    background-size: 6px 6px;
+    background-repeat: no-repeat;
+    padding-right: 2.5rem;
+  }
+  ::placeholder {
+    color: var(--text-3);
+  }
+  input:hover,
+  select:hover,
+  textarea:hover {
+    border-color: var(--text-3);
+  }
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: none;
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px rgb(255 178 26 / 0.25);
+  }
+  [aria-invalid='true'] {
+    border-color: var(--red);
+  }
+  .err {
+    min-height: 0;
+    color: #ff7a73;
+    font-size: 0.88rem;
+  }
+  .err:empty {
+    display: none;
+  }
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .ok-msg {
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--green-dim);
+    background: rgb(53 210 127 / 0.08);
+    color: #9cf0c2;
+    border-radius: var(--radius);
+  }
+  .fail {
+    padding: 0.9rem 1rem;
+    border: 1px solid #7a2a26;
+    background: rgb(242 71 63 / 0.08);
+    color: #ffb1ab;
+    border-radius: var(--radius);
+  }
+  .privacy {
+    color: var(--text-3);
+    font-size: 0.88rem;
+  }
+  .channels {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .wa {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.3rem 1.4rem;
+    background: #1f2a24;
+    border: 1px solid #2f4a3b;
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--text);
+  }
+  .wa:hover {
+    color: var(--text);
+    background: #24382d;
+  }
+  .wa > :global(svg:first-child) {
+    width: 34px;
+    height: 34px;
+    color: #4ade80;
+  }
+  .wa b {
+    display: block;
+    font-size: 1.3rem;
+    font-stretch: 80%;
+  }
+  .wa span span {
+    color: var(--text-2);
+  }
+  .wa :global(.go) {
+    width: 22px;
+    height: 22px;
+  }
+  dl {
+    margin: 0;
+    border-top: 1px solid var(--rule-strong);
+  }
+  dl div {
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  dt {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    color: var(--text-3);
+    margin-bottom: 0.4rem;
+  }
+  dt :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+  dd {
+    margin: 0;
+    display: grid;
+    gap: 0.4rem;
+  }
+  dd a {
+    text-decoration: none;
+  }
+  .map {
+    display: inline-flex;
+    gap: 0.35rem;
+    align-items: center;
+    min-height: 32px;
+    color: var(--amber);
+    font-size: 0.92rem;
+  }
+  .map :global(svg) {
+    width: 14px;
+    height: 14px;
+  }
+  .quick {
+    display: flex;
+    gap: 0.6rem;
+    align-items: baseline;
+    color: var(--text-2);
+  }
+  @media (max-width: 960px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .two {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  if (form) {
+    const msgs = {
+      es: { required: 'Este campo es obligatorio', email: 'Escribe un email válido, por ejemplo nombre@empresa.com', sending: 'Enviando…', sent: 'Recibimos tu mensaje. Te respondemos en menos de 24 h.' },
+      en: { required: 'This field is required', email: 'Enter a valid email, for example name@company.com', sending: 'Sending…', sent: 'We got your message. We reply within 24 h.' },
+    };
+    const lang = (form.elements.namedItem('lang') as HTMLInputElement).value as 'es' | 'en';
+    const m = msgs[lang];
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const fail = form.querySelector<HTMLElement>('[data-fail]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const waLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-wa]')];
+    const get = (n: string) => form.elements.namedItem(n) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
+    // Prefill from links such as /contact?service=web-design&plan=Acelerador#auditoria
+    const params = new URLSearchParams(location.search);
+    form.querySelectorAll<HTMLSelectElement>('[data-prefill]').forEach((sel) => {
+      const v = params.get(sel.dataset.prefill!);
+      if (v && [...sel.options].some((o) => o.value === v)) sel.value = v;
+    });
+    if (params.get('enviado') === '1') {
+      status.textContent = m.sent;
+      status.hidden = false;
+    }
+
+    const composeWa = () => {
+      const lines = [
+        lang === 'es' ? 'Hola CreamosTech, quiero mi auditoría gratuita.' : 'Hi CreamosTech, I want my free audit.',
+        get('name').value && `${lang === 'es' ? 'Nombre' : 'Name'}: ${get('name').value}`,
+        get('company').value && `${lang === 'es' ? 'Empresa' : 'Company'}: ${get('company').value}`,
+        get('service').value && `${lang === 'es' ? 'Servicio' : 'Service'}: ${(get('service') as HTMLSelectElement).selectedOptions[0].text}`,
+        get('plan').value && `Plan: ${get('plan').value}`,
+        get('message').value,
+      ].filter(Boolean);
+      const url = `https://wa.me/5214496355166?text=${encodeURIComponent(lines.join('\n'))}`;
+      waLinks.forEach((a) => (a.href = url));
+    };
+    form.addEventListener('input', composeWa);
+
+    const setErr = (name: string, text: string) => {
+      const el = form.querySelector<HTMLElement>(`[data-err="${name}"]`);
+      const input = get(name);
+      if (el) el.textContent = text;
+      input.setAttribute('aria-invalid', text ? 'true' : 'false');
+      if (el && text) {
+        el.id = `err-${name}`;
+        input.setAttribute('aria-describedby', el.id);
+      }
+    };
+    const validate = () => {
+      let first: HTMLElement | null = null;
+      for (const n of ['name', 'email', 'message']) {
+        const v = get(n).value.trim();
+        let e = '';
+        if (!v) e = m.required;
+        else if (n === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) e = m.email;
+        setErr(n, e);
+        if (e && !first) first = get(n);
+      }
+      first?.focus();
+      return !first;
+    };
+    ['name', 'email', 'message'].forEach((n) => get(n).addEventListener('blur', () => get(n).getAttribute('aria-invalid') === 'true' && validate()));
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      fail.hidden = true;
+      status.hidden = true;
+      if (!validate()) return;
+      composeWa();
+      const label = submit.innerHTML;
+      submit.disabled = true;
+      submit.textContent = m.sending;
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        const data = await res.json().catch(() => ({ ok: false }));
+        if (!res.ok || !data.ok) throw new Error('send');
+        form.reset();
+        status.textContent = m.sent;
+        status.hidden = false;
+        status.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      } catch {
+        fail.hidden = false;
+      } finally {
+        submit.disabled = false;
+        submit.innerHTML = label;
+      }
+    });
+  }
+</script>

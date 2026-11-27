@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import type { Lang } from '../data/site';
+import { t } from '../data/content';
+
+interface Props {
+  lang: Lang;
+  path: string;
+  kind: 'privacy' | 'terms';
+}
+const { lang, path, kind } = Astro.props;
+const tt = t(lang);
+const p = tt.privacy;
+const tm = tt.terms;
+const title = kind === 'privacy' ? p.title : tm.title;
+const note = kind === 'privacy' ? p.launchNote : tm.lastUpdate;
+---
+
+<Base lang={lang} title={title} description={note} path={path}>
+  <PageHead lang={lang} title={title} lead={note} crumbs={[{ label: title }]} />
+  <section class="section legal" aria-label={title}>
+    <div class="wrap">
+      {
+        kind === 'privacy' ? (
+          <div class="prose">
+            <p>{p.sections.intro}</p>
+            <h2>{p.sections.infoTitle}</h2>
+            <p>{p.sections.infoBody}</p>
+            <h2>{p.sections.useTitle}</h2>
+            <ul>
+              {(Array.isArray(p.sections.useItems) ? p.sections.useItems : [p.sections.useItems]).map((x: string) => (
+                <li>{x}</li>
+              ))}
+            </ul>
+            <h2>{p.sections.protectionTitle}</h2>
+            <p>{p.sections.protectionBody}</p>
+            <h2>{p.sections.rightsTitle}</h2>
+            <p>{p.sections.rightsBody}</p>
+          </div>
+        ) : (
+          <div class="prose">
+            <p>{tm.intro}</p>
+            {tm.sections.map((s: { title: string; body: string }) => (
+              <>
+                <h2>{s.title}</h2>
+                <p>{s.body}</p>
+              </>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal {
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+</style>

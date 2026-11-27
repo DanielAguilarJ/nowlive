@@ -1,0 +1,602 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import UnitCube from '../components/UnitCube.astro';
+import CallCta from '../components/CallCta.astro';
+import { href, services, site, waLink, type Lang, type ServiceSlug } from '../data/site';
+import { sentence, serviceCards, serviceDetail } from '../data/content';
+import { faqSchema } from '../data/seo';
+import { u } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  path: string;
+  slug: ServiceSlug;
+}
+const { lang, path, slug } = Astro.props;
+const s = u(lang);
+const d = serviceDetail(lang, slug);
+const meta = services.find((x) => x.slug === slug)!;
+const card = serviceCards(lang).find((c) => c.slug === slug)!;
+const others = serviceCards(lang).filter((c) => c.slug !== slug);
+const cs = d.caseStudy.data;
+const es = lang === 'es';
+const sc = (x: string) => sentence(lang, x);
+const contactUrl = `${href(lang, '/contact')}?service=${slug}#auditoria`;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: card.title,
+    description: d.hero.subheadline,
+    serviceType: card.title,
+    provider: { '@id': `${site.url}/#organization` },
+    areaServed: ['MX', 'US', 'ES', 'LATAM'],
+    url: new URL(path, site.url).href,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: es ? 'Inicio' : 'Home', item: new URL(href(lang, '/'), site.url).href },
+      { '@type': 'ListItem', position: 2, name: s.nav.services, item: new URL(href(lang, '/services'), site.url).href },
+      { '@type': 'ListItem', position: 3, name: card.title, item: new URL(path, site.url).href },
+    ],
+  },
+  ...(d.faq.items?.length ? [faqSchema(d.faq.items)] : []),
+];
+---
+
+<Base lang={lang} title={card.title} description={d.hero.subheadline} path={path} schema={schema}>
+  <PageHead
+    lang={lang}
+    title={sc(d.hero.headline)}
+    lead={d.hero.subheadline}
+    crumbs={[{ label: s.nav.services, to: href(lang, '/services') }, { label: card.title }]}
+    code={`${meta.code} · ${card.title}`}
+  >
+    <blockquote class="problem">
+      <span class="lamp" data-state="red" aria-hidden="true"></span>
+      <p>“{d.hero.problem}”</p>
+    </blockquote>
+    <UnitCube slot="aside" icon={meta.icon} code={meta.code} label={card.title} />
+    <div class="ctas">
+      <a class="btn" href={contactUrl}>{sc(d.hero.primaryCTA)}<Icon name="arrow" /></a>
+      <a class="btn btn--ghost" href="#caso">{sc(d.hero.secondaryCTA)}</a>
+    </div>
+  </PageHead>
+
+  <section class="section" aria-labelledby="feat-title">
+    <div class="wrap">
+      <header class="section-head">
+        <h2 id="feat-title" class="display-2">{sc(d.features.headline)}</h2>
+        <p class="lead">{d.features.subheadline}</p>
+      </header>
+      <ul class="specs">
+        {
+          d.features.items.map((f: { icon: string; title: string; description: string; highlight?: string }) => (
+            <li>
+              <Icon name={f.icon} class="spec-icon" />
+              <div>
+                <h3>{f.title}</h3>
+                <p>{f.description}</p>
+                {f.highlight && <p class="hl">{f.highlight}</p>}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section phases-sec" aria-labelledby="ph-title">
+    <div class="wrap">
+      <header class="section-head">
+        <h2 id="ph-title" class="display-2">{sc(d.process.headline)}</h2>
+        <p class="lead">{d.process.subheadline}</p>
+      </header>
+      <ol class="phases">
+        {
+          d.process.steps.map((p: { step: string; title: string; description: string; duration: string }) => (
+            <li>
+              <p class="ph-step data">
+                <span class="lamp" data-state="green" />
+                {p.step}
+              </p>
+              <h3>{p.title}</h3>
+              <p class="ph-desc">{p.description}</p>
+              <p class="ph-dur data">
+                <Icon name="clock" />
+                {p.duration}
+              </p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="caso" aria-labelledby="case-title">
+    <div class="wrap">
+      <header class="section-head">
+        <h2 id="case-title" class="display-2">{sc(d.caseStudy.headline)}</h2>
+        <p class="lead">{d.caseStudy.subheadline}</p>
+      </header>
+      <article class="case">
+        <header class="case-head">
+          <p class="case-co">{cs.company}</p>
+          <p class="data">{cs.industry}</p>
+        </header>
+        <div class="case-cols">
+          <div>
+            <h3 class="data">{d.caseStudy.titles.challenge}</h3>
+            <p>{cs.challenge}</p>
+          </div>
+          <div>
+            <h3 class="data">{d.caseStudy.titles.solution}</h3>
+            <p>{cs.solution}</p>
+          </div>
+          <div>
+            <h3 class="data">{d.caseStudy.titles.results}</h3>
+            <p>{cs.results}</p>
+          </div>
+        </div>
+        <ul class="case-metrics">
+          {
+            (cs.metrics as { value: number; suffix: string; label: string }[]).map((m) => (
+              <li>
+                <span class="readout">
+                  {m.value}
+                  <span class="unit">{m.suffix}</span>
+                </span>
+                <span class="m-lbl">{m.label}</span>
+              </li>
+            ))
+          }
+        </ul>
+        {
+          cs.testimonial && (
+            <figure class="case-quote">
+              <blockquote>“{cs.testimonial.quote}”</blockquote>
+              <figcaption>
+                <b>{cs.testimonial.author}</b> · {cs.testimonial.role}
+              </figcaption>
+            </figure>
+          )
+        }
+      </article>
+    </div>
+  </section>
+
+  <section class="section on-paper" aria-labelledby="price-title">
+    <div class="wrap">
+      <header class="section-head">
+        <h2 id="price-title" class="display-2">{sc(d.pricing.headline)}</h2>
+        <p class="lead">{d.pricing.subheadline}</p>
+      </header>
+      <ul class="tiers">
+        {
+          d.pricing.tiers.map((tier: { name: string; price: string; period?: string; description: string; features: { text: string; included: boolean }[]; cta: string; popular?: boolean; badge?: string }) => (
+            <li class:list={['tier', { pop: tier.popular }]}>
+              <p class="t-head data">
+                <span>{tier.name}</span>
+                {tier.popular && tier.badge && <span class="t-badge">{tier.badge}</span>}
+              </p>
+              <p class="t-price">
+                {tier.price}
+                {tier.period && <span>/ {tier.period}</span>}
+              </p>
+              <p class="t-desc">{tier.description}</p>
+              <ul class="t-feats">
+                {tier.features.map((f) => (
+                  <li class:list={{ off: !f.included }}>
+                    <Icon name={f.included ? 'check' : 'x'} />
+                    <span>
+                      {f.text}
+                      {!f.included && <span class="sr-only">{es ? '(no incluido)' : '(not included)'}</span>}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <a class:list={['btn', 'btn--block', tier.popular ? '' : 'btn--ink']} href={`${contactUrl.replace('#auditoria', '')}&plan=${encodeURIComponent(tier.name)}#auditoria`}>
+                {sc(tier.cta)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      {d.pricing.guarantee && <p class="guar"><Icon name="shield" />{d.pricing.guarantee}</p>}
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="sfaq-title">
+    <div class="wrap faq-grid">
+      <header class="section-head">
+        <h2 id="sfaq-title" class="display-2">{sc(d.faq.headline)}</h2>
+        <p class="lead">{d.faq.subheadline}</p>
+        {d.faq.helpText && <p class="help">{d.faq.helpText}</p>}
+        <a class="link-arrow" href={waLink(s.whatsappHello)} target="_blank" rel="noopener">{d.faq.helpCTA ? sc(d.faq.helpCTA) : s.heroWhatsapp}<Icon name="arrow" /></a>
+      </header>
+      <div><Faq items={d.faq.items} /></div>
+    </div>
+  </section>
+
+  <section class="section others-sec" aria-labelledby="oth-title">
+    <div class="wrap">
+      <h2 id="oth-title" class="display-3">{es ? 'Las otras estaciones de tu línea' : 'The other stations on your line'}</h2>
+      <ul class="others">
+        {
+          others.map((o) => (
+            <li>
+              <a href={href(lang, `/services/${o.slug}`)}>
+                <span class="data">{o.code}</span>
+                <span class="o-name">{o.title}</span>
+                <Icon name="arrow" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CallCta lang={lang} title={sc(d.cta.headline)} description={d.cta.subheadline} primary={sc(d.cta.primaryCTA)} />
+</Base>
+
+<style>
+  .problem {
+    display: flex;
+    gap: 0.8rem;
+    align-items: baseline;
+    margin: 0.5rem 0 0;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    background: var(--panel);
+    color: var(--text-2);
+    font-style: italic;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .specs {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(2rem, 5vw, 5rem);
+    border-top: 1px solid var(--rule-strong);
+  }
+  .specs li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .specs :global(.spec-icon) {
+    width: 34px;
+    height: 34px;
+    color: var(--amber);
+  }
+  .specs h3 {
+    font-size: 1.4rem;
+    font-stretch: 80%;
+    margin-bottom: 0.45rem;
+  }
+  .specs p {
+    color: var(--text-2);
+  }
+  .specs .hl {
+    margin-top: 0.6rem;
+    color: var(--green);
+    font-weight: 650;
+    font-size: 0.95rem;
+  }
+  .phases-sec {
+    background: var(--panel);
+    border-block: 1px solid var(--rule);
+  }
+  .phases {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    counter-reset: ph;
+  }
+  .phases li {
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+    padding: 1.4rem 1.4rem 1.4rem 0;
+    border-top: 6px solid var(--rule-strong);
+    margin-right: 1rem;
+  }
+  .phases li:first-child {
+    border-top-color: var(--amber);
+  }
+  .ph-step {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    color: var(--amber);
+  }
+  .phases h3 {
+    font-size: 1.45rem;
+    font-stretch: 80%;
+    line-height: 1.05;
+  }
+  .ph-desc {
+    color: var(--text-2);
+    font-size: 0.98rem;
+  }
+  .ph-dur {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    color: var(--text);
+  }
+  .ph-dur :global(svg) {
+    width: 16px;
+    height: 16px;
+    color: var(--text-3);
+  }
+  .case {
+    background: var(--panel);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+  }
+  .case-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.2rem clamp(1.25rem, 3vw, 2rem);
+    border-bottom: 1px solid var(--rule);
+  }
+  .case-co {
+    font-size: 1.6rem;
+    font-weight: 800;
+    font-stretch: 75%;
+  }
+  .case-head .data {
+    color: var(--text-3);
+  }
+  .case-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    padding: clamp(1.25rem, 3vw, 2rem);
+  }
+  .case-cols h3 {
+    color: var(--amber);
+    margin-bottom: 0.6rem;
+  }
+  .case-cols p {
+    color: var(--text-2);
+  }
+  .case-metrics {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--rule);
+    background: #111412;
+  }
+  .case-metrics li {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1.2rem clamp(1.25rem, 3vw, 2rem);
+    border-right: 1px solid var(--rule);
+  }
+  .case-metrics li:last-child {
+    border-right: 0;
+  }
+  .readout {
+    display: flex;
+    align-items: baseline;
+    gap: 0.2rem;
+    font-size: clamp(2.2rem, 3.6vw, 3rem);
+    font-weight: 850;
+    font-stretch: 68%;
+    line-height: 1;
+    color: var(--green);
+    font-variant-numeric: tabular-nums;
+  }
+  .unit {
+    color: var(--green);
+    font-weight: 800;
+    font-stretch: 70%;
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+  .m-lbl {
+    color: var(--text-2);
+    font-size: 0.92rem;
+  }
+  .case-quote {
+    margin: 0;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border-top: 1px solid var(--rule);
+  }
+  .case-quote blockquote {
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
+    font-weight: 600;
+    font-stretch: 88%;
+    line-height: 1.35;
+    max-width: 60ch;
+  }
+  .case-quote figcaption {
+    color: var(--text-2);
+  }
+  .tiers {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+    align-items: stretch;
+  }
+  .tier {
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto;
+    gap: 1rem;
+    padding: 0 1.5rem 1.6rem;
+    background: #f6f7f3;
+    border: 1px solid var(--paper-rule);
+    box-shadow: 0 18px 36px -24px rgb(20 23 21 / 0.45);
+  }
+  .t-head {
+    display: flex;
+    justify-content: space-between;
+    margin-inline: -1.5rem;
+    padding: 0.8rem 1.5rem;
+    border-bottom: 1.5px solid var(--paper-ink);
+    color: var(--paper-ink);
+  }
+  .pop .t-head {
+    background: var(--amber);
+    color: var(--amber-ink);
+  }
+  .t-badge {
+    font-weight: 700;
+  }
+  .t-price {
+    font-family: var(--font-mono);
+    font-size: clamp(1.7rem, 2.6vw, 2.2rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    margin-top: 0.4rem;
+  }
+  .t-price span {
+    font-size: 0.9rem;
+    color: var(--paper-ink-2);
+    letter-spacing: 0;
+  }
+  .t-desc {
+    color: var(--paper-ink-2);
+    font-size: 0.97rem;
+  }
+  .t-feats {
+    align-content: start;
+    list-style: none;
+    display: grid;
+    gap: 0.5rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--paper-rule);
+    font-size: 0.96rem;
+  }
+  .t-feats li {
+    display: flex;
+    gap: 0.55rem;
+    align-items: flex-start;
+  }
+  .t-feats :global(svg) {
+    width: 17px;
+    height: 17px;
+    flex: none;
+    margin-top: 3px;
+    stroke-width: 2.2;
+    color: #1d6b43;
+  }
+  .t-feats .off {
+    color: #6d746f;
+    text-decoration: line-through;
+    text-decoration-color: #a3aaa4;
+  }
+  .t-feats .off :global(svg) {
+    color: #8b928c;
+  }
+  .guar {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    margin-top: 2rem;
+    font-weight: 650;
+  }
+  .guar :global(svg) {
+    width: 22px;
+    height: 22px;
+    color: #1d6b43;
+  }
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+  .faq-grid .section-head {
+    justify-items: start;
+  }
+  .help {
+    color: var(--text-2);
+  }
+  .others-sec {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    border-top: 1px solid var(--rule);
+  }
+  .others {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--rule-strong);
+  }
+  .others a {
+    display: grid;
+    gap: 0.4rem;
+    padding: 1.1rem 1.1rem 1.3rem 0;
+    text-decoration: none;
+    border-right: 1px solid var(--rule);
+    margin-right: 1rem;
+    height: 100%;
+  }
+  .others a {
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .others .data {
+    color: var(--text-3);
+  }
+  .o-name {
+    font-weight: 750;
+    font-stretch: 82%;
+    font-size: 1.1rem;
+    line-height: 1.15;
+  }
+  .others :global(svg) {
+    width: 18px;
+    height: 18px;
+    color: var(--amber);
+    transition: transform 0.25s var(--ease-out);
+  }
+  .others a:hover :global(svg) {
+    transform: translateX(4px);
+  }
+  @media (max-width: 1000px) {
+    .phases,
+    .case-metrics {
+      grid-template-columns: 1fr 1fr;
+    }
+    .tiers {
+      grid-template-columns: 1fr;
+      max-width: 560px;
+    }
+    .case-cols {
+      grid-template-columns: 1fr;
+    }
+    .faq-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 700px) {
+    .specs {
+      grid-template-columns: 1fr;
+    }
+    .phases {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

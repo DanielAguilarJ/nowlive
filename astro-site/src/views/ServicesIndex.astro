@@ -1,0 +1,171 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import Plans from '../components/home/Plans.astro';
+import Process from '../components/home/Process.astro';
+import CallCta from '../components/CallCta.astro';
+import { href, type Lang } from '../data/site';
+import { serviceCards, serviceDetail, serviceQuote, t } from '../data/content';
+import { u } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  path: string;
+}
+const { lang, path } = Astro.props;
+const s = u(lang);
+const ts = t(lang).services;
+const es = lang === 'es';
+const rows = serviceCards(lang).map((c) => {
+  const d = serviceDetail(lang, c.slug);
+  return { ...c, sub: d.hero.subheadline as string, from: d.pricing.tiers[0].price as string, quote: serviceQuote(lang, c.slug) };
+});
+---
+
+<Base
+  lang={lang}
+  title={es ? 'Servicios de marketing digital' : 'Digital marketing services'}
+  description={ts.description}
+  path={path}
+>
+  <PageHead lang={lang} title={ts.title} lead={ts.description} crumbs={[{ label: s.nav.services }]} code={es ? '6 estaciones' : '6 stations'} />
+
+  <section class="section rows-sec" aria-label={s.nav.services}>
+    <div class="wrap">
+      <ol class="rows">
+        {
+          rows.map((r) => (
+            <li>
+              <a class="row" href={href(lang, `/services/${r.slug}`)}>
+                <span class="code data">
+                  <span class="lamp" data-state="green" />
+                  {r.code}
+                </span>
+                <span class="main">
+                  <span class="name">{r.title}</span>
+                  <span class="sub">{r.sub}</span>
+                  <span class="feats data">{r.features.join(' · ')}</span>
+                </span>
+                <span class="side">
+                  {r.quote && (
+                    <span class="q">
+                      “{r.quote.text}”<span class="qa">{r.quote.author}</span>
+                    </span>
+                  )}
+                  <span class="from data">
+                    {es ? 'Desde' : 'From'} <b>{r.from}</b>
+                  </span>
+                </span>
+                <Icon name="arrow" class="go" />
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <Plans lang={lang} />
+  <Process lang={lang} />
+  <CallCta lang={lang} />
+</Base>
+
+<style>
+  .rows-sec {
+    padding-top: clamp(2rem, 4vw, 3rem);
+  }
+  .rows {
+    list-style: none;
+    border-top: 1px solid var(--rule-strong);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 120px 1.5fr 1fr 40px;
+    gap: 1.5rem clamp(1.5rem, 3vw, 3rem);
+    align-items: start;
+    padding-block: clamp(1.5rem, 3vw, 2.25rem);
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    color: var(--text);
+    transition: background-color 0.25s;
+  }
+  .row:hover {
+    color: var(--text);
+    background: linear-gradient(90deg, var(--panel), transparent 80%);
+  }
+  .code {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    color: var(--amber);
+    padding-top: 0.6rem;
+  }
+  .main {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .name {
+    font-size: clamp(1.8rem, 3.4vw, 3rem);
+    font-weight: 800;
+    font-stretch: 70%;
+    line-height: 0.95;
+  }
+  .sub {
+    color: var(--text-2);
+    max-width: 60ch;
+  }
+  .feats {
+    color: var(--text-3);
+    text-transform: none;
+  }
+  .side {
+    display: grid;
+    gap: 1rem;
+    padding-top: 0.4rem;
+  }
+  .q {
+    display: grid;
+    gap: 0.4rem;
+    font-style: italic;
+    color: var(--text);
+  }
+  .qa {
+    font-style: normal;
+    font-size: 0.9rem;
+    color: var(--text-3);
+  }
+  .from {
+    color: var(--text-3);
+  }
+  .from b {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .row :global(.go) {
+    width: 28px;
+    height: 28px;
+    margin-top: 0.7rem;
+    color: var(--amber);
+    transition: transform 0.3s var(--ease-out);
+  }
+  .row:hover :global(.go) {
+    transform: translateX(6px);
+  }
+  @media (max-width: 900px) {
+    .row {
+      grid-template-columns: 1fr 32px;
+    }
+    .code {
+      grid-column: 1 / -1;
+      padding: 0;
+    }
+    .side {
+      grid-column: 1;
+    }
+    .row :global(.go) {
+      grid-row: 2;
+      grid-column: 2;
+    }
+  }
+</style>
