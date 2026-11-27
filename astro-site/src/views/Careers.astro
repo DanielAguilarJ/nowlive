@@ -1,0 +1,198 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import { site, type Lang } from '../data/site';
+import { careers } from '../data/content';
+
+interface Props {
+  lang: Lang;
+  path: string;
+}
+const { lang, path } = Astro.props;
+const es = lang === 'es';
+const c = careers(lang);
+const perkIcons = ['pin', 'doc', 'shield', 'local', 'bolt', 'support'];
+const mail = (subject: string) => `mailto:${site.email}?subject=${encodeURIComponent(subject)}`;
+---
+
+<Base lang={lang} title={es ? 'Trabaja con nosotros' : 'Careers'} description={c.subheadline} path={path}>
+  <PageHead lang={lang} title={c.headline} lead={c.subheadline} crumbs={[{ label: es ? 'Trabaja con nosotros' : 'Careers' }]} />
+
+  <section class="section" aria-labelledby="perks-title">
+    <div class="wrap">
+      <h2 id="perks-title" class="display-2">{c.perksTitle}</h2>
+      <ul class="perks">
+        {
+          c.perks.map((p: { title: string; desc: string }, i: number) => (
+            <li>
+              <Icon name={perkIcons[i % perkIcons.length]} class="p-icon" />
+              <h3>{p.title}</h3>
+              <p>{p.desc}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section roles-sec" aria-labelledby="roles-title">
+    <div class="wrap">
+      <h2 id="roles-title" class="display-2">{c.openRolesTitle}</h2>
+      <ul class="roles">
+        {
+          c.openRoles.map((r: { title: string; department: string; location: string; type: string; description: string }) => (
+            <li>
+              <div>
+                <h3>{r.title}</h3>
+                <p class="r-meta data">
+                  {r.department} · {r.location} · {r.type}
+                </p>
+                <p class="r-desc">{r.description}</p>
+              </div>
+              <a class="btn btn--ghost" href={mail(`${es ? 'Vacante' : 'Role'}: ${r.title}`)}>
+                {String(c.applyLabel).replace(/\s*→\s*$/, '')}
+                <Icon name="arrow" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="nomatch">
+        <div>
+          <h3>{c.noMatchTitle}</h3>
+          <p>{c.noMatchDesc}</p>
+        </div>
+        <a class="btn" href={mail(es ? 'Candidatura espontánea' : 'Open application')}>{c.noMatchCTA}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="hire-title">
+    <div class="wrap">
+      <h2 id="hire-title" class="display-2">{c.processTitle}</h2>
+      <ol class="hire">
+        {
+          c.processSteps.map((s: { step: string; title: string; desc: string }) => (
+            <li>
+              <p class="data">{s.step}</p>
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .perks {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 2rem;
+    border-top: 1px solid var(--rule-strong);
+  }
+  .perks li {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding: 1.6rem 1.5rem 1.6rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .perks :global(.p-icon) {
+    width: 28px;
+    height: 28px;
+    color: var(--amber);
+  }
+  .perks h3,
+  .hire h3,
+  .nomatch h3 {
+    font-size: 1.4rem;
+    font-stretch: 80%;
+  }
+  .perks p,
+  .hire p:last-child,
+  .nomatch p {
+    color: var(--text-2);
+  }
+  .roles-sec {
+    background: var(--panel);
+    border-block: 1px solid var(--rule);
+  }
+  .roles {
+    list-style: none;
+    margin-top: 2rem;
+    border-top: 1px solid var(--rule-strong);
+  }
+  .roles li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .roles h3 {
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  }
+  .r-meta {
+    color: var(--amber);
+    margin-block: 0.5rem;
+  }
+  .r-desc {
+    color: var(--text-2);
+    max-width: 70ch;
+  }
+  .roles .btn {
+    flex: none;
+  }
+  .nomatch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2.5rem;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    border: 1px solid var(--amber);
+    border-radius: var(--radius);
+  }
+  .nomatch .btn {
+    flex: none;
+  }
+  .hire {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 2rem;
+  }
+  .hire li {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding: 1.4rem 1.4rem 0 0;
+    border-top: 6px solid var(--rule-strong);
+    margin-right: 1rem;
+  }
+  .hire .data {
+    color: var(--amber);
+  }
+  @media (max-width: 900px) {
+    .perks,
+    .hire {
+      grid-template-columns: 1fr 1fr;
+    }
+    .roles li,
+    .nomatch {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  @media (max-width: 560px) {
+    .perks,
+    .hire {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

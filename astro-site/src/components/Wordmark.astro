@@ -1,0 +1,41 @@
+---
+// Wordmark: an andon light tower (red stop, amber call, green running) beside the name.
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<span class:list={['wordmark', className]}>
+  <svg class="tower" viewBox="0 0 16 30" aria-hidden="true">
+    <rect x="5" y="0" width="6" height="2" rx="1" fill="currentColor" opacity="0.7"></rect>
+    <rect x="3" y="2.5" width="10" height="6.5" rx="1.2" fill="var(--red)"></rect>
+    <rect x="3" y="10" width="10" height="6.5" rx="1.2" fill="var(--amber)"></rect>
+    <rect x="3" y="17.5" width="10" height="6.5" rx="1.2" fill="var(--green)"></rect>
+    <rect x="6.5" y="24.5" width="3" height="3" fill="currentColor" opacity="0.7"></rect>
+    <rect x="2" y="27.5" width="12" height="2.5" rx="0.6" fill="currentColor" opacity="0.7"></rect>
+  </svg>
+  <span class="name"><b>CREAMOS</b>TECH</span>
+</span>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    line-height: 1;
+  }
+  .tower {
+    width: 14px;
+    height: 27px;
+  }
+  .name {
+    font-size: 1.35rem;
+    font-stretch: 68%;
+    font-weight: 450;
+    letter-spacing: 0.01em;
+  }
+  .name b {
+    font-weight: 850;
+  }
+</style>

@@ -1,0 +1,25 @@
+{
+  "name": "creamostech-astro",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev --port 4321 --host 127.0.0.1",
+    "build": "astro build",
+    "preview": "astro preview --port 4322 --host 127.0.0.1",
+    "extract": "node scripts/extract-content.mjs",
+    "extract:icons": "node scripts/extract-icons.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.6",
+    "@fontsource-variable/archivo": "^5.3.0",
+    "@fontsource-variable/martian-mono": "^5.3.0",
+    "astro": "^7.4.13",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@types/three": "^0.187.0",
+    "typescript": "^6.0.3"
+  }
+}

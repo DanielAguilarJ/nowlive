@@ -1,0 +1,131 @@
+{
+ "PLANS": {
+  "es": [
+   {
+    "id": "starter",
+    "name": "Acelerador",
+    "tagline": "Para emprendedores listos para facturar más rápido",
+    "oldPrice": "$24,900 MXN",
+    "price": "$14,900 MXN",
+    "perMonth": "pago único · entrega en 14 días",
+    "cta": "Quiero vender ya",
+    "features": [
+     "Landing page de alta conversión (lista en 14 días)",
+     "Copywriting persuasivo orientado a venta",
+     "Integración WhatsApp + Pixel Meta + GA4",
+     "Embudo de captura con automatización por email",
+     "Auditoría SEO técnica + 10 keywords ganadoras",
+     "Setup de campaña Meta/Google con creatividades"
+    ],
+    "results": "Resultado típico: 3x leads en 30 días"
+   },
+   {
+    "id": "growth",
+    "name": "Vendedor 24/7",
+    "tagline": "Sistema completo de ventas que trabaja mientras duermes",
+    "oldPrice": "$59,900 MXN",
+    "price": "$34,900 MXN",
+    "perMonth": "pago único · entrega en 21 días",
+    "cta": "Activar sistema vendedor",
+    "popular": true,
+    "badge": "MÁS VENDIDO",
+    "features": [
+     "Sitio web 100% optimizado para vender (5–8 páginas)",
+     "Embudo automatizado completo + lead scoring",
+     "Chatbot WhatsApp con respuestas inteligentes 24/7",
+     "Campañas Meta + Google + TikTok con presupuesto guiado",
+     "Producción de 30 piezas creativas (videos + reels)",
+     "CRM con seguimiento y recordatorios automáticos",
+     "Dashboard ejecutivo con ROI en tiempo real",
+     "Optimización mensual (3 meses incluidos)"
+    ],
+    "results": "Resultado típico: 5–8x ROI en 90 días"
+   },
+   {
+    "id": "scale",
+    "name": "Imperio",
+    "tagline": "Para escalar a 7 cifras al mes sin tope",
+    "oldPrice": "$129,900 MXN",
+    "price": "$79,900 MXN",
+    "perMonth": "pago único · entrega en 30 días",
+    "cta": "Quiero escalar a millones",
+    "features": [
+     "Ecosistema digital completo: web + app + funnels",
+     "Estrategia omnicanal: Meta, Google, TikTok, LinkedIn, YouTube",
+     "60 piezas creativas + 8 videos premium al mes",
+     "Equipo dedicado: estratega + media buyer + creativo + dev",
+     "SEO agresivo: 50 keywords + 12 blogs optimizados",
+     "Automatizaciones avanzadas con IA (Make + n8n)",
+     "A/B testing continuo y optimización semanal",
+     "Reuniones estratégicas semanales con tu CMO virtual",
+     "Garantía blindada: 10x ROI o seguimos sin cobrar"
+    ],
+    "results": "Resultado típico: 10–20x ROI sostenido"
+   }
+  ],
+  "en": [
+   {
+    "id": "starter",
+    "name": "Accelerator",
+    "tagline": "For founders ready to invoice faster",
+    "oldPrice": "$1,490 USD",
+    "price": "$890 USD",
+    "perMonth": "one-time · live in 14 days",
+    "cta": "I want to sell now",
+    "features": [
+     "High-conversion landing page (live in 14 days)",
+     "Persuasive sales-driven copywriting",
+     "WhatsApp + Meta Pixel + GA4 integration",
+     "Capture funnel with email automation",
+     "Technical SEO audit + 10 winning keywords",
+     "Meta/Google campaign setup with creatives"
+    ],
+    "results": "Typical result: 3x leads in 30 days"
+   },
+   {
+    "id": "growth",
+    "name": "24/7 Seller",
+    "tagline": "A complete sales system that works while you sleep",
+    "oldPrice": "$3,590 USD",
+    "price": "$2,090 USD",
+    "perMonth": "one-time · live in 21 days",
+    "cta": "Activate selling system",
+    "popular": true,
+    "badge": "BEST SELLER",
+    "features": [
+     "Full website built to sell (5–8 pages)",
+     "End-to-end automated funnel + lead scoring",
+     "AI WhatsApp chatbot with 24/7 responses",
+     "Meta + Google + TikTok ads with guided budget",
+     "30 creative assets per month (videos + reels)",
+     "CRM with automated follow-up and reminders",
+     "Executive dashboard with real-time ROI",
+     "Monthly optimization (3 months included)"
+    ],
+    "results": "Typical result: 5–8x ROI in 90 days"
+   },
+   {
+    "id": "scale",
+    "name": "Empire",
+    "tagline": "Scale to 7 figures/month with no ceiling",
+    "oldPrice": "$7,790 USD",
+    "price": "$4,790 USD",
+    "perMonth": "one-time · live in 30 days",
+    "cta": "Scale to millions",
+    "features": [
+     "Full digital ecosystem: web + app + funnels",
+     "Omnichannel: Meta, Google, TikTok, LinkedIn, YouTube",
+     "60 creative assets + 8 premium videos per month",
+     "Dedicated squad: strategist + media buyer + creative + dev",
+     "Aggressive SEO: 50 keywords + 12 optimized blogs",
+     "Advanced AI automations (Make + n8n)",
+     "Continuous A/B testing with weekly optimization",
+     "Weekly strategy sessions with your virtual CMO",
+     "Ironclad: 10x ROI or we work for free"
+    ],
+    "results": "Typical result: 10–20x sustained ROI"
+   }
+  ]
+ },
+ "SPOTS_TOTAL": 7
+}

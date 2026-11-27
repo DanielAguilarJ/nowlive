@@ -1,0 +1,294 @@
+---
+import Wordmark from './Wordmark.astro';
+import Icon from './Icon.astro';
+import { href, altPath, waLink, type Lang } from '../data/site';
+import { u } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  path: string;
+  alt?: string;
+}
+const { lang, path, alt } = Astro.props;
+const s = u(lang);
+const other: Lang = lang === 'es' ? 'en' : 'es';
+
+const items = [
+  { label: s.nav.services, to: href(lang, '/services') },
+  { label: s.nav.plans, to: href(lang, '/') + '#planes' },
+  { label: s.nav.cases, to: href(lang, '/casos-de-exito') },
+  { label: s.nav.process, to: href(lang, '/') + '#proceso' },
+  { label: s.nav.about, to: href(lang, '/about') },
+  { label: s.nav.blog, to: href(lang, '/blog') },
+  { label: s.nav.contact, to: href(lang, '/contact') },
+];
+const norm = (p: string) => p.replace(/\/+$/, '') || '/';
+const current = norm(path);
+const isCurrent = (to: string) => {
+  if (to.includes('#')) return false;
+  const t = norm(to);
+  return t === current || (t !== norm(href(lang, '/')) && current.startsWith(t + '/'));
+};
+---
+
+<header class="site-header">
+  <div class="bar wrap">
+    <a class="brand" href={href(lang, '/')} aria-label="CreamosTech — inicio"><Wordmark /></a>
+
+    <nav class="nav" aria-label={lang === 'es' ? 'Principal' : 'Main'}>
+      <ul>
+        {
+          items.map((it) => (
+            <li>
+              <a href={it.to} aria-current={isCurrent(it.to) ? 'page' : undefined}>
+                {it.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a class="lang" href={alt ?? altPath(path, other)} hreflang={other} lang={other} aria-label={s.langSwitchLabel}>
+        {other.toUpperCase()}
+      </a>
+      <a class="wa" href={waLink(s.whatsappHello)} target="_blank" rel="noopener" aria-label={s.whatsapp}>
+        <Icon name="whatsapp" />
+      </a>
+      <a class="btn audit" href={href(lang, '/contact') + '#auditoria'}>
+        <span class="lamp" data-state="amber" aria-hidden="true"></span>
+        {s.audit}
+      </a>
+      <button class="menu-btn" type="button" popovertarget="mobile-menu" aria-label={s.menu}>
+        <Icon name="menu" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="mobile-menu" popover class="mobile-menu">
+  <div class="mm-top wrap">
+    <Wordmark />
+    <button class="menu-btn" type="button" popovertarget="mobile-menu" popovertargetaction="hide" aria-label={s.close}>
+      <Icon name="x" />
+    </button>
+  </div>
+  <nav class="wrap" aria-label={lang === 'es' ? 'Menú móvil' : 'Mobile menu'}>
+    <ul>
+      {
+        items.map((it) => (
+          <li>
+            <a href={it.to} aria-current={isCurrent(it.to) ? 'page' : undefined}>
+              {it.label}
+              <Icon name="arrow" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mm-actions">
+      <a class="btn btn--block" href={href(lang, '/contact') + '#auditoria'}>{s.audit}</a>
+      <a class="btn btn--ghost btn--block" href={waLink(s.whatsappHello)} target="_blank" rel="noopener">
+        <Icon name="whatsapp" />
+        {s.heroWhatsapp}
+      </a>
+      <a class="mm-lang" href={alt ?? altPath(path, other)} hreflang={other} lang={other}>{s.langSwitch}</a>
+    </div>
+  </nav>
+</div>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-h);
+    background: var(--ground);
+    border-bottom: 1px solid var(--rule);
+    view-transition-name: site-header;
+  }
+  .bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .brand {
+    text-decoration: none;
+    color: var(--text);
+    margin-right: auto;
+  }
+  .brand:hover {
+    color: var(--text);
+  }
+  .nav ul {
+    list-style: none;
+    display: flex;
+    gap: 0.15rem;
+  }
+  .nav a {
+    display: block;
+    padding: 0.5rem 0.7rem;
+    font-weight: 600;
+    font-stretch: 88%;
+    font-size: 0.98rem;
+    color: var(--text-2);
+    text-decoration: none;
+    border-radius: var(--radius);
+    transition: color 0.2s;
+  }
+  .nav a:hover {
+    color: var(--text);
+  }
+  .nav a[aria-current='page'] {
+    color: var(--text);
+    box-shadow: inset 0 -2px 0 var(--amber);
+    border-radius: 0;
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .lang,
+  .wa,
+  .menu-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+    font: 600 0.72rem/1 var(--font-mono);
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  .lang:hover,
+  .wa:hover,
+  .menu-btn:hover {
+    border-color: var(--text-3);
+    background: var(--panel-2);
+    color: var(--text);
+  }
+  .wa :global(svg),
+  .menu-btn :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+  .audit {
+    min-height: 44px;
+    padding-inline: 1rem;
+    font-size: 0.95rem;
+  }
+  .audit .lamp {
+    background: var(--amber-ink);
+    width: 8px;
+    height: 8px;
+    box-shadow: none;
+  }
+  .menu-btn {
+    display: none;
+  }
+
+  @media (max-width: 1120px) {
+    .nav {
+      display: none;
+    }
+    .menu-btn {
+      display: inline-grid;
+    }
+  }
+  @media (max-width: 560px) {
+    .lang,
+    .wa {
+      display: none;
+    }
+    .audit {
+      padding-inline: 0.8rem;
+      font-size: 0.9rem;
+    }
+    .audit .lamp {
+      display: none;
+    }
+  }
+  @media (max-width: 350px) {
+    .audit {
+      display: none;
+    }
+  }
+
+  .mobile-menu {
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--ground);
+    color: var(--text);
+    overflow-y: auto;
+  }
+  .mobile-menu::backdrop {
+    background: rgb(0 0 0 / 0.6);
+  }
+  .mm-top {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--rule);
+  }
+  .mobile-menu .menu-btn {
+    display: inline-grid;
+  }
+  .mobile-menu ul {
+    list-style: none;
+    margin-top: 1rem;
+  }
+  .mobile-menu li a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 2rem;
+    font-weight: 800;
+    font-stretch: 70%;
+    text-decoration: none;
+  }
+  .mobile-menu li a :global(svg) {
+    width: 22px;
+    height: 22px;
+    color: var(--text-3);
+  }
+  .mobile-menu li a[aria-current='page'] {
+    color: var(--amber);
+  }
+  .mm-actions {
+    display: grid;
+    gap: 0.75rem;
+    margin-block: 2rem 3rem;
+  }
+  .mm-lang {
+    justify-self: start;
+    color: var(--text-2);
+    padding: 0.5rem 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .mobile-menu:popover-open {
+      animation: menu-in 0.35s var(--ease-out);
+    }
+  }
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+  }
+</style>

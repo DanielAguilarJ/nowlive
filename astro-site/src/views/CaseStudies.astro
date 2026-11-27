@@ -1,0 +1,139 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import Cases from '../components/home/Cases.astro';
+import CallCta from '../components/CallCta.astro';
+import { href, type Lang } from '../data/site';
+import { t } from '../data/content';
+
+interface Props {
+  lang: Lang;
+  path: string;
+}
+const { lang, path } = Astro.props;
+const es = lang === 'es';
+const c = t(lang).caseStudies;
+---
+
+<Base lang={lang} title={c.title} description={c.description} path={path}>
+  <PageHead lang={lang} title={c.title} lead={c.description} crumbs={[{ label: c.title }]}>
+    <dl class="hl">
+      {
+        c.highlights.map((h: { label: string; value: string }) => (
+          <div>
+            <dd>{h.value}</dd>
+            <dt>{h.label}</dt>
+          </div>
+        ))
+      }
+    </dl>
+  </PageHead>
+
+  <section class="section" aria-label={es ? 'Estrategias' : 'Strategies'}>
+    <div class="wrap">
+      <ol class="studies">
+        {
+          c.studies.map((st: { title: string; industry: string; service: string; summary: string; metrics: string[]; link: string }) => (
+            <li>
+              <div class="s-main">
+                <h2>{st.title}</h2>
+                <p class="data">
+                  {st.industry} · {st.service}
+                </p>
+                <p class="sum">{st.summary}</p>
+                <a class="link-arrow" href={href(lang, st.link)}>
+                  {es ? 'Ver el servicio' : 'See the service'}
+                  <Icon name="arrow" />
+                </a>
+              </div>
+              <ul class="metrics">
+                {st.metrics.map((m) => (
+                  <li>
+                    <span class="lamp" data-state="green" />
+                    {m}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <Cases lang={lang} heading={false} />
+  <CallCta lang={lang} />
+</Base>
+
+<style>
+  .hl {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 3rem;
+    margin: 0.5rem 0 0;
+  }
+  .hl div {
+    display: grid;
+  }
+  .hl dd {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 600;
+    color: var(--amber);
+  }
+  .hl dt {
+    color: var(--text-2);
+    font-size: 0.95rem;
+  }
+  .studies {
+    list-style: none;
+    border-top: 1px solid var(--rule-strong);
+  }
+  .studies > li {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 2rem clamp(2rem, 5vw, 5rem);
+    padding-block: clamp(1.75rem, 3.5vw, 2.75rem);
+    border-bottom: 1px solid var(--rule);
+  }
+  .s-main {
+    display: grid;
+    gap: 0.8rem;
+    justify-items: start;
+  }
+  .s-main .data {
+    color: var(--amber);
+  }
+  h2 {
+    font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+  }
+  .sum {
+    color: var(--text-2);
+    max-width: 60ch;
+  }
+  .metrics {
+    list-style: none;
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    padding: 1.2rem 1.4rem;
+    background: #111412;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+  }
+  .metrics li {
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+    font-weight: 700;
+    font-stretch: 85%;
+    font-size: 1.15rem;
+  }
+  @media (max-width: 860px) {
+    .studies > li {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

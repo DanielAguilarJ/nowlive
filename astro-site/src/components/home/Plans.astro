@@ -1,0 +1,339 @@
+---
+import Icon from '../Icon.astro';
+import { href, type Lang } from '../../data/site';
+import { plans } from '../../data/content';
+import { u } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const s = u(lang);
+const list = plans(lang);
+---
+
+<section class="section on-paper plans" id="planes" aria-labelledby="plans-title">
+  <div class="hazard edge" aria-hidden="true"></div>
+  <div class="wrap">
+    <header class="head">
+      <h2 id="plans-title" class="display-2">{s.plansTitle}</h2>
+      <div class="head-side">
+        <p class="lead">{s.plansLead}</p>
+        <p class="spots"><span class="lamp" data-state="red" aria-hidden="true"></span>{s.plansSpots}</p>
+      </div>
+    </header>
+
+    <ol class="orders">
+      {
+        list.map((p, i) => (
+          <li class:list={['order', { popular: p.popular }]}>
+            <div class="sheet">
+              <div class="sheet-head data">
+                <span>{s.plansOrder}</span>
+                <span>OT-0{i + 1}</span>
+              </div>
+              <div class="sheet-body">
+                <h3 class="display-3">{p.name}</h3>
+                <p class="tagline">{p.tagline}</p>
+                <div class="price">
+                  {p.oldPrice && (
+                    <p class="old">
+                      <s>{p.oldPrice}</s>
+                      <span class="off">{s.plansDiscount}</span>
+                    </p>
+                  )}
+                  <p class="now">{p.price}</p>
+                  {p.perMonth && <p class="note">{p.perMonth}</p>}
+                </div>
+                {p.popular && p.badge && <p class="best">{p.badge}</p>}
+                <p class="incl data">{s.plansIncludes}</p>
+                <ul class="checks">
+                  {p.features.map((f) => (
+                    <li>
+                      <span class="box" aria-hidden="true">
+                        <Icon name="check" />
+                      </span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <p class="stamp">{p.results}</p>
+                <a class:list={['btn', 'btn--block', p.popular ? '' : 'btn--ink']} href={`${href(lang, '/contact')}?plan=${encodeURIComponent(p.name)}#auditoria`}>
+                  {p.cta}
+                  <Icon name="arrow" />
+                </a>
+                <p class="foot">{s.plansFooter}</p>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+
+    <aside class="guarantee">
+      <Icon name="shield" />
+      <div>
+        <h3>{s.guaranteeTitle}</h3>
+        <p>{s.guaranteeBody}</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .plans {
+    background:
+      linear-gradient(var(--paper-2) 1px, transparent 1px) 0 0 / 100% 32px,
+      var(--paper);
+  }
+  .edge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  .head {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 2rem 4rem;
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .head-side {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+  .spots {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.85rem;
+    border: 1.5px solid #b3261e;
+    border-radius: var(--radius);
+    color: #8f1d17;
+    font-weight: 700;
+    font-stretch: 88%;
+  }
+  .orders {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2vw, 1.75rem);
+    align-items: stretch;
+  }
+  .order {
+    display: flex;
+  }
+  .order.popular {
+    margin-top: -1.25rem;
+  }
+  .sheet {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #f6f7f3;
+    color: var(--paper-ink);
+    border: 1px solid var(--paper-rule);
+    box-shadow: 0 1px 0 #fff inset, 0 18px 36px -22px rgb(20 23 21 / 0.45);
+    /* tractor-feed holes of continuous printer forms */
+    -webkit-mask:
+      radial-gradient(circle 4px at 12px 50%, #0000 98%, #000) 0 0 / 100% 22px repeat-y,
+      linear-gradient(#000 0 0) 24px 0 / calc(100% - 48px) 100% no-repeat,
+      radial-gradient(circle 4px at calc(100% - 12px) 50%, #0000 98%, #000) 0 0 / 100% 22px repeat-y;
+    mask:
+      radial-gradient(circle 4px at 12px 50%, #0000 98%, #000) 0 0 / 100% 22px repeat-y,
+      linear-gradient(#000 0 0) 24px 0 / calc(100% - 48px) 100% no-repeat,
+      radial-gradient(circle 4px at calc(100% - 12px) 50%, #0000 98%, #000) 0 0 / 100% 22px repeat-y;
+  }
+  .sheet::before,
+  .sheet::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    border-left: 1px dashed var(--paper-rule);
+  }
+  .sheet::before {
+    left: 24px;
+  }
+  .sheet::after {
+    right: 24px;
+  }
+  .sheet-head {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 24px;
+    padding: 0.8rem 1.1rem;
+    border-bottom: 1.5px solid var(--paper-ink);
+    color: var(--paper-ink-2);
+  }
+  .popular .sheet-head {
+    background: var(--amber);
+    color: var(--amber-ink);
+    border-bottom-color: var(--amber-ink);
+  }
+  .sheet-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.4rem calc(24px + 1.25rem) 1.6rem;
+  }
+  .tagline {
+    color: var(--paper-ink-2);
+    font-size: 0.98rem;
+    min-height: 2.9em;
+  }
+  .price {
+    position: relative;
+    padding-block: 0.9rem;
+    border-block: 1px solid var(--paper-rule);
+  }
+  .old {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--paper-ink-2);
+    font-size: 0.95rem;
+  }
+  .off {
+    padding: 0.1rem 0.4rem;
+    background: var(--paper-ink);
+    color: var(--paper);
+    font: 600 0.72rem/1.3 var(--font-mono);
+  }
+  .now {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 2.6vw, 2.3rem);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-top: 0.2rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .note {
+    font-size: 0.88rem;
+    color: var(--paper-ink-2);
+  }
+  .incl {
+    color: var(--paper-ink-2);
+  }
+  .checks {
+    flex: 1;
+    align-content: start;
+    list-style: none;
+    display: grid;
+    gap: 0.55rem;
+    font-size: 0.97rem;
+    line-height: 1.4;
+  }
+  .checks li {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+  }
+  .box {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    border: 1.5px solid var(--paper-ink);
+  }
+  .box :global(svg) {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2.6;
+  }
+  .stamp {
+    align-self: flex-start;
+    margin-block: 0.4rem 0.2rem;
+    padding: 0.45rem 0.7rem;
+    border: 2px solid #1d6b43;
+    color: #155636;
+    font-weight: 800;
+    font-stretch: 78%;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+    rotate: -2deg;
+  }
+  .foot {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--paper-ink-2);
+  }
+  .best {
+    align-self: flex-start;
+    padding: 0.35rem 0.6rem;
+    border: 2.5px solid #b3261e;
+    color: #b3261e;
+    font-weight: 850;
+    font-stretch: 72%;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    rotate: -3deg;
+    margin-block: -0.2rem 0.1rem;
+  }
+  .guarantee {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    background: var(--paper-ink);
+    color: var(--paper);
+    border-radius: var(--radius);
+  }
+  .guarantee :global(svg) {
+    width: 44px;
+    height: 44px;
+    flex: none;
+    color: var(--green);
+  }
+  .guarantee h3 {
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    margin-bottom: 0.5rem;
+  }
+  .guarantee p {
+    color: #c3c9c3;
+    max-width: 70ch;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .sheet-body {
+        animation: print linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 35%;
+      }
+    }
+  }
+  @keyframes print {
+    from {
+      clip-path: inset(0 0 72% 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  @media (max-width: 1000px) {
+    .orders {
+      grid-template-columns: 1fr;
+      max-width: 560px;
+      margin-inline: auto;
+    }
+    .order.popular {
+      margin-top: 0;
+    }
+    .head {
+      grid-template-columns: 1fr;
+    }
+    .tagline {
+      min-height: 0;
+    }
+  }
+</style>

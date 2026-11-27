@@ -1,0 +1,100 @@
+{
+ "categories": [
+  "all",
+  "web",
+  "marketing",
+  "brand"
+ ],
+ "projects": [
+  {
+   "id": 1,
+   "title": "TechFlow SaaS Platform",
+   "category": "Web",
+   "client": "TechFlow Inc.",
+   "services": [
+    "Web Design",
+    "Development",
+    "UX/UI"
+   ],
+   "result": "156% increase in conversions",
+   "image": "/images/portfolio/techflow_saas.png",
+   "description": "Complete redesign of a B2B SaaS platform focusing on user experience and conversion optimization.",
+   "featured": true
+  },
+  {
+   "id": 2,
+   "title": "VitaHealth Patient Portal",
+   "category": "Marketing",
+   "client": "VitaHealth Systems",
+   "services": [
+    "Growth Strategy",
+    "Content Marketing",
+    "Lead Gen"
+   ],
+   "result": "40% reduction in admin time",
+   "image": "/images/portfolio/health_portal.png",
+   "description": "Comprehensive digital marketing campaign for a healthcare portal, driving patient acquisition and engagement.",
+   "featured": true
+  },
+  {
+   "id": 3,
+   "title": "FinTrack Invest App",
+   "category": "Web",
+   "client": "FinTrack Global",
+   "services": [
+    "React Development",
+    "Security",
+    "Real-time Data"
+   ],
+   "result": "100K active daily users",
+   "image": "/images/portfolio/finance_app.png",
+   "description": "High-performance investment tracking dashboard with real-time market data visualization.",
+   "featured": false
+  },
+  {
+   "id": 4,
+   "title": "Luxe Real Estate Portal",
+   "category": "Brand",
+   "client": "Luxe Properties",
+   "services": [
+    "Brand Strategy",
+    "Visual Identity",
+    "Brand Guidelines"
+   ],
+   "result": "3x organic traffic growth",
+   "image": "/images/portfolio/real_estate.png",
+   "description": "Premium brand identity and visual language for a luxury real estate company targeting high-net-worth clients.",
+   "featured": false
+  },
+  {
+   "id": 5,
+   "title": "Aurum & Co. E-commerce",
+   "category": "Marketing",
+   "client": "Aurum & Co.",
+   "services": [
+    "E-commerce Strategy",
+    "Paid Ads",
+    "Email Automation"
+   ],
+   "result": "$2M revenue in first year",
+   "image": "/images/portfolio/fashion_store.png",
+   "description": "Full-funnel marketing strategy for a luxury fashion brand, from awareness campaigns to retention flows.",
+   "featured": false
+  },
+  {
+   "id": 6,
+   "title": "SkillStream Learning",
+   "category": "Brand",
+   "client": "SkillStream EdTech",
+   "services": [
+    "Brand Naming",
+    "Logo Design",
+    "Brand Voice"
+   ],
+   "result": "45% higher course completion",
+   "image": "/images/portfolio/education_platform.png",
+   "description": "Complete brand identity overhaul for an edtech startup, positioning them as the go-to platform for professional upskilling.",
+   "featured": false
+  }
+ ]
+}

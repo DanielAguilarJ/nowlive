@@ -1,0 +1,273 @@
+---
+import Icon from '../Icon.astro';
+import { href, type Lang } from '../../data/site';
+import { portfolio, t } from '../../data/content';
+import { u } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  limit?: number;
+  heading?: boolean;
+}
+const { lang, limit = 6, heading = true } = Astro.props;
+const s = u(lang);
+const tp = t(lang).portfolio;
+const items = portfolio(lang).slice(0, limit);
+const filters = [
+  { id: 'all', label: s.casesAll },
+  { id: 'web', label: s.casesCategories.web },
+  { id: 'marketing', label: s.casesCategories.marketing },
+  { id: 'brand', label: s.casesCategories.brand },
+];
+---
+
+<section class="section cases" id="casos" aria-labelledby="cases-title">
+  <div class="wrap">
+    <header class="head">
+      <div class="section-head">
+        {heading ? <h2 id="cases-title" class="display-2">{tp.title}</h2> : <h2 id="cases-title" class="sr-only">{tp.title}</h2>}
+        {heading && <p class="lead">{tp.description}</p>}
+      </div>
+      <div class="filters" role="group" aria-label={lang === 'es' ? 'Filtrar por tipo' : 'Filter by type'} data-filters>
+        {
+          filters.map((f, i) => (
+            <button type="button" data-filter={f.id} aria-pressed={i === 0 ? 'true' : 'false'}>
+              {f.label}
+            </button>
+          ))
+        }
+      </div>
+    </header>
+
+    <ul class="lots" data-lots aria-live="polite">
+      {
+        items.map((p, i) => (
+          <li class="lot" data-cat={p.category} data-big={i === 0 ? '' : undefined}>
+            <figure>
+              <div class="bezel">
+                <p class="bezel-head data">
+                  <span>
+                    {s.casesClient}: {p.client}
+                  </span>
+                  <span class="lamp" data-state="green" aria-hidden="true" />
+                </p>
+                <img src={p.image} alt={p.title} width="640" height="640" loading="lazy" decoding="async" />
+              </div>
+              <figcaption>
+                <h3>{p.title}</h3>
+                <p class="result">{p.result}</p>
+                <p class="desc">{p.description}</p>
+                <ul class="tags data">
+                  {p.services.map((sv) => (
+                    <li>{sv}</li>
+                  ))}
+                </ul>
+              </figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a class="link-arrow more" href={href(lang, '/casos-de-exito')}>
+      {s.casesMore}
+      <Icon name="arrow" />
+    </a>
+  </div>
+</section>
+
+<style>
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1.5rem 3rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .head .section-head {
+    margin: 0;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .filters button {
+    min-height: 44px;
+    padding: 0 1rem;
+    background: transparent;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    color: var(--text-2);
+    font: inherit;
+    font-weight: 650;
+    font-stretch: 88%;
+    cursor: pointer;
+  }
+  .filters button:hover {
+    color: var(--text);
+    border-color: var(--text-3);
+  }
+  .filters button[aria-pressed='true'] {
+    background: var(--text);
+    border-color: var(--text);
+    color: var(--ground);
+  }
+  .lots {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.25rem, 2.2vw, 2rem);
+  }
+  .lot[hidden] {
+    display: none;
+  }
+  .lot[data-big] {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  figure {
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .bezel {
+    background: #0b0d0c;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    padding: 0 6px 6px;
+    overflow: hidden;
+  }
+  .bezel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.55rem 0.35rem;
+    color: var(--text-3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .bezel img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 1px;
+    filter: saturate(0.85) contrast(1.02);
+    transition: filter 0.4s, transform 0.6s var(--ease-out);
+  }
+  .lot:hover img {
+    filter: none;
+    transform: scale(1.025);
+  }
+  .lot[data-big] figure {
+    height: 100%;
+    grid-template-rows: 1fr auto;
+  }
+  .lot[data-big] .bezel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .lot[data-big] .bezel img {
+    flex: 1;
+    min-height: 320px;
+    aspect-ratio: auto;
+  }
+  figcaption {
+    display: grid;
+    gap: 0.4rem;
+  }
+  h3 {
+    font-size: 1.3rem;
+    font-stretch: 80%;
+  }
+  .lot[data-big] h3 {
+    font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  }
+  .result {
+    color: var(--green);
+    font-weight: 750;
+    font-stretch: 88%;
+  }
+  .desc {
+    color: var(--text-2);
+    font-size: 0.95rem;
+  }
+  .lot:not([data-big]) .desc {
+    display: none;
+  }
+  .tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.3rem;
+  }
+  .tags li {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--rule-strong);
+    color: var(--text-2);
+  }
+  .more {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+  @media (max-width: 1000px) {
+    .lots {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .lot[data-big] {
+      grid-row: auto;
+    }
+  }
+  @media (max-width: 560px) {
+    .lots {
+      grid-template-columns: 1fr;
+    }
+    .lot[data-big] {
+      grid-column: auto;
+      grid-row: auto;
+    }
+    .lot .desc {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-filters]').forEach((group) => {
+    const lots = [...group.closest('section')!.querySelectorAll<HTMLElement>('[data-lots] > li')];
+    const buttons = [...group.querySelectorAll<HTMLButtonElement>('button')];
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const apply = (f: string) => {
+      let first = true;
+      lots.forEach((li) => {
+        const show = f === 'all' || li.dataset.cat === f;
+        li.hidden = !show;
+        li.toggleAttribute('data-big', show && first);
+        if (show) first = false;
+      });
+    };
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        const f = b.dataset.filter!;
+        buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        const doc = document as Document & { startViewTransition?: (cb: () => void) => { finished: Promise<void> } };
+        if (!doc.startViewTransition || reduce) return apply(f);
+        // each lot slides to its new slot instead of the grid jumping
+        lots.forEach((li, i) => {
+          li.style.setProperty('view-transition-name', `lot-${i}`);
+          li.style.setProperty('view-transition-class', 'lot');
+        });
+        doc.startViewTransition(() => apply(f)).finished.finally(() =>
+          lots.forEach((li) => {
+            li.style.removeProperty('view-transition-name');
+            li.style.removeProperty('view-transition-class');
+          }),
+        );
+      }),
+    );
+  });
+</script>

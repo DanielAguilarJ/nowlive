@@ -1,0 +1,67 @@
+---
+// One route table for both languages. Spanish at the root, English under /en.
+// Paths match the old Next.js site so existing links and search results keep working.
+import Home from '../views/Home.astro';
+import ServicesIndex from '../views/ServicesIndex.astro';
+import ServiceDetail from '../views/ServiceDetail.astro';
+import About from '../views/About.astro';
+import Contact from '../views/Contact.astro';
+import BlogIndex from '../views/BlogIndex.astro';
+import BlogPost from '../views/BlogPost.astro';
+import FaqPage from '../views/FaqPage.astro';
+import CaseStudies from '../views/CaseStudies.astro';
+import TestimonialsPage from '../views/TestimonialsPage.astro';
+import Resources from '../views/Resources.astro';
+import Careers from '../views/Careers.astro';
+import Legal from '../views/Legal.astro';
+import { services, type Lang, type ServiceSlug } from '../data/site';
+import { articles } from '../data/content';
+
+type View = { path: string; view: string; slug?: string; only?: Lang };
+
+export function getStaticPaths() {
+  const views: View[] = [
+    { path: '', view: 'home' },
+    { path: 'services', view: 'services' },
+    ...services.map((s) => ({ path: `services/${s.slug}`, view: 'service', slug: s.slug })),
+    { path: 'about', view: 'about' },
+    { path: 'contact', view: 'contact' },
+    { path: 'blog', view: 'blog' },
+    ...articles.map((a) => ({ path: `blog/${a.slug}`, view: 'post', slug: a.slug, only: 'es' as Lang })),
+    { path: 'faq', view: 'faq' },
+    { path: 'casos-de-exito', view: 'cases' },
+    { path: 'testimonios', view: 'testimonials' },
+    { path: 'recursos', view: 'resources' },
+    { path: 'careers', view: 'careers' },
+    { path: 'privacy', view: 'privacy' },
+    { path: 'terms', view: 'terms' },
+  ];
+  return (['es', 'en'] as Lang[]).flatMap((lang) =>
+    views
+      .filter((v) => !v.only || v.only === lang)
+      .map((v) => {
+        const route = [lang === 'en' ? 'en' : '', v.path].filter(Boolean).join('/') || undefined;
+        return { params: { route }, props: { lang, view: v.view, slug: v.slug } };
+      }),
+  );
+}
+
+const { lang, view, slug } = Astro.props as { lang: Lang; view: string; slug?: string };
+const route = Astro.params.route;
+const path = route ? `/${route}/` : '/';
+---
+
+{view === 'home' && <Home lang={lang} path={path} />}
+{view === 'services' && <ServicesIndex lang={lang} path={path} />}
+{view === 'service' && <ServiceDetail lang={lang} path={path} slug={slug as ServiceSlug} />}
+{view === 'about' && <About lang={lang} path={path} />}
+{view === 'contact' && <Contact lang={lang} path={path} />}
+{view === 'blog' && <BlogIndex lang={lang} path={path} />}
+{view === 'post' && <BlogPost lang={lang} path={path} slug={slug!} />}
+{view === 'faq' && <FaqPage lang={lang} path={path} />}
+{view === 'cases' && <CaseStudies lang={lang} path={path} />}
+{view === 'testimonials' && <TestimonialsPage lang={lang} path={path} />}
+{view === 'resources' && <Resources lang={lang} path={path} />}
+{view === 'careers' && <Careers lang={lang} path={path} />}
+{view === 'privacy' && <Legal lang={lang} path={path} kind="privacy" />}
+{view === 'terms' && <Legal lang={lang} path={path} kind="terms" />}

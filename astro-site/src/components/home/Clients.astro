@@ -1,0 +1,89 @@
+---
+import { clients } from '../../data/content';
+import type { Lang } from '../../data/site';
+import { u } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const s = u(lang);
+const { logos, indicators } = clients(lang);
+---
+
+<section class="clients" aria-label={s.trustLine}>
+  <div class="wrap row">
+    <p class="cap">{s.trustLine}</p>
+    <ul class="marks">
+      {logos.map((n) => <li>{n}</li>)}
+    </ul>
+    <ul class="ind data">
+      {
+        indicators.map((x) => (
+          <li>
+            <span class="lamp" data-state="green" aria-hidden="true" />
+            {x}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .clients {
+    border-block: 1px solid var(--rule);
+    background: var(--panel);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem 3rem;
+    align-items: center;
+    padding-block: 1.6rem;
+  }
+  .cap {
+    font-weight: 700;
+    font-stretch: 80%;
+    color: var(--text-2);
+    max-width: 16ch;
+    line-height: 1.2;
+  }
+  .marks {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.8rem 2rem;
+    color: #c9cec8;
+    font-size: 1.15rem;
+    font-weight: 700;
+    font-stretch: 80%;
+    line-height: 1;
+  }
+  .ind {
+    grid-column: 1 / -1;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+    color: var(--text-2);
+  }
+  .ind li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  @media (max-width: 760px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+    .marks {
+      justify-content: flex-start;
+      font-size: 1.1rem;
+      gap: 0.8rem 1.4rem;
+    }
+  }
+</style>

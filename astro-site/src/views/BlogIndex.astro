@@ -1,0 +1,178 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import CallCta from '../components/CallCta.astro';
+import type { Lang } from '../data/site';
+import { articles, t } from '../data/content';
+import { u } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  path: string;
+}
+const { lang, path } = Astro.props;
+const s = u(lang);
+const es = lang === 'es';
+const tb = t(lang).blog;
+const [lead, ...rest] = articles;
+const fmt = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString(es ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+// Unsplash resizes on request; auto=format serves WebP/AVIF to browsers that take them.
+const img = (src: string, w: number) =>
+  src.includes('images.unsplash.com') ? src.replace(/w=\d+&h=\d+/, `w=${w}&h=${Math.round(w * 0.62)}`) + '&auto=format&q=72' : src;
+const categories = [...new Set(articles.map((a) => a.category))];
+---
+
+<Base lang={lang} title={es ? 'Blog de marketing digital' : 'Digital marketing blog'} description={tb.description} path={path}>
+  <link slot="head" rel="preconnect" href="https://images.unsplash.com" />
+  <PageHead lang={lang} title={tb.title} lead={tb.description} crumbs={[{ label: 'Blog' }]} code={`${articles.length} ${es ? 'artículos' : 'articles'}`}>
+    {!es && <p class="note data">Articles are written in Spanish.</p>}
+  </PageHead>
+
+  <section class="section blog" aria-label="Blog">
+    <div class="wrap">
+      <a class="lead-post" href={`/blog/${lead.slug}`}>
+        <img
+          src={img(lead.heroImage, 1200)}
+          srcset={lead.heroImage.includes('images.unsplash.com') ? [640, 900, 1200].map((w) => `${img(lead.heroImage, w)} ${w}w`).join(', ') : undefined}
+          sizes="(max-width: 900px) calc(100vw - 40px), 800px"
+          alt=""
+          width="1200"
+          height="744"
+          fetchpriority="high"
+          decoding="async"
+        />
+        <span class="lp-copy">
+          <span class="lp-title">{lead.title}</span>
+          <span class="meta data">{lead.category} · {fmt(lead.publishedAt)} · {lead.readTime} {s.minRead}</span>
+          <span class="lp-desc">{lead.description}</span>
+          <span class="link-arrow">{s.readMore}<Icon name="arrow" /></span>
+        </span>
+      </a>
+
+      <div class="cats data" aria-hidden="true">
+        {categories.map((c) => <span>{c}</span>)}
+      </div>
+
+      <ul class="posts">
+        {
+          rest.map((a) => (
+            <li>
+              <a href={`/blog/${a.slug}`}>
+                <img src={img(a.heroImage, 640)} alt="" width="640" height="397" loading="lazy" decoding="async" />
+                <span class="p-title">{a.title}</span>
+                <span class="meta data">
+                  {a.category} · {a.readTime}
+                </span>
+                <span class="p-desc">{a.description}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+  <CallCta lang={lang} />
+</Base>
+
+<style>
+  .note {
+    color: var(--text-3);
+  }
+  .blog {
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .lead-post {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .lead-post:hover {
+    color: var(--text);
+  }
+  .lead-post img,
+  .posts img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    background: var(--panel);
+  }
+  .lp-copy {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+  .meta {
+    color: var(--amber);
+  }
+  .lp-title {
+    font-size: clamp(1.9rem, 3.4vw, 3rem);
+    font-weight: 800;
+    font-stretch: 72%;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+  .lp-desc {
+    color: var(--text-2);
+  }
+  .cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-block: clamp(3rem, 6vw, 5rem) 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule-strong);
+    color: var(--text-3);
+  }
+  .posts {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(2rem, 3vw, 2.75rem) clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .posts a {
+    display: grid;
+    gap: 0.7rem;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .posts a:hover {
+    color: var(--text);
+  }
+  .posts a:hover .p-title {
+    color: var(--amber);
+  }
+  .p-title {
+    font-size: 1.35rem;
+    font-weight: 750;
+    font-stretch: 80%;
+    line-height: 1.1;
+    transition: color 0.2s;
+  }
+  .p-desc {
+    color: var(--text-2);
+    font-size: 0.95rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  @media (max-width: 1000px) {
+    .posts {
+      grid-template-columns: 1fr 1fr;
+    }
+    .lead-post {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .posts {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

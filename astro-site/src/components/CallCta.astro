@@ -1,0 +1,170 @@
+---
+// The andon call: the one amber-drenched field on every page.
+import Icon from './Icon.astro';
+import { href, waLink, type Lang } from '../data/site';
+import { t } from '../data/content';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  primary?: string;
+}
+const { lang, title, description, primary } = Astro.props;
+const c = t(lang).cta;
+const urgency = String(c.badge).replace(/^[^\p{L}\p{N}]+/u, '');
+const callText = lang === 'es' ? 'Hola CreamosTech, quiero agendar una llamada de 15 min.' : 'Hi CreamosTech, I want to book a 15-minute call.';
+---
+
+<section class="call" id="cta" aria-labelledby="call-title">
+  <div class="hazard" aria-hidden="true"></div>
+  <div class="wrap inner">
+    <div class="cord" aria-hidden="true"><span></span></div>
+    <div class="copy">
+      <h2 id="call-title" class="display-1">{title ?? c.title}</h2>
+      <p class="desc">{description ?? c.description}</p>
+      <div class="ctas">
+        <a class="btn btn--ink" href={href(lang, '/contact') + '#auditoria'}>
+          {primary ?? c.primaryCTA}
+          <Icon name="arrow" />
+        </a>
+        <a class="btn btn--line" href={waLink(callText)} target="_blank" rel="noopener">
+          <Icon name="calendar" />
+          {c.secondaryCTA}
+        </a>
+      </div>
+      <p class="urgent"><span class="lamp" data-state="red" aria-hidden="true"></span>{urgency}</p>
+    </div>
+    <svg class="tower" viewBox="0 0 120 330" aria-hidden="true">
+      <rect x="46" y="0" width="28" height="10" rx="3" fill="var(--amber-ink)" />
+      <rect x="20" y="14" width="80" height="64" rx="8" fill="none" stroke="var(--amber-ink)" stroke-width="4" />
+      <rect x="20" y="86" width="80" height="64" rx="8" fill="var(--amber-ink)" />
+      <rect x="20" y="158" width="80" height="64" rx="8" fill="none" stroke="var(--amber-ink)" stroke-width="4" />
+      <g class="beacon" stroke="var(--amber)" stroke-width="4" stroke-linecap="round"><path d="M38 118h44" /><path d="M38 104h44" opacity="0.5" /><path d="M38 132h44" opacity="0.5" /></g>
+      <rect x="52" y="226" width="16" height="80" fill="var(--amber-ink)" />
+      <rect x="14" y="306" width="92" height="16" rx="3" fill="var(--amber-ink)" />
+    </svg>
+  </div>
+  <div class="hazard" aria-hidden="true"></div>
+</section>
+
+<style>
+  .call {
+    position: relative;
+    background: var(--amber);
+    color: var(--amber-ink);
+    overflow: clip;
+  }
+  .call ::selection {
+    background: var(--amber-ink);
+    color: var(--amber);
+  }
+  .call :focus-visible {
+    outline-color: var(--amber-ink);
+  }
+  .hazard {
+    background: repeating-linear-gradient(-45deg, var(--amber-ink) 0 14px, var(--amber) 14px 28px);
+  }
+  .inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: clamp(1.5rem, 5vw, 5rem);
+    padding-block: clamp(4rem, 9vw, 7.5rem);
+  }
+  .cord {
+    position: relative;
+    width: 4px;
+    align-self: stretch;
+    margin-top: calc(clamp(4rem, 9vw, 7.5rem) * -1);
+    background: repeating-linear-gradient(180deg, var(--amber-ink) 0 6px, #5c4100 6px 10px);
+  }
+  .cord span {
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    translate: -50% 0;
+    width: 40px;
+    height: 16px;
+    border-radius: 8px;
+    background: var(--amber-ink);
+  }
+  .copy {
+    display: grid;
+    gap: 1.4rem;
+    justify-items: start;
+  }
+  .urgent {
+    display: inline-flex;
+    gap: 0.6rem;
+    align-items: center;
+    font-weight: 750;
+    font-stretch: 85%;
+  }
+  .urgent .lamp {
+    --lamp: #c2241c;
+  }
+  h2 {
+    text-transform: uppercase;
+    max-width: 16ch;
+  }
+  .desc {
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    max-width: 56ch;
+    line-height: 1.5;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .btn--ink:hover {
+    background: #2d2410;
+  }
+  .btn--line {
+    --btn-bg: transparent;
+    --btn-fg: var(--amber-ink);
+    border-color: var(--amber-ink);
+  }
+  .btn--line:hover {
+    background: rgb(27 19 0 / 0.08);
+  }
+  .tower {
+    width: clamp(90px, 11vw, 150px);
+    height: auto;
+    margin-right: clamp(0rem, 4vw, 4rem);
+  }
+  /* Reaching for a button pulls the cord and the tower's lamp starts calling, like the hero line. */
+  .cord {
+    transform-origin: top;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .call:has(.ctas a:hover, .ctas a:focus-visible) .cord {
+    transform: scaleY(1.05);
+    transition-duration: 0.18s;
+  }
+  .call:has(.ctas a:hover, .ctas a:focus-visible) .beacon {
+    animation: beacon 0.8s steps(1, end) infinite;
+  }
+  @keyframes beacon {
+    50% {
+      opacity: 0.15;
+    }
+  }
+  .call a:hover {
+    color: inherit;
+  }
+  .call .btn--ink,
+  .call .btn--ink:hover {
+    color: var(--amber);
+  }
+  @media (max-width: 640px) {
+    .inner {
+      grid-template-columns: 1fr;
+    }
+    .cord,
+    .tower {
+      display: none;
+    }
+  }
+</style>

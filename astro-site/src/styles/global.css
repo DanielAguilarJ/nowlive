@@ -1,0 +1,462 @@
+/* CreamosTech — "Tablero de planta del Bajío".
+   A plant control room: graphite panels, andon lamps (green running, amber call, red stop),
+   7-segment counters, floor safety marking, and printed work orders for dense reading. */
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url('/fonts/archivo-wdth.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Martian Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url('/fonts/martian-mono.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+2000-206F, U+2212;
+}
+/* Metric-matched fallbacks so the swap does not shift the layout. */
+/* Measured in Chromium: Archivo is 99.5 % as wide as Arial, Martian Mono 116 % as wide as Menlo/Courier New. */
+@font-face {
+  font-family: 'Archivo Fallback';
+  src: local('Arial'), local('Helvetica'), local('Roboto');
+  size-adjust: 99.5%;
+  ascent-override: 88.4%;
+  descent-override: 21.1%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Martian Mono Fallback';
+  src: local('Menlo'), local('Courier New'), local('Roboto Mono');
+  size-adjust: 116.3%;
+  ascent-override: 86%;
+  descent-override: 17.2%;
+  line-gap-override: 0%;
+}
+
+:root {
+  color-scheme: dark;
+  --ground: #0e100f;
+  --panel: #151816;
+  --panel-2: #1c201e;
+  --rule: #2a302c;
+  --rule-strong: #3d443f;
+  --text: #e8ebe5;
+  --text-2: #a7afa8;
+  --text-3: #8a938b;
+
+  --amber: #ffb21a;
+  --amber-deep: #e09400;
+  --amber-ink: #1b1300;
+  --green: #35d27f;
+  --green-dim: #1d6b43;
+  --red: #f2473f;
+
+  --paper: #e8eae5;
+  --paper-2: #d9dcd6;
+  --paper-ink: #141715;
+  --paper-ink-2: #4a514c;
+  --paper-rule: #b3bab3;
+
+  --font-sans: 'Archivo', 'Archivo Fallback', system-ui, sans-serif;
+  --font-mono: 'Martian Mono', 'Martian Mono Fallback', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --wrap: 1320px;
+  --gutter: clamp(1rem, 3.2vw, 2.5rem);
+  --header-h: 68px;
+  --radius: 3px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-lift: 0 14px 30px -12px rgb(0 0 0 / 0.55), 0 2px 6px rgb(0 0 0 / 0.35);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  background: var(--ground);
+  scrollbar-color: var(--rule-strong) var(--ground);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--ground);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  caret-color: var(--amber);
+}
+
+::selection {
+  background: var(--amber);
+  color: var(--amber-ink);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ground);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--rule-strong);
+  border: 3px solid var(--ground);
+  border-radius: 6px;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+img {
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+a:hover {
+  color: var(--amber);
+}
+
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 800;
+  font-stretch: 72%;
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+.display-1 {
+  font-size: clamp(2.7rem, 5.6vw, 4.75rem);
+  font-stretch: 66%;
+  line-height: 0.9;
+}
+.display-2 {
+  font-size: clamp(2.25rem, 4.6vw, 4.25rem);
+}
+.display-3 {
+  font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+  font-stretch: 78%;
+  line-height: 1;
+}
+.lead {
+  font-size: clamp(1.08rem, 1.4vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--text-2);
+  max-width: 62ch;
+}
+/* Mono is only for codes, measurements and data. */
+.data {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: clamp(5rem, 10vw, 9rem);
+  position: relative;
+}
+.section-head {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  max-width: 900px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  --btn-bg: var(--amber);
+  --btn-fg: var(--amber-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 52px;
+  padding: 0 1.4rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font: inherit;
+  font-weight: 750;
+  font-stretch: 88%;
+  font-size: 1rem;
+  letter-spacing: 0.005em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out),
+    background-color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:hover {
+  color: var(--btn-fg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lift);
+  background: #ffc140;
+}
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+.btn svg {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+}
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--text);
+  border-color: var(--rule-strong);
+}
+.btn--ghost:hover {
+  background: var(--panel-2);
+  border-color: var(--text-3);
+}
+.btn--ink {
+  --btn-bg: var(--paper-ink);
+  --btn-fg: var(--paper);
+}
+.btn--ink:hover {
+  background: #2a2f2c;
+}
+.btn--block {
+  width: 100%;
+}
+.btn[disabled],
+.btn[aria-disabled='true'] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ---------- Andon lamp ---------- */
+.lamp {
+  --lamp: var(--rule-strong);
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--lamp);
+  box-shadow: inset 0 -2px 3px rgb(0 0 0 / 0.35);
+}
+.lamp[data-state='green'] {
+  --lamp: var(--green);
+}
+.lamp[data-state='amber'] {
+  --lamp: var(--amber);
+}
+.lamp[data-state='red'] {
+  --lamp: var(--red);
+}
+
+/* ---------- Instrument panel screws (four corners) ---------- */
+.screwed {
+  --screw: radial-gradient(circle, #4a524c 0 2.2px, #262b28 2.6px 3.4px, transparent 3.8px);
+  background-image: var(--screw), var(--screw), var(--screw), var(--screw);
+  background-size: 14px 14px;
+  background-repeat: no-repeat;
+  background-position:
+    6px 6px,
+    calc(100% - 6px) 6px,
+    6px calc(100% - 6px),
+    calc(100% - 6px) calc(100% - 6px);
+}
+
+/* ---------- Floor safety marking ---------- */
+.hazard {
+  height: 14px;
+  background: repeating-linear-gradient(-45deg, var(--amber) 0 14px, var(--ground) 14px 28px);
+}
+
+/* ---------- Text links with arrow ---------- */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-stretch: 88%;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+}
+.link-arrow svg {
+  width: 1em;
+  height: 1em;
+  transition: transform 0.25s var(--ease-out);
+}
+.link-arrow:hover svg {
+  transform: translateX(4px);
+}
+
+/* ---------- Paper (work-order) surfaces ---------- */
+.on-paper {
+  color-scheme: light;
+  background: var(--paper);
+  color: var(--paper-ink);
+}
+.on-paper .lead {
+  color: var(--paper-ink-2);
+}
+.on-paper ::selection {
+  background: var(--paper-ink);
+  color: var(--paper);
+}
+.on-paper :focus-visible {
+  outline-color: var(--paper-ink);
+}
+.on-paper a:hover {
+  color: var(--paper-ink);
+  text-decoration-thickness: 2px;
+}
+
+/* ---------- Prose (blog, legal) ---------- */
+.prose {
+  max-width: 70ch;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+.prose > * + * {
+  margin-top: 1.1em;
+}
+.prose h2 {
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  margin-top: 2.4em;
+  margin-bottom: 0.2em;
+}
+.prose h3 {
+  font-size: 1.35rem;
+  font-stretch: 85%;
+  margin-top: 1.8em;
+}
+.prose ul {
+  padding-left: 1.2em;
+}
+.prose li + li {
+  margin-top: 0.45em;
+}
+.prose li::marker {
+  color: var(--amber);
+}
+
+/* ---------- Page transitions (no JS) ---------- */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.28s;
+  animation-timing-function: var(--ease-out);
+}
+/* case-study filter: each lot slides to its new slot */
+::view-transition-group(*.lot) {
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+::view-transition-old(*.lot) {
+  animation-duration: 0.18s;
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Scroll-linked rise, only where a section opts in ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-rise] {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0.25;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

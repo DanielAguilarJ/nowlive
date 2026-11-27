@@ -1,0 +1,128 @@
+---
+import Icon from '../Icon.astro';
+import { href, type Lang } from '../../data/site';
+import { t } from '../../data/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const team = t(lang).team;
+const m = team.members[0];
+---
+
+<section class="section operator" aria-labelledby="op-title">
+  <div class="wrap grid">
+    <div class="badge-wrap" aria-hidden="true">
+      <span class="lanyard"></span>
+      <div class="badge">
+        <span class="clip"></span>
+        <p class="b-head data">CreamosTech · {lang === 'es' ? 'Operador' : 'Operator'}</p>
+        <span class="photo">KA</span>
+        <p class="b-name">{m.name}</p>
+        <p class="b-role data">{m.role}</p>
+        <span class="stripe"></span>
+      </div>
+    </div>
+    <div class="copy">
+      <h2 id="op-title" class="display-2">{team.title}</h2>
+      <p class="lead">{team.description}</p>
+      <p class="bio">{m.bio}</p>
+      <a class="link-arrow" href={href(lang, '/about')}>
+        {lang === 'es' ? 'Conoce CreamosTech' : 'About CreamosTech'}
+        <Icon name="arrow" />
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .operator {
+    background: var(--panel);
+    border-block: 1px solid var(--rule);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.8fr) 1.4fr;
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+  }
+  .badge-wrap {
+    position: relative;
+    display: grid;
+    justify-items: center;
+  }
+  .lanyard {
+    width: 26px;
+    height: 70px;
+    background: repeating-linear-gradient(90deg, var(--amber) 0 4px, var(--amber-deep) 4px 6px);
+    clip-path: polygon(20% 0, 80% 0, 70% 100%, 30% 100%);
+  }
+  .badge {
+    position: relative;
+    width: min(290px, 100%);
+    display: grid;
+    justify-items: center;
+    gap: 0.7rem;
+    padding: 2rem 1.5rem 0;
+    background: #f1f2ee;
+    color: var(--paper-ink);
+    border-radius: 10px;
+    box-shadow: 0 30px 60px -25px rgb(0 0 0 / 0.75);
+    rotate: -3deg;
+    overflow: hidden;
+  }
+  .clip {
+    position: absolute;
+    top: 10px;
+    width: 52px;
+    height: 8px;
+    border-radius: 4px;
+    background: #c7ccc6;
+  }
+  .b-head {
+    color: var(--paper-ink-2);
+  }
+  .photo {
+    display: grid;
+    place-items: center;
+    width: 150px;
+    height: 170px;
+    background: var(--paper-ink);
+    color: var(--amber);
+    font-weight: 850;
+    font-stretch: 65%;
+    font-size: 4rem;
+    border-radius: 4px;
+  }
+  .b-name {
+    font-weight: 800;
+    font-stretch: 75%;
+    font-size: 1.35rem;
+    line-height: 1.05;
+    text-align: center;
+  }
+  .b-role {
+    color: var(--paper-ink-2);
+  }
+  .stripe {
+    width: calc(100% + 3rem);
+    height: 18px;
+    margin-top: 0.6rem;
+    background: repeating-linear-gradient(-45deg, var(--amber) 0 10px, var(--paper-ink) 10px 20px);
+  }
+  .copy {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+  }
+  .bio {
+    color: var(--text-2);
+    max-width: 62ch;
+  }
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

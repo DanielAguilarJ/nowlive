@@ -1,0 +1,51 @@
+# CreamosTech static site on Hostinger (LiteSpeed/Apache).
+ErrorDocument 404 /404.html
+Options -Indexes
+AddType application/manifest+json .webmanifest
+AddDefaultCharset utf-8
+AddCharset utf-8 .txt
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # HTTPS is forced from hPanel (Security > SSL), not here: behind Hostinger's CDN
+  # a rule on %{HTTPS} can loop.
+  # The old Next.js site published its sitemap at /sitemap.xml.
+  RewriteRule ^sitemap\.xml$ /sitemap-index.xml [R=301,L]
+  # The old admin panel does not exist on the static site.
+  RewriteRule ^admin(/.*)?$ / [R=302,L]
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript text/javascript application/json image/svg+xml application/xml text/xml
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType image/webp "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Hashed build files never change: cache them for a year.
+  <FilesMatch "\.(js|css)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.woff2$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# Provenance notes for images are for the team, not for visitors.
+<FilesMatch "\.webp\.json$">
+  Require all denied
+</FilesMatch>

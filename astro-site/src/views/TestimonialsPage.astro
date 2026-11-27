@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Signoffs from '../components/home/Signoffs.astro';
+import CallCta from '../components/CallCta.astro';
+import type { Lang } from '../data/site';
+import { t } from '../data/content';
+
+interface Props {
+  lang: Lang;
+  path: string;
+}
+const { lang, path } = Astro.props;
+const tp = t(lang).testimonialsPage;
+---
+
+<Base lang={lang} title={tp.title} description={tp.description} path={path}>
+  <PageHead lang={lang} title={tp.title} lead={tp.description} crumbs={[{ label: tp.title }]} />
+  <section class="section" aria-label={tp.title}>
+    <div class="wrap">
+      <ul class="results">
+        {
+          tp.testimonials.map((q: { name: string; role: string; company: string; quote: string; result: string }) => (
+            <li>
+              <p class="res">
+                <span class="lamp" data-state="green" />
+                {q.result}
+              </p>
+              <blockquote>“{q.quote}”</blockquote>
+              <p class="who">
+                <b>{q.name}</b> · {q.role}, {q.company}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+  <Signoffs lang={lang} />
+  <CallCta lang={lang} />
+</Base>
+
+<style>
+  .results {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+  .results li {
+    display: grid;
+    gap: 1.2rem;
+    align-content: start;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    background: var(--panel);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+  }
+  .res {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    font-size: clamp(1.3rem, 2.2vw, 1.75rem);
+    font-weight: 800;
+    font-stretch: 72%;
+    line-height: 1.05;
+    color: var(--green);
+  }
+  blockquote {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.55;
+  }
+  .who {
+    padding-top: 1rem;
+    border-top: 1px dashed var(--rule-strong);
+    color: var(--text-2);
+    font-size: 0.95rem;
+  }
+  .who b {
+    color: var(--text);
+  }
+  @media (max-width: 900px) {
+    .results {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

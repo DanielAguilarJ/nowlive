@@ -1,0 +1,167 @@
+{
+ "roleGradients": [
+  "from-blue-500 to-purple-600",
+  "from-pink-500 to-rose-600",
+  "from-emerald-500 to-teal-600",
+  "from-violet-500 to-indigo-600",
+  "from-orange-500 to-amber-600",
+  "from-cyan-500 to-blue-600"
+ ],
+ "processIcons": [
+  null,
+  null,
+  null,
+  null
+ ],
+ "valueIcons": [
+  null,
+  null,
+  null,
+  null
+ ],
+ "timelineMilestones": {
+  "es": [
+   {
+    "year": "2012",
+    "title": "Fundacion",
+    "desc": "Nace CreamosTech con la vision de transformar el marketing digital."
+   },
+   {
+    "year": "2015",
+    "title": "50 proyectos",
+    "desc": "Alcanzamos nuestros primeros 50 proyectos exitosos entregados."
+   },
+   {
+    "year": "2018",
+    "title": "Expansion LATAM",
+    "desc": "Abrimos operaciones en varios paises de Latinoamerica."
+   },
+   {
+    "year": "2020",
+    "title": "100+ clientes",
+    "desc": "Superamos los 100 clientes activos en medio de la transformacion digital global."
+   },
+   {
+    "year": "2023",
+    "title": "Lideres en innovacion",
+    "desc": "Reconocidos como lideres en innovacion digital en la region."
+   },
+   {
+    "year": "2024",
+    "title": "AI-First Agency",
+    "desc": "Adoptamos la inteligencia artificial como eje central de todas nuestras soluciones."
+   }
+  ],
+  "en": [
+   {
+    "year": "2012",
+    "title": "Founded",
+    "desc": "CreamosTech is born with the vision to transform digital marketing."
+   },
+   {
+    "year": "2015",
+    "title": "50 projects",
+    "desc": "We reach our first 50 successfully delivered projects."
+   },
+   {
+    "year": "2018",
+    "title": "LATAM Expansion",
+    "desc": "We open operations across multiple Latin American countries."
+   },
+   {
+    "year": "2020",
+    "title": "100+ clients",
+    "desc": "We surpass 100 active clients amidst the global digital transformation."
+   },
+   {
+    "year": "2023",
+    "title": "Innovation leaders",
+    "desc": "Recognized as digital innovation leaders in the region."
+   },
+   {
+    "year": "2024",
+    "title": "AI-First Agency",
+    "desc": "We adopt artificial intelligence as the core of all our solutions."
+   }
+  ]
+ },
+ "techStack": [
+  {
+   "name": "React",
+   "icon": null
+  },
+  {
+   "name": "Next.js",
+   "icon": null
+  },
+  {
+   "name": "TypeScript",
+   "icon": null
+  },
+  {
+   "name": "Node.js",
+   "icon": null
+  },
+  {
+   "name": "Python",
+   "icon": null
+  },
+  {
+   "name": "AWS",
+   "icon": null
+  },
+  {
+   "name": "Google Cloud",
+   "icon": null
+  },
+  {
+   "name": "Figma",
+   "icon": null
+  },
+  {
+   "name": "Adobe Creative",
+   "icon": null
+  }
+ ],
+ "cultureData": {
+  "es": [
+   {
+    "title": "Remote-first",
+    "desc": "Trabajamos desde donde nos sentimos mejor. Nuestro equipo esta distribuido por toda Latinoamerica y Espana, colaborando de forma asincrona y eficiente.",
+    "gradient": "from-blue-500 to-cyan-400"
+   },
+   {
+    "title": "Aprendizaje y crecimiento",
+    "desc": "Cada miembro tiene un presupuesto dedicado a formacion. Hacemos tech talks semanales y fomentamos la experimentacion con nuevas tecnologias.",
+    "gradient": "from-violet-500 to-purple-400"
+   },
+   {
+    "title": "Equilibrio vida-trabajo",
+    "desc": "Horarios flexibles, viernes cortos y politica de desconexion digital. Creemos que un equipo descansado produce resultados extraordinarios.",
+    "gradient": "from-emerald-500 to-teal-400"
+   }
+  ],
+  "en": [
+   {
+    "title": "Remote-first",
+    "desc": "We work from wherever we feel best. Our team is distributed across Latin America and Spain, collaborating asynchronously and efficiently.",
+    "gradient": "from-blue-500 to-cyan-400"
+   },
+   {
+    "title": "Learning & Growth",
+    "desc": "Every member has a dedicated training budget. We hold weekly tech talks and encourage experimentation with new technologies.",
+    "gradient": "from-violet-500 to-purple-400"
+   },
+   {
+    "title": "Work-life balance",
+    "desc": "Flexible hours, short Fridays, and a digital disconnect policy. We believe a well-rested team produces extraordinary results.",
+    "gradient": "from-emerald-500 to-teal-400"
+   }
+  ]
+ },
+ "cultureIcons": [
+  null,
+  null,
+  null
+ ]
+}

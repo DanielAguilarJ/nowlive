@@ -1,0 +1,159 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppFab from '../components/WhatsAppFab.astro';
+import { site, altPath, type Lang } from '../data/site';
+import { seoFor } from '../data/seo';
+import { u } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  path: string;
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  schema?: Record<string, unknown>[];
+  /** URL of the same page in the other language; null when the page exists in one language only. */
+  alt?: string | null;
+}
+const { lang, path, image = '/og.jpg', type = 'website', noindex = false, schema = [], alt } = Astro.props;
+const override = seoFor(path);
+const title = override.title ?? Astro.props.title;
+const description = override.description ?? Astro.props.description;
+const other: Lang = lang === 'es' ? 'en' : 'es';
+const altUrl = alt === null ? null : new URL(alt ?? altPath(path, other), site.url).href;
+const s = u(lang);
+// Google shows about 60 characters; the brand is added only when it still fits.
+const fullTitle = title.includes('CreamosTech') || title.length > 46 ? title : `${title} | CreamosTech`;
+const canonical = new URL(path, site.url).href;
+const esUrl = lang === 'es' ? canonical : altUrl;
+const enUrl = lang === 'en' ? canonical : altUrl;
+const ogImage = new URL(image, site.url).href;
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${site.url}/#organization`,
+  name: site.name,
+  url: site.url,
+  logo: `${site.url}/icon-512.png`,
+  image: `${site.url}/og.jpg`,
+  email: site.email,
+  telephone: site.phoneE164,
+  foundingDate: site.foundingDate,
+  priceRange: '$$',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: site.address.city,
+    addressRegion: 'Aguascalientes',
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.country,
+  },
+  areaServed: ['MX', 'US', 'ES', 'LATAM'],
+  sameAs: Object.values(site.social),
+  founder: { '@type': 'Person', '@id': `${site.url}/#kevin`, name: 'Kevin Daniel Aguilar Junco', jobTitle: 'SEO' },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'sales',
+    telephone: site.phoneE164,
+    email: site.email,
+    availableLanguage: ['es', 'en'],
+    areaServed: ['MX', 'US', 'ES'],
+  },
+  knowsAbout:
+    lang === 'es'
+      ? ['Diseño web', 'Estrategia digital', 'Automatización de marketing', 'Creación de contenido', 'SEO', 'Analítica web', 'Identidad de marca', 'Marketing por WhatsApp']
+      : ['Web design', 'Digital strategy', 'Marketing automation', 'Content creation', 'SEO', 'Web analytics', 'Brand identity', 'WhatsApp marketing'],
+};
+const ld = [organization, ...schema];
+---
+
+<!doctype html>
+<html lang={lang === 'es' ? 'es-MX' : 'en'} id="top">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {esUrl && <link rel="alternate" hreflang="es-MX" href={esUrl} />}
+    {enUrl && <link rel="alternate" hreflang="en" href={enUrl} />}
+    {esUrl && <link rel="alternate" hreflang="x-default" href={esUrl} />}
+    {
+      noindex ? (
+        <meta name="robots" content="noindex, follow" />
+      ) : (
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+      )
+    }
+    <meta name="theme-color" content="#0e100f" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="preload" href="/fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/martian-mono.woff2" as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="CreamosTech" />
+    <meta property="og:locale" content={lang === 'es' ? 'es_MX' : 'en_US'} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={fullTitle} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <script type="application/ld+json" set:html={JSON.stringify(ld.length === 1 ? ld[0] : ld)} />
+    <slot name="head" />
+  </head>
+  <body>
+    <Fragment
+      set:html={`<!--
+THESIS: The site is the control board of the client's sales production line. It refuses the dark neon-glass agency hero with a floating blob.
+OWN-WORLD: Graphite control-room panels, andon lamps (green running, amber call, red stop), 7-segment LED counters, amber/black floor marking, printed work orders on paper gray. Archivo condensed for voice, Martian Mono only for codes and data.
+STORY: The visitor watches traffic become customers on a running line, believes the confirmed output and guarantees, and pulls the andon cord: free audit, WhatsApp or a plan.
+FIRST VIEWPORT: Left: condensed headline with the rotating product, subheadline, amber audit button beside WhatsApp, guarantee chips. Behind and right: live 3D line with four gantry stations. Bottom: LED production board with four counters.
+FORM: Tablero de planta del Bajío, grounded candidate 1 of 7, the pick card the user chose; seed key 4c8d7551.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+-->`}
+    />
+    <a class="skip" href="#main">{s.skip}</a>
+    <Header lang={lang} path={path} alt={alt === null ? altPath('/', other) : alt} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <WhatsAppFab lang={lang} />
+    <style is:global>
+      .skip {
+        position: absolute;
+        left: 1rem;
+        top: -100px;
+        z-index: 100;
+        padding: 0.75rem 1rem;
+        background: var(--amber);
+        color: var(--amber-ink);
+        font-weight: 700;
+      }
+      .skip:focus {
+        top: 1rem;
+      }
+    </style>
+    <script>
+      // Close the mobile menu when one of its links is followed (same-page anchors included).
+      const menu = document.getElementById('mobile-menu');
+      menu?.addEventListener('click', (e) => {
+        if ((e.target as HTMLElement).closest('a')) (menu as HTMLElement & { hidePopover?: () => void }).hidePopover?.();
+      });
+    </script>
+  </body>
+</html>

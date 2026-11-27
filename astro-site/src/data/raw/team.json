@@ -1,0 +1,18 @@
+{
+ "avatars": [
+  "/images/team/member_1.png",
+  "/images/team/member_2.png",
+  "/images/team/member_3.png",
+  "/images/team/member_4.png",
+  "/images/team/member_5.png",
+  "/images/team/member_6.png"
+ ],
+ "roleGradients": [
+  "from-blue-500 to-purple-600",
+  "from-pink-500 to-rose-600",
+  "from-emerald-500 to-teal-600",
+  "from-violet-500 to-indigo-600",
+  "from-orange-500 to-amber-600",
+  "from-cyan-500 to-blue-600"
+ ]
+}

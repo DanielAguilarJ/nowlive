@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { waLink } from '../data/site';
+import { u } from '../i18n/ui';
+
+const s = u('es');
+---
+
+<Base lang="es" title="Página no encontrada" description={s.notFoundBody} path="/404" noindex alt={null}>
+  <section class="nf">
+    <div class="hazard" aria-hidden="true"></div>
+    <div class="wrap inner">
+      <p class="code" aria-hidden="true">
+        <span class="lamp" data-state="red"></span>404
+      </p>
+      <h1 class="display-1">{s.notFoundTitle}</h1>
+      <p class="lead">{s.notFoundBody}</p>
+      <div class="ctas">
+        <a class="btn" href="/">Ir al inicio<Icon name="arrow" /></a>
+        <a class="btn btn--ghost" href={waLink(s.whatsappHello)} target="_blank" rel="noopener"><Icon name="whatsapp" />{s.heroWhatsapp}</a>
+      </div>
+      <p class="en"><a href="/en/" lang="en">Go to the English site</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    min-height: calc(100svh - var(--header-h));
+  }
+  .inner {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+    padding-block: clamp(4rem, 10vw, 8rem);
+  }
+  .code {
+    display: inline-flex;
+    gap: 0.8rem;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 3rem;
+    color: var(--red);
+  }
+  .code .lamp {
+    width: 18px;
+    height: 18px;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .en {
+    color: var(--text-2);
+  }
+</style>

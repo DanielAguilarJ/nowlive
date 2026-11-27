@@ -1,0 +1,168 @@
+{
+ "siteConfig": {
+  "name": "CreamosTech",
+  "url": "https://creamostech.agency",
+  "defaultLocale": "es",
+  "localeOpenGraph": "es_ES",
+  "foundingDate": "2024",
+  "contactEmail": "hola@creamostech.agency",
+  "phone": "+5214496355166",
+  "address": {
+   "streetAddress": "Av. Universidad 1001, Bosques del Prado Nte.",
+   "addressLocality": "Aguascalientes",
+   "postalCode": "20127",
+   "addressCountry": "MX"
+  },
+  "socialLinks": {
+   "twitter": "https://twitter.com/creamostech",
+   "linkedin": "https://linkedin.com/company/creamostech",
+   "instagram": "https://instagram.com/creamostech"
+  }
+ },
+ "servicesDatabase": {
+  "web-design": {
+   "name": "Diseño y Desarrollo Web",
+   "nameEn": "Web Design & Development",
+   "description": "Creamos sitios web profesionales que convierten visitantes en clientes. Diseño responsivo, optimizado para SEO y con tecnología de vanguardia.",
+   "descriptionEn": "We create professional websites that convert visitors into customers. Responsive design, SEO optimized with cutting-edge technology.",
+   "url": "/services/web-design",
+   "image": "/images/services/web-design.jpg",
+   "price": {
+    "min": 2500,
+    "max": 15000,
+    "currency": "EUR"
+   },
+   "sameAs": [
+    "https://www.wikidata.org/wiki/Q386724",
+    "https://en.wikipedia.org/wiki/Web_design",
+    "https://www.wikidata.org/wiki/Q80993"
+   ],
+   "areaServed": [
+    "ES",
+    "LATAM",
+    "US"
+   ],
+   "serviceType": "ProfessionalService"
+  },
+  "digital-strategy": {
+   "name": "Estrategia Digital",
+   "nameEn": "Digital Strategy",
+   "description": "Estrategia digital integral: análisis de mercado, buyer personas, funnel de conversión y roadmap de crecimiento.",
+   "descriptionEn": "Comprehensive digital strategy: market analysis, buyer personas, conversion funnel and growth roadmap.",
+   "url": "/services/digital-strategy",
+   "image": "/images/services/digital-strategy.jpg",
+   "price": {
+    "min": 3000,
+    "max": 20000,
+    "currency": "EUR"
+   },
+   "sameAs": [
+    "https://www.wikidata.org/wiki/Q1323477",
+    "https://en.wikipedia.org/wiki/Digital_marketing",
+    "https://www.wikidata.org/wiki/Q39809"
+   ],
+   "areaServed": [
+    "ES",
+    "LATAM",
+    "US"
+   ],
+   "serviceType": "ProfessionalService"
+  },
+  "marketing-automation": {
+   "name": "Automatización de Marketing",
+   "nameEn": "Marketing Automation",
+   "description": "Automatiza tus procesos de marketing: email marketing, lead nurturing, CRM integration y workflows inteligentes.",
+   "descriptionEn": "Automate your marketing processes: email marketing, lead nurturing, CRM integration and smart workflows.",
+   "url": "/services/marketing-automation",
+   "image": "/images/services/marketing-automation.jpg",
+   "price": {
+    "min": 2000,
+    "max": 12000,
+    "currency": "EUR"
+   },
+   "sameAs": [
+    "https://www.wikidata.org/wiki/Q4118400",
+    "https://en.wikipedia.org/wiki/Marketing_automation",
+    "https://www.wikidata.org/wiki/Q80993"
+   ],
+   "areaServed": [
+    "ES",
+    "LATAM",
+    "US"
+   ],
+   "serviceType": "ProfessionalService"
+  },
+  "content-creation": {
+   "name": "Creación de Contenido",
+   "nameEn": "Content Creation",
+   "description": "Contenido estratégico para tu marca: copywriting, diseño gráfico, video, fotografía y gestión de redes sociales.",
+   "descriptionEn": "Strategic content for your brand: copywriting, graphic design, video, photography and social media management.",
+   "url": "/services/content-creation",
+   "image": "/images/services/content-creation.jpg",
+   "price": {
+    "min": 1500,
+    "max": 8000,
+    "currency": "EUR"
+   },
+   "sameAs": [
+    "https://www.wikidata.org/wiki/Q1193407",
+    "https://en.wikipedia.org/wiki/Content_marketing",
+    "https://www.wikidata.org/wiki/Q863566"
+   ],
+   "areaServed": [
+    "ES",
+    "LATAM",
+    "US"
+   ],
+   "serviceType": "ProfessionalService"
+  },
+  "seo-analytics": {
+   "name": "SEO & Analytics",
+   "nameEn": "SEO & Analytics",
+   "description": "Optimización SEO técnica y de contenido, análisis de datos y reporting avanzado para decisiones basadas en datos.",
+   "descriptionEn": "Technical and content SEO optimization, data analysis and advanced reporting for data-driven decisions.",
+   "url": "/services/seo-analytics",
+   "image": "/images/services/seo-analytics.jpg",
+   "price": {
+    "min": 1800,
+    "max": 10000,
+    "currency": "EUR"
+   },
+   "sameAs": [
+    "https://www.wikidata.org/wiki/Q180711",
+    "https://en.wikipedia.org/wiki/Search_engine_optimization",
+    "https://www.wikidata.org/wiki/Q217602"
+   ],
+   "areaServed": [
+    "ES",
+    "LATAM",
+    "US"
+   ],
+   "serviceType": "ProfessionalService"
+  },
+  "brand-identity": {
+   "name": "Identidad de Marca",
+   "nameEn": "Brand Identity",
+   "description": "Creamos identidades de marca memorables: naming, logo, paleta de colores, tipografía y brand guidelines.",
+   "descriptionEn": "We create memorable brand identities: naming, logo, color palette, typography and brand guidelines.",
+   "url": "/services/brand-identity",
+   "image": "/images/services/brand-identity.jpg",
+   "price": {
+    "min": 3500,
+    "max": 18000,
+    "currency": "EUR"
+   },
+   "sameAs": [
+    "https://www.wikidata.org/wiki/Q167270",
+    "https://en.wikipedia.org/wiki/Brand",
+    "https://www.wikidata.org/wiki/Q184458"
+   ],
+   "areaServed": [
+    "ES",
+    "LATAM",
+    "US"
+   ],
+   "serviceType": "ProfessionalService"
+  }
+ }
+}

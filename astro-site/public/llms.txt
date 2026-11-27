@@ -1,0 +1,32 @@
+# CreamosTech
+
+> Agencia de marketing digital en Aguascalientes, México. Diseña, lanza y optimiza sistemas de venta digitales: páginas web que convierten, embudos automáticos, WhatsApp, anuncios, contenido y SEO. Atiende clientes en México, Estados Unidos, España y Latinoamérica. Auditoría gratuita en menos de 24 horas.
+
+- Oficina: Av. Universidad 1001, Bosques del Prado Nte., 20127 Aguascalientes, Ags., México
+- Teléfono y WhatsApp: +52 1 449 635 5166
+- Correo: hola@creamostech.com
+- Idiomas: español (sitio principal) e inglés (/en/)
+
+## Servicios
+
+- [Diseño y desarrollo web](https://creamostech.com/services/web-design/): sitios rápidos, adaptables al celular y con SEO desde el diseño.
+- [Estrategia digital](https://creamostech.com/services/digital-strategy/): investigación de mercado, análisis de competencia, roadmap y KPIs.
+- [Automatización de marketing](https://creamostech.com/services/marketing-automation/): workflows, emails y lead scoring.
+- [Creación de contenido](https://creamostech.com/services/content-creation/): stories, reels, blogs SEO y video con calendario editorial.
+- [SEO y analítica](https://creamostech.com/services/seo-analytics/): SEO técnico, keywords objetivo, Google Business y reportes mensuales.
+- [Identidad de marca](https://creamostech.com/services/brand-identity/): logotipo, paleta, tipografía, voz y manual de marca.
+
+## Planes
+
+- Acelerador: $14,900 MXN, pago único, entrega en 14 días.
+- Vendedor 24/7: $34,900 MXN, pago único, entrega en 21 días.
+- Imperio: $79,900 MXN, pago único, entrega en 30 días.
+
+## Páginas clave
+
+- [Inicio](https://creamostech.com/)
+- [Contacto y auditoría gratuita](https://creamostech.com/contact/)
+- [Casos de éxito](https://creamostech.com/casos-de-exito/)
+- [Preguntas frecuentes](https://creamostech.com/faq/)
+- [Blog](https://creamostech.com/blog/)
+- [English version](https://creamostech.com/en/)

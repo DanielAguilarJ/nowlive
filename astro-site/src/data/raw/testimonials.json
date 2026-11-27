@@ -1,0 +1,40 @@
+{
+ "testimonials": [
+  {
+   "id": 1,
+   "quote": "CreamosTech transformed our digital presence completely. Their strategic approach and creative execution helped us increase our conversion rates by 200%. They're not just vendors, they're true partners.",
+   "author": "Sarah Johnson",
+   "title": "CEO, TechFlow Inc.",
+   "avatar": "/images/testimonials/testimonial_1.png",
+   "rating": 5,
+   "company": "TechFlow"
+  },
+  {
+   "id": 2,
+   "quote": "The team at CreamosTech exceeded our expectations in every way. Their attention to detail, creative solutions, and responsive communication made our rebrand project a huge success.",
+   "author": "Michael Chen",
+   "title": "Marketing Director, Verde Foods",
+   "avatar": "/images/testimonials/testimonial_2.png",
+   "rating": 5,
+   "company": "Verde Foods"
+  },
+  {
+   "id": 3,
+   "quote": "Working with CreamosTech was a game-changer for our app launch. Their marketing strategy drove 50,000 downloads in the first month. Highly recommend their services!",
+   "author": "Emily Rodriguez",
+   "title": "Founder, FitLife Health",
+   "avatar": "/images/testimonials/testimonial_3.png",
+   "rating": 5,
+   "company": "FitLife Health"
+  },
+  {
+   "id": 4,
+   "quote": "The SEO and content strategy CreamosTech developed for us tripled our organic traffic within six months. Their data-driven approach delivers real results.",
+   "author": "David Park",
+   "title": "VP of Digital, Luxe Properties",
+   "avatar": "/images/team/member_6.png",
+   "rating": 5,
+   "company": "Luxe Properties"
+  }
+ ]
+}

@@ -1,0 +1,46 @@
+{
+ "serviceIcons": {
+  "Diseno & Desarrollo Web": "🌐",
+  "Web Design & Development": "🌐",
+  "Estrategia Digital": "📊",
+  "Digital Strategy": "📊",
+  "Marketing Automation": "⚙️",
+  "Creacion de Contenido": "✍️",
+  "Content Creation": "✍️",
+  "SEO & Analytics": "🔍",
+  "Identidad de Marca": "🎨",
+  "Brand Identity": "🎨"
+ },
+ "serviceTestimonials": {
+  "/services/web-design": {
+   "es": "Nuestra web nueva convierte 3x mas que la anterior.",
+   "en": "Our new site converts 3x more than the old one.",
+   "author": "Carlos M., CEO Retail DTC"
+  },
+  "/services/digital-strategy": {
+   "es": "Pasamos de improvisar a tener un roadmap claro con KPIs reales.",
+   "en": "We went from guessing to a clear roadmap with real KPIs.",
+   "author": "Lucia P., CMO SaaS B2B"
+  },
+  "/services/marketing-automation": {
+   "es": "Los workflows automatizados nos ahorraron 20h/semana en ventas.",
+   "en": "Automated workflows saved our sales team 20h/week.",
+   "author": "Emily Z., VP Growth Fintech"
+  },
+  "/services/content-creation": {
+   "es": "Nuestro engagement subio un 150% en 3 meses.",
+   "en": "Our engagement jumped 150% in 3 months.",
+   "author": "Ana R., Marketing Director"
+  },
+  "/services/seo-analytics": {
+   "es": "Triplicamos el trafico organico en 6 meses.",
+   "en": "We tripled organic traffic in 6 months.",
+   "author": "James W., Head of Digital"
+  },
+  "/services/brand-identity": {
+   "es": "La nueva marca nos posiciono como lideres del sector.",
+   "en": "The new brand positioned us as industry leaders.",
+   "author": "Sofia M., Brand Manager"
+  }
+ }
+}
